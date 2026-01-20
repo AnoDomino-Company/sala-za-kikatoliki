@@ -1,0 +1,2816 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Catholic Prayer App</title>
+  <link rel="manifest" href="manifest.json">
+<style>
+:root {
+  --transition: all 0.3s ease;
+  --border-radius: 12px;
+  --about-padding: 0.2em 1.5em;
+  --about-radius: 10px;
+  --about-max-width: 350px;
+  --about-box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+  --about-h2-size: 1.2em;
+  --about-p-size: 1em;
+  --about-p-line: 1.5;
+}
+
+/* About Modal Styles */
+#aboutModal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.3);
+  align-items: center; justify-content: center;
+  z-index: 9999;
+}
+.about-content {
+  padding: var(--about-padding);
+  border-radius: var(--about-radius);
+  max-width: var(--about-max-width);
+  text-align: left;
+  box-shadow: var(--about-box-shadow);
+  position: relative;
+  transition: background 0.3s, color 0.3s;
+  max-height: 500px; /* or any height you want */
+  overflow-y: auto;
+  white-space: pre-line;
+
+}
+/* Theme colors for modal */
+body.ordinary-light #aboutModal .about-content { background: #f8f8f8; color: #222; }
+body.ordinary-dark #aboutModal .about-content { background: #222; color: #f3f3f3; }
+body.Christmas-light #aboutModal .about-content { background: #fff8f0; color: #a12c2c; }
+body.Christmas-dark #aboutModal .about-content { background: #3a1a1a; color: #ffe5e5; }
+body.lent-light #aboutModal .about-content { background: #f6f0ff; color: #5a2a7a; }
+body.lent-dark #aboutModal .about-content { background: #2a1a3a; color: #e0cfff; }
+body.easter-light #aboutModal .about-content { background: #f7fff0; color: #2c7a2c; }
+body.easter-dark #aboutModal .about-content { background: #1a3a1a; color: #e5ffe5; }
+#aboutModal .about-content h2 {
+  margin-bottom: 0.7em;
+  font-size: var(--about-h2-size);
+}
+#aboutModal .about-content p {
+  font-size: var(--about-p-size);
+  line-height: var(--about-p-line);
+}
+#closeAbout {
+  position: absolute;
+  top: 0.5em;
+  right: 0.7em;
+  background: none;
+  border: none;
+  font-size: var(--about-h2-size);
+  cursor: pointer;
+  color: inherit;
+}
+#aboutBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--about-h2-size);
+  padding: 0 0.5em;
+  color: inherit;
+  transition: color 0.3s;
+}
+body[class*="dark"] #aboutBtn { color: #f3f3f3; }
+
+ #aboutLabel {
+      font-size: 0.8em;
+      color: inherit;
+      opacity: 0.7;
+      margin-top: 2px;
+      text-align: center;
+      display: block;
+    }
+
+    /* Base font size for better scaling with slider */
+    html {
+      font-size: 16px; /* Default base font size */
+    }
+
+    /* --- THEME VARIABLE DEFINITIONS (REVISED) --- */
+
+
+    @media (prefers-color-scheme: light) {
+      input[type="text"]::placeholder {
+        color: black;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      input[type="text"]::placeholder {
+        color: white;
+      }
+    }
+
+         /* 💚 Ordinary Time (Enhanced Contrast) */
+    body.ordinary-light {
+      --primary-bg: #f7fff6;
+      --text-color: #063a04;
+      --header-bg: linear-gradient(135deg, #3d803b, #2a6d29);
+      --card-bg: rgba(255, 255, 255, 0.4);
+      --settings-bg: #eee;
+      --settings-text: #000;
+      --search-result-bg: rgba(255, 255, 255, 0.9);
+      --search-result-hover: #eaf3ea;
+      --daily-verse-bg: #f3fff3; /* very light pastel green */
+      --verse-panel-bg: #f1f8f1;
+      --verse-panel-text: #111;
+      --verse-theme-bg: #81c784; /* medium green, much deeper than daily-verse-bg */
+      --verse-theme-text: #063a04; /* Dark green text */
+      --verse-theme-active-bg: #3d803b;
+      --verse-theme-active-text: #ffffff;
+    }
+    body.ordinary-dark {
+      --primary-bg: #0b1a0a;
+      --text-color: #e0f0e0;
+      --header-bg: linear-gradient(135deg, #0e3d0d, #052a04);
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --settings-bg: #1e1e1e;
+      --settings-text: #f5f5f5;
+      --search-result-bg: rgba(30, 30, 30, 0.9);
+      --search-result-hover: rgba(60, 60, 60, 0.9);
+      --daily-verse-bg: #112a11;
+      --verse-panel-bg: #102010;
+      --verse-panel-text: #e0f0e0;
+      --verse-theme-bg: #225c22; /* darker green for contrast */
+      --verse-theme-text: #e0f0e0; /* Light green text */
+      --verse-theme-active-bg: #3d803b;
+      --verse-theme-active-text: #ffffff;
+    }
+
+    /* 🎄 Christmas (Corrected Theme) */
+    body.Christmas-light {
+      --primary-bg: #fff8f8;
+      --text-color: #006400; /* Deep festive green */
+      --header-bg: linear-gradient(135deg, #D62828, #B82020); /* Festive Red */
+      --card-bg: rgba(255, 255, 255, 0.5);
+      --settings-bg: #fdeaea;
+      --settings-text: #000;
+      --search-result-bg: rgba(255, 248, 248, 0.9);
+      --search-result-hover: #fae0e0;
+      --daily-verse-bg: #fff7fa; /* very light pink */
+      --verse-panel-bg: #fff5f5;
+      --verse-panel-text: #8B0000; /* Dark Red */
+      --verse-theme-bg: #ffb3b3; /* medium pink, much deeper than daily-verse-bg */
+      --verse-theme-text: #8B0000; /* Dark red text */
+      --verse-theme-active-bg: #D62828;
+      --verse-theme-active-text: #ffffff;
+    }
+    body.Christmas-dark {
+      --primary-bg: #2A0E0E; /* Deep Velvety Red */
+      --text-color: #ffffff;
+      --header-bg: linear-gradient(135deg, #A01C1C, #7D1E1E); /* Richer Red */
+      --card-bg: rgba(255, 215, 153, 0.07);
+      --settings-bg: #4d1a1a;
+      --settings-text: #fff8f8;
+      --search-result-bg: rgba(42, 14, 14, 0.9);
+      --search-result-hover: rgba(80, 20, 20, 0.9);
+      --daily-verse-bg: #5a2424;
+      --verse-panel-bg: #4d1a1a;
+      --verse-panel-text: #ffd799;
+      --verse-theme-bg: #7d2d2d; /* darker muted red for contrast */
+      --verse-theme-text: #ffd799; /* Warm golden text */
+      --verse-theme-active-bg: #D62828;
+      --verse-theme-active-text: #ffffff;
+    }
+    /* 🎄 Fix for Active Category in Christmas Mode */
+    body.Christmas-light .category.active,
+    body.Christmas-dark .category.active {
+      background: #FFD700; /* Gold background */
+      color: #8B0000;      /* Dark red text */
+      box-shadow: 0 0 14px rgba(255, 255, 255, 0.9); /* A slightly stronger glow */
+    }
+    /* 💜 Lent (Enhanced Readability) */
+    body.lent-light {
+      --primary-bg: #f9f5ff;
+      --text-color: #31004f;
+      --header-bg: linear-gradient(135deg, #9B59B6, #8e44ad);
+      --card-bg: rgba(255, 255, 255, 0.4);
+      --settings-bg: #f4eef7;
+      --settings-text: #000;
+      --search-result-bg: rgba(255, 255, 255, 0.9);
+      --search-result-hover: #e8dff1;
+      --daily-verse-bg: #f6eaff; /* very light purple */
+      --verse-panel-bg: #f5effa;
+      --verse-panel-text: #31004f;
+      --verse-theme-bg: #b39ddb; /* medium purple, much deeper than daily-verse-bg */
+      --verse-theme-text: #31004f; /* Dark purple text */
+      --verse-theme-active-bg: #9B59B6;
+      --verse-theme-active-text: #ffffff;
+    }
+    body.lent-dark {
+      --primary-bg: #160a21;
+      --text-color: #e5cfff;
+      --header-bg: linear-gradient(135deg, #4C1A74, #3d155b);
+      --card-bg: rgba(229, 207, 255, 0.07);
+      --settings-bg: #2a1a38;
+      --settings-text: #f5f5f5;
+      --search-result-bg: rgba(42, 26, 56, 0.9);
+      --search-result-hover: rgba(61, 21, 91, 0.9);
+      --daily-verse-bg: #3d155b;
+      --verse-panel-bg: #2c1a3e;
+      --verse-panel-text: #e5cfff;
+      --verse-theme-bg: #4c2a74; /* darker muted purple for contrast */
+      --verse-theme-text: #e5cfff; /* Light purple text */
+      --verse-theme-active-bg: #8e44ad;
+      --verse-theme-active-text: #ffffff;
+    }
+
+    /* 🌟 Easter (Refined Theme) */
+    body.easter-light {
+      --primary-bg: #fffff0;
+      --text-color: #5d4037;
+      --header-bg: linear-gradient(135deg, #FFD700, #FFEC8B);
+      --card-bg: rgba(255, 255, 255, 0.6);
+      --settings-bg: #fefbeb;
+      --settings-text: #000;
+      --search-result-bg: rgba(255, 255, 240, 0.9);
+      --search-result-hover: #fffada;
+      --daily-verse-bg: #fffde7; /* very light yellow */
+      --verse-panel-bg: #fff9c4;
+      --verse-panel-text: #5d4037;
+      --verse-theme-bg: #ffd54f; /* medium yellow, much deeper than daily-verse-bg */
+      --verse-theme-text: #5d4037; /* Brown text */
+      --verse-theme-active-bg: #FFD700;
+      --verse-theme-active-text: #5d4037;
+    }
+    body.easter-dark {
+      --primary-bg: #1a1400;
+      --text-color: #fff5cc;
+      --header-bg: linear-gradient(135deg, #FFD700, #FFEC8B);
+      --card-bg: rgba(255, 245, 204, 0.07);
+      --settings-bg: #2a2100;
+      --settings-text: #fff5cc;
+      --search-result-bg: rgba(42, 33, 0, 0.9);
+      --search-result-hover: rgba(66, 53, 0, 0.9);
+      --daily-verse-bg: #4d3d00;
+      --verse-panel-bg: #332900;
+      --verse-panel-text: #fff5cc;
+      --verse-theme-bg: #a67c00; /* darker muted gold for contrast */
+      --verse-theme-text: #fff5cc; /* Light gold text */
+      --verse-theme-active-bg: #FFD700;
+      --verse-theme-active-text: #1a140a;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-size: 1rem;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      background: var(--primary-bg);
+      color: var(--text-color);
+      transition: background 0.5s, color 0.5s;
+    }
+
+    header {
+      background: var(--header-bg);
+      color: white;
+      padding: 1em;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+    
+    body.easter-dark header {
+        color: #1a140a;
+    }
+
+    .header-buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    input[type="text"] {
+      padding: 0.5em;
+      width: 100%;
+      max-width: 300px;
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+      background: rgba(255,255,255,0.1);
+      color: inherit;
+      font-size: 1em;
+      transition: border 0.2s;
+    }
+
+  .categories {
+    display: flex;
+    flex-wrap: wrap; /* allow wrapping on small screens */
+    justify-content: flex-start; /* or space-between / center / flex-start based on your flavor */
+    gap: 0.5rem;
+    padding: 1rem;
+    background: rgba(255,255,255,0.3);
+    position:static;
+    top: 60px;
+    z-index: 999;
+    font-weight: bold;
+    width: 100%; /* full width of parent */
+  }
+
+
+  .category {
+    flex: 1 1 auto; /* allows each category to grow and shrink naturally */
+    min-width: 100px; /* prevents them from being too small */
+    padding: 0.75rem;
+    border: none;
+    border-radius:var(--border-radius);
+    background: rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    text-align: center;
+    white-space: normal
+  }
+
+
+
+
+    
+    .category.active {
+      background: var(--header-bg); /* Use a consistent highlight color */
+      color: white;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+    
+    body.easter-dark .category.active {
+        color: #1a140a;
+    }
+
+    .section {
+      display: none;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .prayer {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      margin: 1em;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .prayer-button {
+      width: 100%;
+      padding: 1em;
+      border: none;
+      background: none;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      font-size: 1.05rem;
+      color: var(--text-color);
+    }
+
+    .content {
+      padding: 0 1em;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: var(--transition);
+      color: var(--text-color);
+    }
+
+    .content.active {
+      padding: 1em;
+      max-height: 4000px;
+      opacity: 1;
+    }
+
+    #settings {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 90vw;
+      max-width: 320px;
+      background-color: var(--settings-bg);
+      color: var(--settings-text);
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.95);
+      transition: transform 0.3s, opacity 0.3s, visibility 0.3s;
+      z-index: 100;
+    }
+    #settings.show {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+    }
+    #settings label,
+    #settings select,
+    #settings input[type="checkbox"] {
+      color: inherit;
+      background-color: transparent;
+      border: none;
+      font-size: 1em;
+      margin-bottom: 0.5em;
+    }
+    #settings select, #settings input[type="range"] {
+      width: 100%;
+      margin-bottom: 0.5em;
+    }
+
+    #settingsBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      font-size: 28px;
+      background: #f0f0f0;
+      color: #333;
+      border: none;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hidden { display: none; }
+
+    .categories .category .icon {
+      font-size: 1.2em;
+      margin-right: 8px;
+    }
+
+    .categories .category.active .icon { color: inherit; }
+
+    #welcome-message {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin: 1em;
+    }
+
+    .welcome-message h2, .welcome-message p {
+      text-align: center;
+    }
+
+    #fontSizeSlider {
+      width: 100%;
+      margin-top: 0.3rem;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      color: #333; /* Modal text should be readable */
+      padding: 20px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .modal-content h2 { margin-bottom: 1rem; }
+    .modal-content label { display: block; margin-top: 1rem; font-weight: bold; }
+    .modal-content input, .modal-content select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+    }
+    .modal-content button {
+      margin-top: 1rem;
+      padding: 10px 20px;
+      background-color: #3d803b;
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .content .break{
+        white-space: pre-line;
+    }
+
+    #searchResults {
+      position: fixed;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      max-height: 60vh;
+      overflow-y: auto;
+      background: var(--search-result-bg);
+      color: var(--text-color);
+      backdrop-filter: blur(4px);
+      border-radius: var(--border-radius);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 2000;
+      padding: 1rem;
+    }
+    
+    #searchResults ul { list-style: none; margin: 0; padding: 0; }
+    #searchResults li {
+      padding: 0.5em;
+      margin-bottom: 0.5em;
+      cursor: pointer;
+      border-bottom: 1px solid #ccc;
+    }
+    #searchResults li:hover { background-color: var(--search-result-hover); }
+
+    /* Rosary section */
+    .mystery-set-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .mystery-set-selector button {
+      padding: 0.5rem;
+      border: none;
+      border-radius: var(--border-radius);
+      background: rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.9rem;
+      color: var(--text-color);
+    }
+    .mystery-set-selector button.active {
+      background: var(--header-bg);
+      color: white;
+    }
+    
+    body.easter-dark .mystery-set-selector button.active {
+      color: #1a140a;
+    }
+
+    .mysteries-list { padding-left: 1.5rem; margin-bottom: 1.5rem; }
+    .mysteries-list li { margin-bottom: 0.5rem; }
+    #dynamicMysteries h3 { font-size: 1.1rem; }
+    #dynamicMysteries li {
+      font-size: 1rem;
+      white-space: pre-line;
+      line-height: 1.4;      
+    }
+
+    /* Daily verse section */
+    .daily-verse {
+      margin: 1em;
+      padding: 1em;
+      border-radius: var(--border-radius);
+      font-style: italic;
+      background-color: var(--daily-verse-bg);
+      color: var(--text-color);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .daily-verse button {
+      margin-top: 1rem;
+      padding: 0.5em 1em;
+      font-size: 0.9rem;
+      background-color: var(--verse-theme-bg);
+      color: var(--verse-theme-text);
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+    }
+
+    .verse-panel {
+      background: var(--verse-panel-bg);
+      color: var(--verse-panel-text);
+      border-radius: var(--border-radius);
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin-top: 1rem;
+    }
+    .verse-block { margin-bottom: 1rem; }
+    .verse-theme-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .verse-theme {
+      padding: 0.4rem 1rem;
+      border-radius: var(--border-radius);
+      background: var(--verse-theme-bg); /* This will now be a soft, solid color */
+      color: var(--verse-theme-text);
+      cursor: pointer;
+      border: none; /* Ensure no border is present */
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+    .verse-theme.active {
+      background: var(--verse-theme-active-bg);
+      color: var(--verse-theme-active-text, white); /* Use new variable */
+      border: 1px solid var(--verse-theme-active-bg);
+      font-weight: bold;
+    }
+
+    .verse-theme:hover {
+      background: var(--verse-theme-active-bg);
+      color: var(--verse-theme-active-text, white); /* Use new variable */
+      border-color: var(--verse-theme-active-bg);
+    }
+    .back-to-today-wrapper {
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+
+
+
+
+    /* 🎄 Vibrant Header Enhancements */
+    body.Christmas-light header,
+    body.Christmas-dark header {
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 12px rgba(218, 165, 32, 0.5); /* Golden glow */
+    }
+
+    /* ✨ Category Glow Effects */
+    body.Christmas-light .category,
+    body.Christmas-dark .category {
+      background: linear-gradient(145deg, #FF4C4C, #B82020);
+      border: 1px solid #FFD700;
+      box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+      color: white;
+    }
+    body.Christmas-light .category:hover,
+    body.Christmas-dark .category:hover {
+      background: #FFD700;
+      color: #8B0000;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+    }
+
+    /* 🌟 Verse Panel Shine */
+    body.Christmas-light .verse-panel,
+    body.Christmas-dark .verse-panel {
+      background: linear-gradient(to bottom, #fff5f5, #ffe3e3);
+      box-shadow: 0 4px 10px rgba(255, 215, 0, 0.3);
+    }
+
+    /* 🌟 FAB Button Magic */
+    body.Christmas-light #settingsBtn,
+    body.Christmas-dark #settingsBtn {
+      background: linear-gradient(135deg, #FFD700, #FF4C4C);
+      color: white;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    body.Christmas-light #settingsBtn:hover,
+    body.Christmas-dark #settingsBtn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 16px rgba(255, 255, 255, 0.6);
+    }
+
+    /* 📜 Prayer Cards Glow */
+    body.Christmas-light .prayer,
+    body.Christmas-dark .prayer {
+      border: 2px solid #D62828;
+      background: linear-gradient(to bottom, #fff8f8, #ffeaea);
+      box-shadow: 0 4px 10px rgba(178, 32, 32, 0.2);
+    }
+
+        /* 🔧 Fix prayer background and text in Christmas-dark mode */
+    body.Christmas-dark .prayer {
+      background: linear-gradient(to bottom, #3d1a1a, #2a0e0e); /* deep red wine gradient */
+      color: #ffd799; /* warm gold text */
+      box-shadow: 0 4px 10px rgba(255, 215, 0, 0.15);
+      border: 1px solid #A01C1C;
+    }
+
+    /* Optional enhanced style */
+    body.Christmas-dark .prayer-button {
+      color: #ffd799;
+    }
+    body.Christmas-dark .content {
+      color: #fff8f8;
+    }
+
+    body.Christmas-dark .prayer {
+      box-shadow: 0 6px 16px rgba(255, 215, 0, 0.15);
+    }
+
+    /* 🎄 Fix verse-panel background in Christmas-dark */
+    body.Christmas-dark .verse-panel {
+      background: linear-gradient(to bottom, #3a0e0e, #2a0e0e); /* Deep wine gradient */
+      color: #ffd799; /* Warm golden text */
+      border: 1px solid #A01C1C;
+      box-shadow: 0 4px 12px rgba(255, 215, 0, 0.15);
+    }
+
+        /* Add this to your existing styles */
+    .rosary-sub-sections {
+      position: relative;
+    }
+
+    .sub-section {
+      display: none;
+    }
+
+    .sub-section.active {
+      display: block;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+        /* Rosary Subcategories Navigation Styles */
+    .rosary-categories {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        margin: 0.5rem 0.1rem;
+        background: var(--card-bg);
+        border-radius: var(--border-radius);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: var(--transition);
+    }
+
+    .rosary-categories .category {
+        flex: 1 1 auto;
+        min-width: 120px;
+        padding: 0.75rem;
+        border: none;
+        border-radius: var(--border-radius);
+        background: rgba(0,0,0,0.05);
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: bold;
+        font-size: 0.9rem;
+        color: var(--text-color);
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    
+    .rosary-categories .category:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .rosary-categories .category.active {
+        background: var(--header-bg);
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    /* Special styling for Easter dark mode */
+    body.easter-dark .rosary-categories .category.active {
+        color: #1a140a;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+        .rosary-categories {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .rosary-categories .category {
+            max-width: 100%;
+        }
+    }
+  </style>
+</head>
+<body class="ordinary-light">
+  <header>
+    <h1 data-en="Catholic Daily Prayers." data-sw="Sala za Kikatoliki.">Catholic Daily Prayers.</h1>
+    <div class="header-buttons">
+      <input type="text" id="searchInput" placeholder data-en="Search..." data-sw="Tafuta sala..." />
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <button id="aboutBtn" title="About">ℹ️</button>
+        <span id="aboutLabel" data-en="About" data-sw="Kuhusu">About</span>
+      </div>
+    </div>
+  </header>
+
+  <div id="setupModal" class="modal">
+    <div class="modal-content">
+      <h2>Karibu Sala za Kikatoliki.</h2>
+      <p>Tafadhali Chagua lugha yako na andika jina lako \ Please select your preferred language and enter your name:</p>
+      <label for="languageSelectSetup">Lugha\Language:</label>
+      <select id="languageSelectSetup">
+         <option value="sw">Swahili</option>
+         <option value="en">English</option>
+      </select>
+      <label for="userNameInput">Jina Lako / Your Name:</label>
+      <input type="text" id="userNameInput" placeholder="Ingiza Jina Lako./Enter your name." />
+      <button id="saveUserDetailsBtn">Save</button>
+      <p style="font-size: smaller; font-weight: bold;">©AnoDomino-2025</p>
+    </div>
+  </div>
+  <!-- About Modal -->
+  <div id="aboutModal" class="modal" >
+    <div class="about-content">
+      <button id="closeAbout">✖️</button>
+      <h2 id="aboutTitle" data-en="About This App" data-sw="Kuhusu App Hii"></h2>
+      <p class="break" id="aboutText" data-en="All Glory Be To God ,
+        AnoDomino Technologies presents a digital sanctuary for prayer, spiritual growth,  scripture, and designed in both Kiswahili and English languages, following the Catholic Liturgy. The app aims at helping users draw closer to God. It is our prayer that it will fulfill that aim.
+
+        This app makes use of prayers from the website of Radio Maria and EWTN, and also “Chuo Kidogo cha Sala”.
+        The Scriptures are taken from The African Bible (St Paul Communications/Daughters of St Paul, 1999) for English, and from Biblia Takatifu (T.M.P. Book Department, Tabora, 1967;) for Swahili.
+        
+        Launched 2025, the app was developed  by Anollian Mushi and Samantha George, and our sincere acknoledgements to; 
+        •	Padri Pamphilius Ngowi.
+        •	Padri James Nwauzor.
+        •	Frateri Sibusiso Ndaba.
+        •	Sister Hermania.
+        •	Tijmen de Brouwer.
+
+        And to everyone else who contributed in one way or another to the development of this app.
+
+        May the Lord bless you all.
+        -Anollian Mushi." data-sw="Utukufu wote ni wa Mungu,
+        AnoDomino Technologies inawasilisha hekalu la kidijitali kwa ajili ya sala, ukuaji wa kiroho, maandiko, na iliyoundwa kwa lugha zote Kiswahili na Kingereza, ikifuata utaratibu wa Kikatoliki. Programu hii inalenga kusaidia watumiaji kujiweka karibu na Mungu. Ni sala yetu kwamba itafanikiwa kufikia lengo hilo.
+
+        Program hii imetumia sala kutoka katika tovuti za Radio Maria Tanzania na EWTN pamoja na “Chuo Kidogo cha Sala”.
+        Maadiko Matakatifu yamechukuliwa kutoka Bibilia ya The African Bible (St Paul Communications/Daughters of St Paul, 1999) kwa lugha ya Kiingereza na kutoka Biblia Takatifu (T.M.P. Book Department, Tabora, 1967;) kwa lugha ya Kiswahili.
+        
+        Ilizinduliwa mwaka 2025, programu hii iliandaliwa na Anollian Mushi na Samantha George, na tunatoa shukrani zetu za dhati kwa;
+        •	Padri Pamphilius Ngowi.
+        •	Padri James Nwauzor.  
+        •	Frateri Sibusiso Ndaba.
+        •	Sista Hermania.
+        •	Tijmen de Brouwer.
+
+        Na kwa watu wote waliochangia kwa njia moja au nyingine katika maendeleo ya programu hii.
+
+        Mungu awabariki nyote.
+        -Anollian Mushi"></p>
+              <p style="font-size: smaller; font-weight: bold;">©AnoDomino Technologies-2025</p>
+    </div>
+  </div>
+  </div>
+
+  <nav class="categories">
+    <button class="category" data-category-id="home"><span class="icon" role="img" aria-label="Prayer hands">🙏</span><span data-en="Home" data-sw="Nyumbani">Home</span></button>
+    <button class="category" data-category-id="Basic Prayers"><span data-en="Basic Prayers" data-sw="Sala Muhimu">Basic Prayers</span></button>
+    <button class="category" data-category-id="Special prayers"><span data-en="Special prayers" data-sw="Sala Maalumu">Special prayers</span></button>
+    <button class="category" data-category-id="Prayers for Saints"><span data-en="Prayers for Saints"data-sw="Sala za Watakatifu.">Sala za Watakatifu.</span></button>
+    <button class="category" data-category-id="Rosary"><span data-en="Rosary" data-sw="Rozari">Rosary</span></button>
+  </nav>
+
+  <main id="prayer-content">
+    <section id="home" class="section active">
+      <div id="welcome-message" class="welcome-message">
+        <h2 id="personalizedGreeting" data-en="Welcome to the Digital Sanctuary" data-sw="Karibu kwenye Hekalu la Kidijitali">
+          Welcome to the Digital Sanctuary
+        </h2>
+        <p data-en="May peace be with you as you pray today." data-sw="Amani iwe nawe wakati unaposali leo.">
+          May peace be with you as you pray today.
+        </p>
+      </div>
+
+    <section id="daily-verse" class="daily-verse">
+      <h3 data-en="Verse of the Day" data-sw="Mstari wa Bibilia Siku ya Leo.">Verse of the Day</h3>
+
+      <div class="verse-panel">
+        <div id="todaysVerse" class="verse-block">
+          <p id="verseText" data-en="" data-sw="" style="font-style: italic;"></p>
+          <p id="verseReference" data-en="" data-sw="" style="text-align: right; font-weight: bold;"></p>
+        </div>
+
+        <div class="verse-theme-selector">
+          <button class="verse-theme" data-theme="hope" data-en="Hope" data-sw="Tumaini">Hope</button>
+          <button class="verse-theme" data-theme="comfort" data-en="Comfort" data-sw="Faraja">Comfort</button>
+          <button class="verse-theme" data-theme="wisdom" data-en="Wisdom" data-sw="Hekima">Wisdom</button>
+          <button class="verse-theme" data-theme="faith" data-en="Faith" data-sw="Imani">Faith</button>
+        </div>
+
+        <div class="back-to-today-wrapper">
+          <button id="backToToday" class="verse-theme" data-en="Back to Today's Verse" data-sw="Rudi Mstari wa Leo">Rudi Mstari wa Leo</button>
+        </div>
+      </div>
+    </section>
+
+    </section>
+
+    <section id="Basic Prayers" class="section">
+      <article class="prayer">
+        
+        <h4 data-en="† In the Name of the Father and of the Son and the Holy Spirit. Amen." data-sw="† Kwa Jina la Baba na la Mwana na la Roho Mtakatifu. Amina">† Kwa Jina la Baba na la Mwana na la Roho Mtakatifu. Amina</h4>
+        
+      </article>
+      <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Our Father." data-sw="Baba Yetu">Our Father.</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p data-en="Our Father, who art in heaven, hallowed be thy name; thy kingdom come; thy will be done; on earth as it is in heaven. Give us this day our daily bread.
+          And forgive us our trespasses, as we forgive those who trespass against us.
+          And lead us not into temptation, but deliver us from evil. Amen." data-sw="Baba yetu uliye mbinguni, jina lako litukuzwe, ufalme wako ufike, utakalo lifanyike dunian kama
+           huko mbinguni, utupe leo mkate wetu wa kila siku, utusamehe makosa yetu kama nasi tunavyowasamehe wale waliotukosea usitutie katika vishawishi
+            lakini utuopoe maovuni. Amina">Baba yetu uliye mbinguni, jina lako litukuzwe, ufalme wako ufike, utakalo lifanyike dunian kama
+           huko mbinguni, utupe leo mkate wetu wa kila siku, utusamehe makosa yetu kama nasi tunavyowasamehe wale waliotukosea usitutie katika vishawishi
+            lakini utuopoe maovuni. Amina</p>
+        </div>
+      </article>
+
+      <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Hail Mary." data-sw="Salamu Maria.">Hail Mary</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p data-en="Hail Mary, full of grace, the Lord is with thee, blessed art thou among women, and blessed is the fruit of thy womb, Jesus.
+          Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen." data-sw="Salamu Maria, umejaa neema Bwana yu nawe,
+          umebarikiwa kuliko wanawake wote na uzao wa tumbo lako amebarikiwa, Maria mtakatifu Mama wa Mungu utuombee sisi wakosefu kama tunavowasamehe na sisi waliotukosea
+          usitutie katika vishawishi lakini utuopoe maovuni. Amina.">Salamu Maria, umejaa neema Bwana yu nawe,
+          umebarikiwa kuliko wanawake wote na uzao wa tumbo lako amebarikiwa, Maria mtakatifu Mama wa Mungu utuombee sisi wakosefu kama tunavowasamehe na sisi waliotukosea
+          usitutie katika vishawishi lakini utuopoe maovuni. Amina.</p>
+        </div>
+      </article>
+
+      <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Glory be..." data-sw="Atukuzwe Baba...">Atukuzwe Baba...</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p data-en="Glory be to the Father,
+          and to the Son,
+          and to the Holy Spirit.
+          As it was in the beginning, is now,
+          and ever shall be,
+          world without end." data-sw=" Atukuzwe baba na mwana na roho mtakatifu kama mwanzo
+          na sasa na Siku zote na milele Amina">Atukuzwe baba na mwana na roho mtakatifu kama
+           mwanzo na sasa na Siku zote na milele Amina</p>
+      </article>
+
+      <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="The Angelus Prayer." data-sw="Malaika wa Bwana.">Malaika wa Bwana</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p class="break" data-en="V. The Angel of the Lord declared unto Mary.
+          R. And she conceived of the Holy Spirit.
+          Hail Mary, full of grace,
+          the Lord is with you!
+          Blessed are you among women, and blessed is the fruit of your womb, Jesus.
+          Holy Mary, Mother of God,
+          pray for us sinners,
+          now and at the hour of our death.
+          V. Behold the handmaid of the Lord.
+          R. Be it done unto me according to your word.
+          Hail Mary . . .
+          V. And the Word was made Flesh. R. And dwelt among us.
+          Hail Mary . . .
+          V. Pray for us, O holy Mother of God.
+          R. That we may be made worthy of the promises of Christ.
+          Let us pray:
+          Pour forth we beseech you, O Lord, your grace into our hearts, that we, to whom the incarnation of Christ your Son was made known by the message of an angel, may by his passion and cross be brought to the glory of his resurrection.
+          Through the same Christ Our Lord.
+          Amen" data-sw="Malaika wa Bwana alimpasha habari Maria.
+          Naye akapata mimba kwa uwezo wa Roho Mtakatifu.
+          Salamu, Maria.....
+          Ndimi mtumishi wa Bwana. Nitendewe ulivyonena.
+          Salamu, Maria....
+          Neno la Mungu akatwaa mwili. Akakaa kwetu.
+          Salamu, Maria....
+          Utuombee, Mzazi mtakatifu wa Mungu. Tujaliwe ahadi za Kristu.
+          Tuombe
+          Tunakuomba, Ee Bwana, utie neema yako mioyon mwetu, ili sisi tuliojua kwa maelezo ya Malaika kwamba Mwanao amejifanya mtu kwa mateso na msalaba wake tufikishwe kwenye utukufu na ufufuko. Tunaomba hayo kwa njia ya Kristu Bwana wetu.
+          Amina">"Malaika wa Bwana alimpasha habari Maria.
+          Naye akapata mimba kwa uwezo wa Roho Mtakatifu.
+          Salamu, Maria.....
+          Ndimi mtumishi wa Bwana. Nitendewe ulivyonena.
+          Salamu, Maria....
+          Neno la Mungu akatwaa mwili. Akakaa kwetu.
+          Salamu, Maria....
+          Utuombee, Mzazi mtakatifu wa Mungu. Tujaliwe ahadi za Kristu.
+          Tuombe
+          Tunakuomba, Ee Bwana, utie neema yako mioyon mwetu, ili sisi tuliojua kwa maelezo ya Malaika kwamba Mwanao amejifanya mtu kwa mateso na msalaba wake tufikishwe kwenye utukufu na ufufuko. Tunaomba hayo kwa njia ya Kristu Bwana wetu.
+          Amina"</p>
+        </div>
+      </article>
+
+      <article class="prayer" >
+        <button class="prayer-button">
+          <span data-en="Queen of Heaven." data-sw="Malkia wa Mbingu.">Malkia wa Mbingu.</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p class="break" data-en="Queen of heaven, rejoice, alleluia.
+          For he whom you did merit to bear, alleluia.
+          Has risen, as he said, alleluia.
+          Pray for us to God, alleluia.
+          Rejoice and be glad, O virgin Mary, alleluia.
+          For the Lord has truly risen, alleluia.
+
+          Let us pray. 
+          O God, who gave joy to the world through the resurrection of thy son, our Lord Jesus Christ, grant we beseech thee, that through the intercession of the virgin Mary, his mother, we may obtain the joys of everlasting life. Through the same Christ our Lord.
+          Amen." data-sw="Malkia wa mbingu, furahi Aleluya,
+          Kwani uliyestahili kumchukua Aleluya,
+          Amefufuka alivyosema Aleluya,
+          Utuombee kwa Mungu Aleluya,
+          Furahi, shangilia, Ee Bikira Maria Aleluya,
+          Kwani hakika Bwana amefufuka Aleluya.
+          Tuombe:
+          Ee Mungu uliyependa kuifurahisha dunia kwa kufufuka kwake Bwana wetu Yesu Kristu, Mwanao; fanyiza twakuomba, kwa ajili ya Bikira Maria, tupate nasi furaha za uzima wa milele. Tunaomba hayo kwa njia ya Kristu Bwana wetu. Amina.
+          ">Malkia wa mbingu, furahi Aleluya,
+              Kwani uliyestahili kumchukua Aleluya,
+              Amefufuka alivyosema Aleluya
+              Utuombee kwa Mungu Aleluya
+              Furahi, shangilia, Ee Bikira Maria Aleluya,
+              Kwani hakika Bwana amefufuka Aleluya.
+              Tuombe:
+              Ee Mungu uliyependa kuifurahisha dunia kwa kufufuka kwake Bwana wetu Yesu Kristu, Mwanao; fanyiza twakuomba, kwa ajili ya Bikira Maria, tupate nasi furaha za uzima wa milele. Tunaomba hayo kwa njia ya Kristu Bwana wetu. Amina.
+              </p>
+        </div>
+      </article>
+
+      <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Apostle's Creed."
+           data-sw="Kanuni ya Imani.">Kanuni ya Imani.</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p data-en="I believe in God, the Father Almighty, Creator of Heaven and earth;
+          and in Jesus Christ, His only Son Our Lord,
+          Who was conceived by the Holy Spirit, born of the Virgin Mary, suffered under Pontius Pilate, was crucified, died, and was buried.
+          He descended into Hell; the third day He rose again from the dead;
+          He ascended into Heaven, and sitteth at the right hand of God, the Father almighty; from thence He shall come to judge the living and the dead.
+          I believe in the Holy Spirit, the holy Catholic Church, the communion of saints, the forgiveness of sins, the resurrection of the body and life everlasting."
+          data-sw="Nasadiki kwa Mungu, Baba Mwenyezi, muumba mbingu na dunia.
+          Na kwa Yesu Kristu, Mwanaye wa pekee, Bwana wetu; aliyetungwa kwa uwezo wa Roho Mtakatifu,
+          akazaliwa na Bikira Maria,
+          akateswa kwa mamlaka ya Ponsyo Pilato,
+          akasulubiwa, akafa, akazikwa, akashukia kuzimu;
+          siku ya tatu akafufuka katika wafu;
+          akapaa mbinguni; amekaa kuume kwa Mungu Baba Mwenyezi;
+          toka huko atakuja kuwahukumu wazima na wafu.
+          Nasadiki kwa Roho Mtakatifu,
+          Kanisa takatifu katoliki,
+          ushirika wa Watakatifu,
+          maondoleo ya dhambi,
+          ufufuko wa miili na uzima wa milele.
+          Amina.">Nasadiki kwa Mungu, Baba Mwenyezi, muumba mbingu na dunia.
+          Na kwa Yesu Kristu, Mwanaye wa pekee, Bwana wetu; aliyetungwa kwa uwezo wa Roho Mtakatifu,
+          akazaliwa na Bikira Maria,
+          akateswa kwa mamlaka ya Ponsyo Pilato,
+          akasulubiwa, akafa, akazikwa, akashukia kuzimu;
+          siku ya tatu akafufuka katika wafu;
+          akapaa mbinguni; amekaa kuume kwa Mungu Baba Mwenyezi;
+          toka huko atakuja kuwahukumu wazima na wafu.
+          Nasadiki kwa Roho Mtakatifu,
+          Kanisa takatifu katoliki,
+          ushirika wa Watakatifu,
+          maondoleo ya dhambi,
+          ufufuko wa miili na uzima wa milele.
+          Amina.</p>
+        </div>
+      </article>
+
+      <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Act of Faith." data-sw="Sala ya Imani.">Sala ya Imani.</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p data-en="O my God, I firmly believe that Thou art one God, in three Divine Persons, the Father, the Son and the Holy Ghost; I believe that Thy Divine Son became man and died for our sins and that He will come to judge the living and the dead. I believe these and all the truths which the holy Catholic Church teaches, because Thou hast revealed them,
+          Who canst neither deceive nor be deceived. " data-sw=" Mungu wangu, nasadiki maneno yote linalosadiki na linalofundisha kanisa katoliki la Roma; Kwani ndiwe uliyefundisha hayo, wala hudanganyiki, wala hudanganyi.
+          Amina">Mungu wangu, nasadiki maneno yote linalosadiki na linalofundisha kanisa katoliki la Roma; Kwani ndiwe uliyefundisha hayo, wala hudanganyiki, wala hudanganyi.
+          Amina</p>
+      </article>
+
+      <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Act of Hope." data-sw=" Sala ya matumaini.">Sala ya matumaini.</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p data-en="O My God, relying on Thy infinite goodness and promises, I hope to obtain pardon of my sins, the help of Thy grace and life everlasting,
+           through the merits of Jesus Christ, my Lord and Redeemer. " data-sw="Mungu wangu, natumaini kwako nitapewa kwa njia ya Yesu Kristu, neema zako duniani na utukufu mbinguni, kwani ndiwe uliyeagana hayo nasi, nawe mwamini.
+           Amina ">Mungu wangu, natumaini kwako nitapewa kwa njia ya Yesu Kristu, neema zako duniani na utukufu mbinguni, kwani ndiwe uliyeagana hayo nasi, nawe mwamini.
+           Amina</p>
+        </article>
+
+        <article class="prayer">
+          <button class="prayer-button">
+            <span data-en="Act of Love." data-sw="Sala ya mapendo">Sala ya mapendo.</span>
+            <span class="toggle-icon">▼</span>
+          </button>
+          <div class="content">
+            <p data-en="O Lord God, I love you above all things
+            and I love my neighbor for your sake
+            because you are the highest, infinite and perfect
+            good, worthy of all my love.
+            In this love I intend to live and die.
+            Amen." data-sw=" Mungu wangu, nakupenda zaidi ya cho chote, kwani ndiwe mwema, ndiwe mwenye kupendeza.
+              Nampenda na jirani yangu kama nafsi yangu, kwa ajili yako. Amina">Mungu wangu, nakupenda zaidi ya cho chote, kwani ndiwe mwema, ndiwe mwenye kupendeza.
+              Nampenda na jirani yangu kama nafsi yangu, kwa ajili yako. Amina</p>
+        </article>
+
+        <article class="prayer">
+          <button class="prayer-button">
+            <span data-en="Confession of sin." data-sw="Ungamo la dhambi.">Ungamo la dhambi.</span>
+            <span class="toggle-icon">▼</span>
+          </button>
+          <div class="content">
+            <p class="break" data-en="Let us consider in our hearts all the times today that we have offended God, in thoughts, words and deeds...
+            I confess to Almighty God, and to you, my brothers, that I have sinned greatly, in thought, in word, in deed, and in failing to fulfill my duty, I have sinned, I have sinned, I have sinned greatly. That is why I ask you, Blessed Mary, ever Virgin, the angels and all the saints, and to you, my brothers, pray for me to the Lord our God.
+            +May Almighty God have mercy on us, forgive us our sins and bring us to eternal life, Amina.
+
+            DO THE GROWTH.
+            My God, I have greatly repented of my sins against you. For you are good, you are pleasant. You are disgusted with sin, so I do not want to sin again. I will repent, I ask for your grace so that I may return. Amina.
+            O merciful God, send down your blessings upon our Holy Father {name of the Pope} and upon the bishops, priests, deacons, farmers, all workers, students and the entire community that you make your people. Save the savages, comfort the sick, guide the fainting to see the eternal light, Amina."
+
+            data-sw="Na tuwaze katika moyo makosa yote ya leo tuliyomkosea Mungu,
+            Namuungamia Mungu Mwenyezi, nanyi ndugu zangu, kwani nimekosa mno, kwa mawazo, kwa maneno, kwa vitendo na kwa kutokutimiza wajibu, nimekosa mimi, nimekosa mimi, nimekosa sana. Ndio maana nakuomba Maria mwenyeheri, Bikira daima, Malaika na Watakatifu wote, nanyi ndugu zangu, niombeeni kwa Bwana Mungu wetu.
+
+            +Mungu Mwenyezi atuhurumie, atusamehe dhambi zetu na atufukishe kwenye uzima wa milele, Amina.
+
+            SALA YA KUTUBU.
+            Mungu wangu, nimetubu sana niliyokosa kwako. Kwani ndiwe mwema, ndiwe mwenye kupendeza. Wachukizwa na dhambi, basi sitaki kukosa tena. Nitafanya kitubio, naomba neema yako nipate kurudi. Amina.
+
+            Ee Mungu mwenye huruma, uwashushie baraka zako, Baba Mtakatifu wetu {Jina la Papa} na maaskofu, na mapadre, na mashemasi, wakulima, wafanyakazi wote, wanafunzi na jamii yote unaowafanya kuwa watu wako . Uwaokoe washenzi, uwafariji wagonjwa, waelekee wanaozimia waweze kuona mwanga wa milele, Amina.
+            ">"Na tuwaze katika moyo makosa yote ya leo tuliyomkosea Mungu,
+            Namuungamia Mungu Mwenyezi, nanyi ndugu zangu, kwani nimekosa mno, kwa mawazo, kwa maneno, kwa vitendo na kwa kutokutimiza wajibu, nimekosa mimi, nimekosa mimi, nimekosa sana. Ndio maana nakuomba Maria mwenyeheri, Bikira daima, Malaika na Watakatifu wote, nanyi ndugu zangu, niombeeni kwa Bwana Mungu wetu.
+
+            +Mungu Mwenyezi atuhurumie, atusamehe dhambi zetu na atufukishe kwenye uzima wa milele, Amina.
+
+            SALA YA KUTUBU.
+            Mungu wangu, nimetubu sana niliyokosa kwako. Kwani ndiwe mwema, ndiwe mwenye kupendeza. Wachukizwa na dhambi, basi sitaki kukosa tena. Nitafanya kitubio, naomba neema yako nipate kurudi. Amina.
+            
+            Ee Mungu mwenye huruma, uwashushie baraka zako, Baba Mtakatifu wetu {Jina la Papa} na maaskofu, na mapadre, na mashemasi, wakulima, wafanyakazi wote, wanafunzi na jamii yote unaowafanya kuwa watu wako . Uwaokoe washenzi, uwafariji wagonjwa, waelekee wanaozimia waweze kuona mwanga wa milele, Amina.
+            </p>
+          </div>
+        </article>
+
+      <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Guardian Angel Prayer"
+          data-sw="Sala kwa Malaika mlinzi ">Sala kwa Malaika mlinzi</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p data-en="Angel of God,
+          my guardian dear,
+          To whom God's love
+          commits me here,
+          Ever this day,
+          be at my side,
+          To light and guard,Rule and guide."
+           data-sw=" Malaika mlinzi wangu, unilinde katika hatari zote, za roho na za mwili. Amina.
+           Atukuzwe Baba na Mwana na Roho Mtakatifu. Kama mwanzo na sasa na siku zote na milele. Amina">Malaika mlinzi wangu, unilinde katika hatari zote,
+           za roho na za mwili. Amina. Atukuzwe Baba na Mwana na Roho Mtakatifu. Kama mwanzo na sasa na siku zote na milele. Amina</p>
+      </article>
+
+      <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Prayer before meal." data-sw="Sala kabla ya kula.">Sala kabla ya kula.</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p data-en=" Bless us, O Lord! and these Thy gifts, which we are about to receive from Thy bounty, through Christ our Lord.
+          Amen." data-sw="Tubariki Mungu wetu, sisi na chakula chetu tupate nguvu za kukutumikia vyema. Amina. "> Tubariki Mungu wetu, sisi na chakula chetu tupate nguvu za kukutumikia vyema. Amina. </p>
+      </article>
+
+      <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Prayer after meal." data-sw="Sala baada ya kula.">Sala baada ya kula.</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p data-en="  We give Thee thanks for all Thy benefits, O Almighty God, who livest and reignest world without end. Amen.
+          May the souls of the faithful departed, through the mercy of God, rest in peace. Amen" data-sw="Nakushukuru Mungu wangu, mimi na chakula ulichonijalia, nipate nguvu za kukutumikia vyema. Amina.  ">Nakushukuru Mungu wangu, mimi na chakula ulichonijalia, nipate nguvu za kukutumikia vema. Amina. </p>
+      </article>
+
+    </section>
+
+    <section id="Prayers for Saints" class="section">
+
+      <article class="prayer">
+        
+        <h4 data-en="† In the Name of the Father and of the Son and the Holy Spirit. Amen." data-sw="† Kwa Jina la Baba na la Mwana na la Roho Mtakatifu. Amina">† Kwa Jina la Baba na la Mwana na la Roho Mtakatifu. Amina</h4>
+        
+        </article>
+
+
+       <article class="prayer">
+            <button class="prayer-button">
+              <span data-en="Prayer to Saint Joseph." data-sw="Sala kwa Mt.Yosefu.">Sala kwa Mt.Joseph.</span>
+              <span class="toggle-icon">▼</span>
+            </button>
+            <div class="content">
+              <p data-en="O God, in Your wonderful providence You were pleased to choose Blessed Joseph to be the
+              spouse of Your most holy Mother. Grant, we beg You, that we may be worthy to have him for
+              our intercessor in heaven whom we venerate on earth as our protector. You who live and reign
+              forever and ever. Amen." data-sw="Ee Yosefu mwenye heri, tunakimbilia kwako katika masumbuko yetu; na kisha omba shime ya mchumba wako mtakatifu tunaomba pia kwa matumaini usimamizi wako. Kwa ajili ya mapendo uliyompenda Bikira Mtakatifu mzazi wa Mungu, na kwa ajili ya kumtunza mtoto Yesu, twakuomba sana, utuangalie 
+              kwa wema siye tuliokuwa fungu lake Yesu Kristu, tukakombolewa kwa damu yake. Tusimamie katika masumbuko yetu kwa enzi na shime yako. Ee mlinzi amini wa jamaa takatifu, uwakinge watoto
+              wateule wa Yesu Kristu. Ee Baba uliyetupemda mno tuepushe na kilema chochote cha madanganyo na upotevu. Ee kinga yetu mwezaji, utusimamie huko juu Mbinguni ulipo, tunaposhindana na wenye nguvu wakaao gizani.
+              Kama vile siku za kale ukamwopoa mtoto Yesu katika hatari ya kuuawa na leo hivi likinge Kanisa Takatifu la Mungu katika mitego ya adui, na katika shida zote. Mtunze daima kila mmoja wetu kwa mfano wako, ili tupate na msaada wako, kukaa na utakatifu maisha, kufa kifo chema, na kupata 
+              Mbinguni makao ya raha Milele. Amina.
+              ">Ee Yosefu mwenye heri, tunakimbilia kwako katika masumbuko yetu; na kisha omba shime ya mchumba wako mtakatifu tunaomba pia kwa matumaini usimamizi wako. Kwa ajili ya mapendo uliyompenda Bikira Mtakatifu mzazi wa Mungu, na kwa ajili ya kumtunza mtoto Yesu, twakuomba sana, utuangalie 
+              kwa wema siye tuliokuwa fungu lake Yesu Kristu, tukakombolewa kwa damu yake. Tusimamie katika masumbuko yetu kwa enzi na shime yako. Ee mlinzi amini wa jamaa takatifu, uwakinge watoto
+              wateule wa Yesu Kristu. Ee Baba uliyetupemda mno tuepushe na kilema chochote cha madanganyo na upotevu. Ee kinga yetu mwezaji, utusimamie huko juu Mbinguni ulipo, tunaposhindana na wenye nguvu wakaao gizani.
+              Kama vile siku za kale ukamwopoa mtoto Yesu katika hatari ya kuuawa na leo hivi likinge Kanisa Takatifu la Mungu katika mitego ya adui, na katika shida zote. Mtunze daima kila mmoja wetu kwa mfano wako, ili tupate na msaada wako, kukaa na utakatifu maisha, kufa kifo chema, na kupata 
+              Mbinguni makao ya raha Milele. Amina.
+            </p>
+          </article>
+
+          <article class="prayer">
+            <button class="prayer-button">
+              <span data-en="Prayer to Saint Michael, the Archangel." data-sw="Sala kwa Mt.Mikaeli Malaika Mkuu.">Sala kwa Mt.Mikaeli Malaika Mkuu.</span>
+              <span class="toggle-icon">▼</span>
+            </button>
+            <div class="content">
+              <p data-en="Saint Michael the Archangel, defend us in battle.
+              Be our protection against the wickedness and snares of the devil;
+              may God rebuke him, we humbly pray.
+              O Prince of the heavenly host, by the power of God,
+              thrust into hell Satan and all the evil spirits who wander
+              through the world for ruin of souls. Amen." data-sw="Mtakatifu Mikaeli Malaika Mkuu, utulinde katika vita, uwe kinga yetu 
+              katika maovu na maoteo ya shetani, Mungu amtiishe tunaomba sana, nawe Mkuu wa Majeshi ya Mbinguni, kwa nguvu ya Mungu, uwaangushe motoni
+              shetani na pepo wabaya wengine wote, wanaozunguka duniani, ili kuzipoteza roho za watu. AMINA.">
+              Mtakatifu Mikaeli Malaika Mkuu, utulinde katika vita, uwe
+              kinga yetu katika maovu na maoteo ya shetani, Mungu amtiishe tunaomba sana, nawe Mkuu wa Majeshi ya Mbinguni, kwa nguvu ya Mungu, uwaangushe motoni
+              shetani na pepo wabaya wengine wote, wanaozunguka duniani, ili kuzipoteza roho za watu. AMINA.
+               </p>
+          </article>
+
+        <article class="prayer">
+            <button class="prayer-button">
+              <span data-en="Prayer of Saint Francis of Assisi." data-sw="Sala ya Mt. Fransisko wa Assizi.">Sala ya Mt. Fransisko wa Assizi.</span>
+              <span class="toggle-icon">▼</span>
+            </button>
+            <div class="content">
+              <p class="break" data-en="Lord, make me an instrument of Your peace.
+              Where there is hatred, let me sow love.
+              Where there is injury, pardon;
+              Where there is doubt, faith.
+              Where there is despair, hope;
+              Where there is darkness, light;
+              and where there is sadness, joy.
+              O Divine Master, grant that I may not so much seek to be consoled as to console; 
+              to be understood as to understand; 
+              to be loved as to love. 
+              For it is in giving that we receive, 
+              it is in pardoning that we are pardoned, 
+              and it is in dying that we are born to eternal life. Amen.
+              " data-sw="Ee Bwana unifanye kuwa chombo cha amani yako.
+              Palipo chuki unifanye nieneze mapendo.
+              Palipo na mashaka pawe na amani.
+              Palipo na tuamini pawe na matumaini.
+              Palipo na giza pawe na mwanga. 
+              Palipo na huzuni pawe na furaha.
+              
+              Ee Bwana Mungu,unijalie nisitafute kufarijiwa,bali kufariji,
+              kupendwa bali kupenda, 
+              kwani ni kwa kutoa ndipo tunapokea,
+              ni kwa kusamehe ndipo tunasamehewa 
+              na ni kwa kufa ndipo tunapokea uzima wa Milele. AMINA.
+               ">Ee Bwana unifanye kuwa chombo cha amani yako.
+              Palipo chuki unifanye nieneze mapendo.
+              Palipo na mashaka pawe na amani.
+              Palipo na tuamini pawe na matumaini.
+              Palipo na giza pawe na mwanga. 
+              Palipo na huzuni pawe na furaha.
+
+              Ee Bwana Mungu,unijalie nisitafute kufarijiwa,bali kufariji,
+              kupendwa bali kupenda, 
+              kwani ni kwa kutoa ndipo tunapokea,
+              ni kwa kusamehe ndipo tunasamehewa 
+              na ni kwa kufa ndipo tunapokea uzima wa Milele. AMINA.</p>
+          </article>
+
+          
+
+          <article class="prayer">
+            <button class="prayer-button">
+              <span data-en="Prayer to Saint Anthony of Padua." data-sw="Sala kwa Mt.Antoni wa Padua.">Sala kwa Mt.Antoni wa Padua.</span>
+              <span class="toggle-icon">▼</span>
+            </button>
+            <div class="content">
+              <p data-en="Glorious Saint Anthony of Padua, you renounced every earthly ambition when yet very young.
+              You gave yourself wholly and perpetually to God’s service. Hence, I beg of you to secure for me
+              the means to respond readily to God's purpose for me. Grant me the favor I now seek if it is
+              God’s will. Please do not forget the prayers and merits of our missionaries, and the many needs
+              of their people." data-sw=" Ee Mtakatifu Antoni wa Padua, uliye mpole kati ya watakatifu wote.Upendo wako kwa Mungu na kwa binadamu wakati ulipoishi hapa duniani, umetustahilia uwezo wa kutenda miujiza mingi kwa ajili ya wale wenye shida.
+              Kwa hiyo sisi pia tunapata moyo wa kukimbilia kwako na kuomba msaada wako. Labda ombi letu haliwezi kutimizwa bila mwujiza. Hata hivyo huitwa Mtakatifu wa miujiza?
+              Kwa hiyo Mtakatifu Antoni wa Padua mwenye upole na huruma sana kwa watu wenye shida, sikiliza maombi yetu na kuyapeleka mbele ya Mtoto Yesu aliyependa kukaa mikononi mwako.Nasi tutakuonyesha shukrani kubwa katika maisha yetu yote.
+              Amina.">Ee Mtakatifu Antoni wa Padua, uliye mpole kati ya watakatifu wote.Upendo wako kwa Mungu na kwa binadamu wakati ulipoishi hapa duniani, umetustahilia uwezo wa kutenda miujiza mingi kwa ajili ya wale wenye shida.
+              Kwa hiyo sisi pia tunapata moyo wa kukimbilia kwako na kuomba msaada wako. Labda ombi letu haliwezi kutimizwa bila mwujiza. Hata hivyo huitwi Mtakatifu wa miujiza?
+              Kwa hiyo Mtakatifu Antoni wa Padua mwenye upole na huruma sana kwa watu wenye shida, sikiliza maombi yetu na kuyapeleka mbele ya Mtoto Yesu aliyependa kukaa mikononi mwako.Nasi tutakuonyesha shukrani kubwa katika maisha yetu yote.
+              Amina.</p>
+          </article>
+          
+          <article class="prayer">
+            <button class="prayer-button">
+              <span data-en="Prayer to Saint Padre Pio." data-sw="Sala kwa Padre Pio.">Sala kwa Mt.Antoni wa Padua.</span>
+              <span class="toggle-icon">▼</span>
+            </button>
+            <div class="content">
+              <p class="break" data-en="O God,
+              You gave Saint Pio of Pietrelcina, Capuchin priest, the great privilege of participating in a unique way in the passion of Your Son, grant me through his intercession the grace of (.... your need) which I ardently desire; and above all grant me the grace of living in conformity with the death of Jesus, to arrive at the Glory of the resurrection.
+
+              Glory be to the Father... (three times)" data-sw=" Ee Yesu, uliyejaa neema na upendo, ukijitoa sadaka kwetu, hata kufa msalabani. Nakusihi kwa unyenyekevu unijalie neema zako kwa maombezi ya mtumishi wako, Mt. Pio wa Pietrelcina. Alishiriki kwa ukarimu mateso yako, akakupenda sana na kufanya kazi kwa uaminifu kabisa kwa ajili ya utukufu wa Baba yako wa Mbinguni na kwa ajili ya wokovu wa watu. Kwa hiyo nakusihi kwa matumaini, unijalie kwa maombezi yake, neema ya {....} ambayo naihitaji Sana.
+              
+              Atukuzwe Baba...(Mara 3).">Ee Yesu, uliyejaa neema na upendo, ukijitoa sadaka kwetu, hata kufa msalabani. Nakusihi kwa unyenyekevu unijalie neema zako kwa maombezi ya mtumishi wako, Mt. Pio wa Pietrelcina. Alishiriki kwa ukarimu mateso yako, akakupenda sana na kufanya kazi kwa uaminifu kabisa kwa ajili ya utukufu wa Baba yako wa Mbinguni na kwa ajili ya wokovu wa watu. Kwa hiyo nakusihi kwa matumaini, unijalie kwa maombezi yake, neema ya {....} ambayo naihitaji Sana.
+              
+              Atukuzwe Baba...(Mara 3).</p>
+          </article>
+
+
+          <article class="prayer">
+            <button class="prayer-button">
+              <span data-en="Prayer to Saint Agatha." data-sw="Sala kwa Mt.Agatha.">Sala kwa Mt.Agatha.</span>
+              <span class="toggle-icon">▼</span>
+            </button>
+            <div class="content">
+              <p data-en="O glorious Saint Agatha, through whose intercession in Christ I hope for the restored health of
+              body and soul, hasten to lead me to the true Good, God alone. By your intercession, O blessed
+              Agatha, may I ever enjoy your protection by faithfully witnessing to Christ. You invite all who
+              come to you to enjoy the treasure of communion with the Holy Trinity. Moreover, if it be for
+              God’s greater glory and the good of my person, please intercede for me with the request of
+              (mention request here).
+              Saint Agatha, you found favor with God by your chastity and by your courage in suffering death
+              for the gospel. Teach me how to suffer with cheerfulness, uniting myself to Christ crucified with
+              a simplicity and purity of heart. Amen" data-sw=" Mtakatifu Agatha, Bikira aliyebarikiwa na Mungu.
+              Unaheshimiwa kama mlinzi wa Saratani ya matiti.
+              Ulipata maumivu na kuteswa katika kujitolea kwako kwa Bwana.
+              Nilinde kutokana na Saratani ya matiti
+              na kuingilia kati mbele ya Mungu Mwenyezi,
+              Na niombee ili nipate kuponywa.
+              Niponye na unifariji na kwa rehema,
+              Nipe ulinzi kutoka kwa saratani yote.
+              Mtakatifu Agatha, uniombee.
+              AMINA.">Mtakatifu Agatha, Bikira aliyebarikiwa na Mungu.
+              Unaheshimiwa kama mlinzi wa Saratani ya matiti.
+              Ulipata maumivu na kuteswa katika kujitolea kwako kwa Bwana.
+              Nilinde kutokana na Saratani ya matiti
+              na kuingilia kati mbele ya Mungu Mwenyezi,
+              Na niombee ili nipate kuponywa.
+              Niponye na unifariji na kwa rehema,
+              Nipe ulinzi kutoka kwa saratani yote.
+              Mtakatifu Agatha, uniombee.
+              AMINA.</p>
+          </article>
+
+          <article class="prayer">
+            <button class="prayer-button">
+              <span data-en="Prayer to Saint Teresa of Avila." data-sw="Sala kwa Mt.Theresia wa Mtoto Yesu">Sala kwa Mt.Theresia wa Mtoto Yesu</span>
+              <span class="toggle-icon">▼</span>
+            </button>
+            <div class="content">
+              <p data-en="O God, who by your Holy Spirit moved Teresa of Avila to manifest to your Church the way of
+              perfection: Grant us, we pray, to be nourished by her excellent teaching, and enkindle within us a
+              keen and unquenchable longing for true holiness.
+              Almighty God, who, when the hearts of your people have grown cold, send your Holy Spirit to
+              relight the flame of your love in their hearts, and raise up faithful ministers to recall your people
+              to their former devotion and service. Mercifully grant that we, following the teaching and
+              example of Teresa of Avila, may be filled with your Holy Spirit, may be aflame with zeal for
+              your glory and love for your goodness and hunger for your love, and that our feet may be set
+              upon the path that leads to true holiness. We ask through Jesus Christ our Lord. Amen." data-sw=" Ee Mtakatifu Theresia wa Mtoto Yesu, ulistahili kuitwa  Msimamizi wa Misioni Katoliki za dunia yote.
+              Kumbuka ile tamaa yako kuu uliyoonyesha huku duniani ya kusimika Msalaba wa Yesu Kristu, katika nchi zote, na kuhubiri Injili mpaka mwisho wa dunia.
+              Twakuomba kwa ajili ya maagano yako, wasaidie mapadre,wamisionari, na Kanisa zima.
+              Ee Mtakatifu Theresia wa Mtoto Yesu 'Msimamizi wa misioni'---
+              Utuombee.Amina">Ee Mtakatifu Theresia wa Mtoto Yesu, ulistahili kuitwa  Msimamizi wa Misioni Katoliki za dunia yote.
+              Kumbuka ile tamaa yako kuu uliyoonyesha huku duniani ya kusimika Msalaba wa Yesu Kristu, katika nchi zote, na kuhubiri Injili mpaka mwisho wa dunia.
+              Twakuomba kwa ajili ya maagano yako, wasaidie mapadre,wamisionari, na Kanisa zima.
+              Ee Mtakatifu Theresia wa Mtoto Yesu "Msimamizi wa misioni"---
+              Utuombee.Amina</p>
+          </article>
+
+          <article class="prayer">
+            <button class="prayer-button">
+              <span data-en="Prayer to Saint Jude." data-sw="Sala kwa Mt.Yuda.">Sala kwa Mt.Yuda.</span>
+              <span class="toggle-icon">▼</span>
+            </button>
+            <div class="content">
+              <p class="break" data-en="Saint Jude, glorious Apostle, faithful servant and friend of Jesus: The name of the traitor has caused you to be forgotten by many, but the true Church invokes you universally as the Patron of things despaired of. Pray for me, that finally I may receive the consolations and the succor of Heaven in all my necessities, tribulations and sufferings, particularly (here make your request), and that I may bless God with the Elect throughout eternity. Amen.
+              Saint Jude, Apostle, martyr and relative of our Lord Jesus Christ, of Mary and of Joseph, intercede for us."
+              data-sw=" Ee Mtakatifu Yuda,mtume na shahidi,uliye mkuu katika fadhila natajiri wa miujiza,jamaa wa karibu wa Yesu Kristo,mwombezi mwaminifu wa wale wote waombao msaada wako nyakati za shida.Ninakukimbilia wewe na kukusihi unisaidie,wewe uliyepewa uwezo mkubwa na Mungu. Unisaidie katika shida yangu hii....(Taja ombi lako).
+              Nami ninaahidi kukufanya ili ujulikane na watu wakuombe.
+              Sali
+              ·         Baba yetu tatu, x3
+              ·         Saalamu Maria x3
+              ·         Atukuzwe x3
+              Mtakatifu Yuda,utuombee wote tuombao msaada wako. AMINA
+              ">Ee Mtakatifu Yuda,mtume na shahidi,uliye mkuu katika fadhila natajiri wa miujiza,jamaa wa karibu wa Yesu Kristo,mwombezi mwaminifu wa wale wote waombao msaada wako nyakati za shida.Ninakukimbilia wewe na kukusihi unisaidie,wewe uliyepewa uwezo mkubwa na Mungu. Unisaidie katika shida yangu hii....(Taja ombi lako).
+              Nami ninaahidi kukufanya ili ujulikane na watu wakuombe.
+              Sali<br>
+              ·         Baba yetu tatu, x3<br>
+              ·         Saalamu Maria x3<br>
+              ·         Atukuzwe x3<br>
+              Mtakatifu Yuda,utuombee wote tuombao msaada wako. AMINA
+              </p>
+          </article>
+
+          <article class="prayer">
+            <button class="prayer-button">
+              <span data-en="Prayer to Saint Ann." data-sw="Sala kwa Mt.Anna.">Sala kwa MT.Anna.</span>
+              <span class="toggle-icon">▼</span>
+            </button>
+            <div class="content">
+              <p class="break" data-en="O Glorious Saint Ann, filled with compassion for those who invoke you and with love for those
+              who suffer, heavily laden with the weight of my troubles, I cast myself at your feet and humbly
+              beg of you to take the present affair which I recommend to you under your special protection
+              (here make your request).
+              Please recommend it to your daughter the Blessed Virgin Mary and lay it before the Throne of
+              Jesus so that He may bring it to a happy issue. Please continue to intercede for me until my
+              request is granted. Above all, obtain for me the grace of one day beholding my God face to face
+              and with you and Mary and all the Saints praising and blessing Him for all eternity. Amen.
+              Good Saint Ann, Mother of Her who is our life, our sweetness and our hope, pray to Her for us
+              and obtain our requests. (repeat three times)" data-sw=" Mtukufu Mt.Anna,uliyejawa huruma kwa waote wakuombao,na upendo kwa wale watesekao,nikielemewa na uzito wa matatizo yangu,ninajitupa miguuni pako na kukuomba unisaidie haja yangu ninayoileta kwako chini ya ukingaji wako wa pekee. Upende kuifikisha kwa binti yako Bikira Maria na kuiweka mbele ya kiti cha enzi cha Yesu,ili apate kuikubali.Usiache kuniombea hadi ombi langu litakapokubaliwa.Juu ya yote unipatie neema ya kumtazama siku moja Mungu uso kwa uso,nami pamoja nawe na Maria na watakatifu wote tumsifu na kumtukuza kwa milele yote.
+
+              Ee mwema Mt. Ana, mama wa yule aliye uzima,tulizo na matumaini yetu,utuombee na kutupatia ombi letu.(x3)">Mtukufu Mt.Anna,uliyejawa huruma kwa waote wakuombao,na upendo kwa wale watesekao,nikielemewa na uzito wa matatizo yangu,ninajitupa miguuni pako na kukuomba unisaidie haja yangu ninayoileta kwako chini ya ukingaji wako wa pekee. Upende kuifikisha kwa binti yako Bikira Maria na kuiweka mbele ya kiti cha enzi cha Yesu,ili apate kuikubali.Usiache kuniombea hadi ombi langu litakapokubaliwa.Juu ya yote unipatie neema ya kumtazama siku moja Mungu uso kwa uso,nami pamoja nawe na Maria na watakatifu wote tumsifu na kumtukuza kwa milele yote.
+
+              Ee mwema Mt. Ana, mama wa yule aliye uzima,tulizo na matumaini yetu,utuombee na kutupatia ombi letu.(x3)</p>
+          </article>
+    </section>
+
+    <section id="Special prayers" class="section">
+
+      <article class="prayer">
+        
+        <h4 data-en="† In the Name of the Father and of the Son and the Holy Spirit. Amen." data-sw="† Kwa Jina la Baba na la Mwana na la Roho Mtakatifu. Amina">† Kwa Jina la Baba na la Mwana na la Roho Mtakatifu. Amina</h4>
+        
+        </article>
+
+      <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Prayer for the sick." data-sw="Sala ya kuwaombea wagonjwa.">Sala ya kuwaombea wagonjwa.</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p data-en="Lord, look upon me with the eyes of your mercy.  May your healing hand rest upon me, may your life-giving powers flow into every cell of my body and into the depths of my soul, cleansing, purifying, restoring me to wholeness and strength for service in your kingdom.  O God, grant to me a deep awareness of your surrounding presence so that I may permit you to give me health and strength and peace,
+           through Christ our Lord. " data-sw=" Ee Bwana Yesu Kristo, ulishiriki ubinadamu wetu kwa hiari yako upate kuwaponya wagonjwa na kuwaokoa wanadamu.
+          Sikiliza kwa huruma sala zetu, umjalie afya ya mwili na roho (Taja jina la mgonjwa) yetu.Mfariji kwa kinga yako, mpe nafuu kwa nguvu yako.
+          Msaidie atumaini kuokoka kwa njia ya mateso, kama ulivyotufundisha kutumaini hapo ulipoteswa kwa ajili yako.
+          Utujalie sisi sote amani na furaha zote za ufalme wako huko unakoishi daima na milele.Amina">Ee Bwana Yesu Kristo, ulishiriki ubinadamu wetu kwa hiari yako upate kuwaponya wagonjwa na kuwaokoa wanadamu.
+          Sikiliza kwa huruma sala zetu, umjalie afya ya mwili na roho (Taja jina la mgonjwa) yetu.Mfariji kwa kinga yako, mpe nafuu kwa nguvu yako.
+          Msaidie atumaini kuokoka kwa njia ya mateso, kama ulivyotufundisha kutumaini hapo ulipoteswa kwa ajili yako.
+          Utujalie sisi sote amani na furaha zote za ufalme wako huko unakoishi daima na milele.Amina</p>
+      </article>
+
+
+      <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Prayer before Examination." data-sw="Sala kabla ya Mitihani.">Sala kabla ya Mitihani</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p data-en=" Dear Lord, as I take this exam, I thank you that my value
+          Is not based on my performance, but on your great love for me.
+          Come into my heart so that we can walk through this time together.
+          Help me, not only with this test, but the many tests of life that are sure to come my way.
+
+          As I take this exam, bring back to my mind everything I studied
+          and be gracious with what I have overlooked.
+          Help me to remain focused and calm, confident in the facts and in my ability,
+          and firm in the knowledge that no matter what happens today you are there with me." data-sw="Ee Mungu wa milele usiyezeeka, uliyeumba kila kitu kwa utaratibu, Wewe ambaye ni chanzo cha ufahamu na busara yetu, unayeangaza akili zetu kwa mwanga wa imani. Tia ndani ya akili yangu tone la busara na maarifa yako; ondoa giza la kutofahamu kwangu. Unipe uwezo wa kuongea kwa ufasaha; uweke maneno yako mdomoni mwangu, unijalie uwezo wa kuandika na kufikiri kwa hekima, unijalie kipawa cha kukumbuka yote ninayojifunza na kipawa cha kufafanua sawasawa  yote ninayosoma.
+          Nawe Mama yangu imakulata, kikao cha hekima ya Mungu, uwe Mwombezi wangu kwa mwanao Yesu Kristo.  Ee mpendwa Mtakatifu Rita, uniombee ili nipate zaidi ya yote mwanzo wa hekima ambayo ni kumcha Mungu, na toka hapo niwe Mkristo mwema.
+          Ninaomba hayo yote kwa njia ya Kristo Bwana wetu aliye hekima na ufahamu wa milele, AMINA. ">Ee Mungu wa milele usiyezeeka, uliyeumba kila kitu kwa utaratibu, Wewe ambaye ni chanzo cha ufahamu na busara yetu, unayeangaza akili zetu kwa mwanga wa imani. Tia ndani ya akili yangu tone la busara na maarifa yako; ondoa giza la kutofahamu kwangu. Unipe uwezo wa kuongea kwa ufasaha; uweke maneno yako mdomoni mwangu, unijalie uwezo wa kuandika na kufikiri kwa hekima, unijalie kipawa cha kukumbuka yote ninayojifunza na kipawa cha kufafanua sawasawa  yote ninayosoma.
+          Nawe Mama yangu imakulata, kikao cha hekima ya Mungu, uwe Mwombezi wangu kwa mwanao Yesu Kristo.  Ee mpendwa Mtakatifu Rita, uniombee ili nipate zaidi ya yote mwanzo wa hekima ambayo ni kumcha Mungu, na toka hapo niwe Mkristo mwema.
+          Ninaomba hayo yote kwa njia ya Kristo Bwana wetu aliye hekima na ufahamu wa milele, AMINA.</p>
+      </article>
+
+      <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Prayers for work success." data-sw="Sala ya kuitakatifuza kazi.">Sala ya kuitakatifuza kazi.</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p data-en="O Glorious Saint Joseph, model of all those who are devoted to labor, obtain for me the grace to work in a spirit of penance for the expiation of my many sins; to work conscientiously, putting the call of duty above my natural inclinations; to work with thankfulness and joy, considering it an honor to employ and develop by means of labor the gifts received from God; to work with order, peace, moderation and patience, never shrinking from weariness and trials; to work above all with purity of intention and detachment from self, keeping unceasingly before my eyes death and the account that I must give of time lost, talents unused, good omitted, and vain complacency in success, so fatal to the work of God.
+
+          All for Jesus, all through Mary, all after thy example, O Patriarch, Saint Joseph. Such shall be my watch-word in life and in death. Amen. " data-sw=" Ee Mt. Yosefu,Mtukufu mfano wa wafanyakazi wote, uniombee nipate neema ya kufanya kazi katika roho ya toba kwa ajili ya kufidia dhambi zangu nyingi, ili nifanye kazi kwa uaminifu nikithamini zaidi hisia ya wajibu kuliko upendeleo binafsi, ili nifanye kazi kwa furaha na shukrani nikihesabu kuwa ni fahari uwezo wa kuvitumia na kuvikuza kwa njia ya kazi vipaji nilivyopata kutoka kwa Mungu.
+          Nifanye kazi kwa utaratibu, amani, kiasi na uvumilivu kutokubali kushindwa na uchovu na matatizo, ili zaidi ya yote nifanye kazi kwa nia safi na kujisahau mwenyewe nikikumbuka wakati wote juu ya kifo na bili ambayo itanibidi niilipe kwa ajili ya muda niliopoteza, vipaji nisivyotumia, kupuuza nafasi ya kutenda mema na upendeleo mtupu wa mafanikio wenye kuleta madhara katika kazi ya Mungu.
+          Yote kwa ajili ya Yesu, yote kwa njia ya Maria, Yote kwa mfano wako, Ee Baba Mt. Yosefu. Huu uwe wito wangu katika maisha na saa ya kufa kwangu. Amina.">Ee Mt. Yosefu,Mtukufu mfano wa wafanyakazi wote, uniombee nipate neema ya kufanya kazi katika roho ya toba kwa ajili ya kufidia dhambi zangu nyingi, ili nifanye kazi kwa uaminifu nikithamini zaidi hisia ya wajibu kuliko upendeleo binafsi, ili nifanye kazi kwa furaha na shukrani nikihesabu kuwa ni fahari uwezo wa kuvitumia na kuvikuza kwa njia ya kazi vipaji nilivyopata kutoka kwa Mungu.
+          Nifanye kazi kwa utaratibu, amani, kiasi na uvumilivu kutokubali kushindwa na uchovu na matatizo, ili zaidi ya yote nifanye kazi kwa nia safi na kujisahau mwenyewe nikikumbuka wakati wote juu ya kifo na bili ambayo itanibidi niilipe kwa ajili ya muda niliopoteza, vipaji nisivyotumia, kupuuza nafasi ya kutenda mema na upendeleo mtupu wa mafanikio wenye kuleta madhara katika kazi ya Mungu.
+          Yote kwa ajili ya Yesu, yote kwa njia ya Maria, Yote kwa mfano wako, Ee Baba Mt. Yosefu. Huu uwe wito wangu katika maisha na saa ya kufa kwangu. Amina.</p>
+      </article>
+
+       <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Prayer for a our Parents." data-sw="Sala ya kuwaombea Wazazi">Sala ya kuombea Wazazi</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p class= "break" data-en="O Almighty God,
+            you gave us the commandment
+            to honour our father and mother.
+            In your loving kindness
+            hear my prayer for my parents.
+            Give them long lives
+            and keep them well in body and spirit.
+            Bless their labours;
+            keep them always in your care.
+            Bless them generously for their loving care for me.
+            Grant that, through your grace,
+            I may always be their support
+            and comfort, and that,
+            after our life together on earth,
+            we may experience the joy together praising you forever.
+          " data-sw="Mungu wetu uliyetoa amri tuwapende, tuwaheshimu, tuwatil na kuwasaidia Wazazi na Walezi wetu, usikilize Sala tunazokutolea, kwa kuombea Wazazi na Walezi wetu, wanatufanyia mema mengi hata hatuwezi kabisa kuwalipa sawa. Tangu Utoto wetu wanatulinda, wanatutunza wanatupatia Chakula na Mavazi, wanatuangalia Mchana na Usiku. Wanachoka wanakosa usingizi wapate kutulinda na kututuliza, wanahangaika sana na hata kupata uchungu kwa ajili yetu.
+            Ee Mungu, uwarudishie mema yote wanayotufanyia uwabariki na kuwalinda Roho na Mwili. Uwasaidie katika kazi zao zipate kuwafaa sana. Uwatulize uchungu wa roho wapate kufurahiwa siku zote. Uwakinge na hatari zote za Roho na za Mwili. Uwalinde waone uzee mzima na mwema, wakafurahiwe na kuona mwenendo mwema wa Watoto wao. Utusaidie nasi tuwapende sana, tuwatil siku zote, tuwafurahishe mioyo yao kwa kuwatunza na kuwaheshimu. Uwalinde siku zote za Uzee wao, wakidumu katika urafiki nawe, hatimae ukatupokee wote, pamoja Mbinguni, tupate kupendana na kufurahi katika Utukufu wako
+            Milele. Amina.">Mungu wetu uliyetoa amri tuwapende, tuwaheshimu, tuwatii na kuwasaidia Wazazi na Walezi wetu, usikilize Sala tunazokutolea, kwa kuombea Wazazi na Walezi wetu, wanatufanyia mema mengi hata hatuwezi kabisa kuwalipa sawa. Tangu Utoto wetu wanatulinda, wanatutunza wanatupatia Chakula na Mavazi, wanatuangalia Mchana na Usiku. Wanachoka wanakosa usingizi wapate kutulinda na kututuliza, wanahangaika sana na hata kupata uchungu kwa ajili yetu.
+            Ee Mungu, uwarudishie mema yote wanayotufanyia uwabariki na kuwalinda Roho na Mwili. Uwasaidie katika kazi zao zipate kuwafaa sana. Uwatulize uchungu wa roho wapate kufurahiwa siku zote. Uwakinge na hatari zote za Roho na za Mwili. Uwalinde waone uzee mzima na mwema, wakafurahiwe na kuona mwenendo mwema wa Watoto wao. Utusaidie nasi tuwapende sana, tuwatil siku zote, tuwafurahishe mioyo yao kwa kuwatunza na kuwaheshimu. Uwalinde siku zote za Uzee wao, wakidumu katika urafiki nawe, hatimae ukatupokee wote, pamoja Mbinguni, tupate kupendana na kufurahi katika Utukufu wako
+            Milele. Amina.</p>
+      </article>
+
+                <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Prayer for marriage." data-sw="Sala ya kuombea Ndoa.">Sala ya kuombea Ndoa.</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p data-en="O God, who in creating the human race
+          willed that man and wife should be one,
+          keep, we pray, in a bond of inseparable love
+          those who are united in the covenant of Marriage,
+          so that, as you make their love fruitful,
+          they may become, by your grace, witnesses to charity itself.
+          Through Christ our Lord
+          Amen." data-sw="Ee Mungu, ambaye ulipoumba binadamu
+          uliweka kwamba mume na mke wawe mmoja,
+          tunaomba uwabariki, katika kiungo cha upendo usiotengana,
+          wale waliounganishwa katika agano la Ndoa,
+          ili, kama unavyozaa matunda ya upendo wao,
+          wawe, kwa neema yako, mashahidi wa upendo wenyewe.
+          Kupitia Kristo Bwana wetu.
+          Amina.">Ee Mungu, ambaye ulipoumba binadamu
+          uliweka kwamba mume na mke wawe mmoja,
+          tunaomba uwabariki, katika kiungo cha upendo usiotengana,
+          wale waliounganishwa katika agano la Ndoa,
+          ili, kama unavyozaa matunda ya upendo wao,
+          wawe, kwa neema yako, mashahidi wa upendo wenyewe.
+          Kupitia Kristo Bwana wetu.
+          Amina.</p>
+      </article>
+
+      <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Prayer for our Children" data-sw="Sala ya kuwaombea watoto.">Sala ya kuombea watoto.</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p data-en="O God the Father of mankind, who hast given unto me these my children, and committed them to my charge to bring them up for Thee, and to prepare them for eternal life: help me with Thy heavenly grace, that I may be able to fulfil this most sacred duty and stewardship. Teach me both what to give and what to withhold; when to reprove and when to forbear; make me to be gentle, yet firm; considerate and watchful; and deliver me equally from the weakness of indulgence, and the excess of severity; and grant that, both by word and example, I may be careful to lead them in the ways of wisdom and true piety, so that at last I may, with them, be admitted to the unspeakable joys of our true home in heaven, in the company of the blessed Angels and Saints. Amen.
+
+            O Heavenly Father, I commend my children to Thy care. Be Thou their God and Father; and mercifully supply whatever is lacking in me through frailty or negligence. Strengthen them to overcome the corruptions of the world, whether from within or without; and deliver them from the secret snares of the enemy. Pour Thy grace into their hearts, and strengthen and multiply in them the gifts of Thy Holy Spirit, that they may daily grow in grace and in knowledge of our Lord Jesus Christ; and so, faithfully serving Thee here, may come to rejoice in Thy presence hereafter. Amen." 
+            data-sw="Mungu Baba yetu, umetubariki sisi kwa zawadi ya Watoto, tunakushukuru kwa Lulu hizi za thamani zinazopamba nyumba yetu, kicheko chao kinatupatia sisi furaha na kuyang’arisha Maisha yetu, wenyewe ni Mwelezo wa uwepo wako katika nyumba yetu, kukua kwao kunaonyesha mafumbo ya upendo wako, wawezeshe kuonja uwepo wa upendo wako na kukomaa jatika Hekima na kukua katika upendo wako, Maisha yajayo ya Watoto wetu yapo mikononi mwako, japokuwa nasi tuna jukumu katika kuelekeza mwelekeo wao wa baadae, Tusaidie kuwa waaminifu katika jukumu ketu ili kwamba tuweze kuwasaidia katika kuitikia Neema zako na hivyo wawe kama vile unavyotaka wawe. Amina.
+            #TuwaleenaTuwalindeWatoto
+            #SalaniSilaha
+            #RadioMariaTz">Mungu Baba yetu, umetubariki sisi kwa zawadi ya Watoto, tunakushukuru kwa Lulu hizi za thamani zinazopamba nyumba yetu, kicheko chao kinatupatia sisi furaha na kuyang’arisha Maisha yetu, wenyewe ni Mwelezo wa uwepo wako katika nyumba yetu, kukua kwao kunaonyesha mafumbo ya upendo wako, wawezeshe kuonja uwepo wa upendo wako na kukomaa jatika Hekima na kukua katika upendo wako, Maisha yajayo ya Watoto wetu yapo mikononi mwako, japokuwa nasi tuna jukumu katika kuelekeza mwelekeo wao wa baadae, Tusaidie kuwa waaminifu katika jukumu ketu ili kwamba tuweze kuwasaidia katika kuitikia Neema zako na hivyo wawe kama vile unavyotaka wawe. Amina.
+            #TuwaleenaTuwalindeWatoto
+            #SalaniSilaha
+            #RadioMariaTz</p>
+          </article>
+
+      <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Prayer for a better spouse." data-sw="Sala ya kuomba Mchumba Mwema.">Sala ya kuomba Mchumba Mwema.</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p data-en="O Jesus, lover of the young, the dearest Friend I have, in all confidence I open my heart to You to beg Your light and assistance in the important task of planning my future. Give me the light of Your grace, that I may decide wisely concerning the person who is to be my partner through life. Dearest Jesus, send me such a one whom in Your divine wisdom You judge best suited to be united with me in marriage. May her/his character reflect some of the traits of Your own Sacred Heart. May s/he be upright, loyal, pure, sincere and noble, so that with united efforts and with pure and unselfish love we both may strive to perfect ourselves in soul and body, as well as the children it may please You to entrust to our care. Bless our friendship before marriage, that sin may have no part in it. May our mutual love bind us so closely, that our future home may ever be most like Your own at Nazareth.
+
+          O Mary Immaculate, sweet Mother of the young, to your special care I entrust the decision I am to make as to my future wife/husband. You are my guiding Star! Direct me to the person with whom I can best cooperate in doing God's Holy Will, with whom I can live in peace, love and harmony in this life, and attain to eternal joys in the next.
+          Amen. " data-sw="Ee mwumba wetu, umewaunganisha watu katika ndoa Takatifu, nami natumaini kupokea Sakramenti hiyo na kushirikiana na mwenzangu wa ndoa maisha yangu yote.
+          Kwa hiyo nakuomba Ee Bwana unisaidie kuchagua kwa hekima, nipate mchumba mwema, safi na mwaminifu, nifuate zaidi uzuri wa roho kuliko wa uso, zaidi tabia njema kuliko umaridadi.
+          Mioyo yetu iwe ya kulingana na nia zetu zipatane, tupate kuishi pamoja na amani na kulea jamaa zetu kwa kukuheshimu wewe na baraka zako. Amina. ">Ee mwumba wetu, umewaunganisha watu katika ndoa Takatifu, nami natumaini kupokea Sakramenti hiyo na kushirikiana na mwenzangu wa ndoa maisha yangu yote.
+            Kwa hiyo nakuomba Ee Bwana unisaidie kuchagua kwa hekima, nipate mchumba mwema, safi na mwaminifu, nifuate zaidi uzuri wa roho kuliko wa uso, zaidi tabia njema kuliko umaridadi.
+            Mioyo yetu iwe ya kulingana na nia zetu zipatane, tupate kuishi pamoja na amani na kulea jamaa zetu kwa kukuheshimu wewe na baraka zako. Amina.</p>
+      </article>
+
+
+
+    </section>
+
+  <section id="Rosary" class="section">
+
+    <nav class="categories rosary-categories">
+    <button class="category" data-category-id="Maria"><span data-en="Blessed Virgin Mary" data-sw="Ya Bikira Maria">Ya Bikira Maria</span></button>
+    <button class="category" data-category-id="Huruma ya Mungu"><span data-en="Chaplet of Divine Mercy" data-sw="Ya Huruma ya Mungu">Ya Huruma ya Mungu</span></button>
+    </nav>
+    
+
+    <section id="Maria" class="sub-section">
+       <article class="prayer">
+        
+        <h4 data-en="† In the Name of the Father and of the Son and the Holy Spirit. Amen." data-sw="† Kwa Jina la Baba na la Mwana na la Roho Mtakatifu. Amina">† Kwa Jina la Baba na la Mwana na la Roho Mtakatifu. Amina</h4>
+        
+      </article>
+     <article class="prayer">
+      <button class="prayer-button">
+        <span data-en="The beginning of the Rosary" data-sw="Mwanzo wa Rozari">Mwanzo wa Rozari</span>
+        <span class="toggle-icon">▼</span>
+      </button>
+
+        <div class="content">
+            <p class ="break" 
+          data-en="1. The Apostel's Creed...
+          2. Our Father...
+          3. O lord Grant Us Faith--- Haily Mary...
+          4. O Lord Grand Us Hope--- Haily Mary...
+          5. O Lord Grant Us Charity--- Haily Mary...
+          
+          Then Follows the Rosary Mysteries..."
+          data-sw="1. Kanuni ya Imani...
+          2. Baba Yetu...
+          3. Ee Bwana Utujalie Imani--- Salamu Maria...
+          4. Ee Bwana Utujalie Matumaini--- Salamu Maria...
+          5. Ee Bwana Utujalie Mapendo--- Salamu Maria...
+          
+          Inafwata Matendo ya Rozari hapo chini....">1. Kanuni ya Imani...
+          2. Baba Yetu...
+          3. Ee Bwana Utujalie Imani--- Salamu Maria...
+          4. Ee Bwana Utujalie Matumaini--- Salamu Maria...
+          5. Ee Bwana Utujalie Mapendo--- Salamu Maria...
+      
+          Inafwata Matendo ya Rozari hapo chini....</p>
+        </div>
+      </article>
+
+    <article class="prayer" id="rosary-mysteries">
+      <button class="prayer-button" id="rosary-mysteries-toggle">
+        <span id="mystery-label" data-en="Rosary Mysteries" data-sw="Mafungu ya Rozari">Rosary Mysteries</span>
+        <span class="toggle-icon">▼</span>
+      </button>
+      <div class="content" id="mysteries-content">
+        <div class="mystery-set-selector">
+          <button data-set="Furaha" data-en="Joyful" data-sw="Furaha">Furaha</button>
+          <button data-set="Uchungu" data-en="Sorrowful" data-sw="Uchungu">Uchungu</button>
+          <button data-set="Utukufu" data-en="Glorious" data-sw="Utukufu">Utukufu</button>
+          <button data-set="Mwanga" data-en="Luminous" data-sw="Mwanga">Mwanga</button>
+          <button data-set="Today" data-en="Today's" data-sw="Ya Leo">Ya Leo</button>
+        </div>
+        <div id="dynamicMysteries"></div>
+      </div>
+    </article>
+
+    <article class="prayer">
+      <button class="prayer-button">
+        <span data-en="The Memorare." data-sw="Kumbuka ee Bikira mwenye rehema...">Kumbuka ee Bikira mwenye rehema...</span>
+        <span class="toggle-icon">▼</span>
+      </button>
+      <div class="content">
+        <p data-en="Remember, O most gracious Virgin Mary, that never was it known that anyone who came to your protection, implored your help, or sought your intercession was left unaided.  Inspired by this confidence, I come to you, O Virgin or virgins, my mother. 
+        To you I come, before you I stand, sinful and sorrowful.
+        O Mother of the Word Incarnate, do not reject my prayer but in your mercy hear and answer me. " data-sw="Kumbuka ee Bikira mwenye rehema,haijasikika kamwe
+        kwamba ulimwacha mtu aliyekimbilia ulinzi wako, akiomba msaada wako,akitaka umwombe.Nami kwa matumaini hayo nakukimbilia ee mama,mkuu wa mabikira,ninakuja kwako,ninasimama mbele yako,nikilalamika mimi mkosefu ewe mama wa neno la Mungu,
+        usiyakatae maneno yangu,mbali uyasikilize kwa wema na unitimizie Amina.">Kumbuka ee Bikira mwenye rehema,haijasikika kamwe kwamba ulimwacha mtu aliyekimbilia ulinzi wako, akiomba msaada wako,akitaka umwombe.Nami kwa matumaini hayo nakukimbilia ee mama,mkuu wa mabikira,ninakuja kwako,ninasimama mbele yako,nikilalamika mimi mkosefu ewe mama wa neno la Mungu,usiyakatae maneno yangu,mbali uyasikilize kwa wema na unitimizie Amina.</p>
+      </div>
+    </article>
+
+    <article class="prayer">
+      <button class="prayer-button">
+        <span data-en="Litany of the Blessed Virgin Mary" data-sw="Litania Ya Mama Bikira Maria">Litania Ya Mama Bikira Maria</span>
+        <span class="toggle-icon">▼</span>
+      </button>
+      <div class="content">
+        <p class ="break" data-en="Lord, have mercy on us,
+            R/. Lord, have mercy on us.
+
+            Christ, have mercy on Us,
+            R/. Christ, have mercy on us.
+
+            Lord, have mercy on us,
+            R/. Lord, have mercy on us.
+
+            Christ, hear us,
+            R/. Christ, hear us.
+
+            Christ graciously hear us,
+            R/. Christ graciously hear us.
+
+            God the Father of Heaven,
+            R/. Have mercy on us.
+
+            God the Son, Redeemer of the world,
+            R/. Have mercy on us.
+
+            God the Holy spirit,
+            R/. Have mercy on us.
+
+            Holy Trinity, One God,
+            R/. Have mercy on us.
+
+            Holy Mary
+            R/. Pray for us.(It repeats...)
+
+            Holy Mother of God, 
+            Holy Virgin of Virgins, 
+            Mother of Christ, 
+            Mother of Church, 
+            Mother of Mercy, 
+            Mother of divine grace,
+            Mother of Hope, 
+            Mother most pure,
+            Mother most chaste,
+            Mother inviolate,
+            Mother undefiled,
+            Mother most amiable,
+            Mother most admirable,
+            Mother of good counsel, 
+            Mother of our Creator, 
+            Mother of our Saviour, 
+            Virgin most prudent,
+            Virgin most venerable,
+            Virgin most renowned,
+            Virgin most powerful,
+            Virgin most merciful,
+            Virgin most faithful,
+            Mirror of justice,
+            Seat of wisdom,
+            Cause of our joy, 
+            Spiritual vessel,
+            Vessel of honour,
+            Singular vessel of devotion,
+            Mystical rose,
+            Tower of David, 
+            Tower of ivory,
+            House of gold,
+            Ark of the covenant,
+            Gate of heaven,
+            Morning star,
+            Health of the sick, 
+            Refuge of sinners,
+            Solace of migrants,
+            Comfort of the afflicted,
+            Help of Christians, 
+            Queen of Angels, 
+            Queen of Patriarchs, 
+            Queen of Prophets, 
+            Queen of Apostles, 
+            Queen of Martyrs, 
+            Queen of Confessors, 
+            Queen of Virgins, 
+            Queen of all Saints, 
+            Queen conceived without original sin,
+            Queen assumed into heaven
+            Queen of the most holy Rosary, 
+            Queen of the families,
+            Queen of peace,
+            Lamb of God, who takes away the sins of the world,
+            R/. Spare us, O Lord.
+
+            Lamb of God, who takes away the sins of the world,
+            R/. Graciously hear us, O Lord.
+            
+            Lamb of God, who takes away the sins of the world:
+            R/. Have mercy on us.
+
+            V/. We fly to your patronage, O Holy Mother of God; despise not our petitions in our necessities but deliver us always from all dangers, O glorious and Blessed Virgin.
+            V/. Pray of us, O Holy Mother of God,
+            R/. That we may be made worthy of the promises of Christ.
+            V/. Let us pray: Grant we beseech you O Lord, God, that we your servants may enjoy the perpetual health both of mind and body, and by the glorious intercession of Blessed Mary ever Virgin, may be delivered from present sorrow and attain to eternal joy, through Christ our Lord.
+            Amen." data-sw="Bwana utuhurumie.
+            Bwana utuhurumie.
+
+            Kristo utuhurumie.
+            Kristo utuhurumie.
+
+            Bwana utuhurumie.
+            Bwana utuhurumie.
+
+            Kristo utusikie.
+            Kristo utusikilize
+
+            Baba wa mbinguni, Mungu, utuhurumie.
+            Mwana Mkombozi wa dunia, Mungu, utuhurumie.
+            Roho Mtakatifu, Mungu, utuhurumie.
+            Utatu Mtakatifu, Mungu mmoja, utuhurumie.
+
+            KIITIKIO: Utuombee
+
+            Maria Mtakatifu,
+            Mzazi Mtakatifu wa Mungu,
+            Bikira Mtakatifu, Mkuu wa mabikira,
+            Mama wa Kristu,
+            Mama wa neema ya Mungu,
+            Mama mtakatifu sana,
+            Mama mwenye usafi wa moyo,
+            Mama usiye na doa,
+            Mama usiye na dhambi,
+            Mama mpendelevu,
+            Mama mstaajabivu,
+            Mama wa shauri jema,
+            Mama wa Mwumba,
+            Mama wa Mkombozi,
+            Bikira mwenye utaratibu,
+            Bikira mwenye heshima,
+            Bikira mwenye sifa,
+            Bikira mwenye enzi,
+            Bikira mwenye huruma,
+            Bikira amini,
+            Kikao cha haki,
+            Kikao cha hekima,
+            Sababu ya furaha yetu,
+            Chombo cha neema,
+            Chombo cha heshima,
+            Chombo bora cha ibada,
+            Waridi lenye fumbo,
+            Mnara wa Daudi,
+            Mnara wa pembe,
+            Nyumba ya dhahabu,
+            Sanduku la Agano,
+            Mlango wa mbingu,
+            Nyota ya asubuhi,
+            Afya ya wagonjwa,
+            Makimbilio ya wakosefu,
+            Mfariji wa wenye uchungu,
+            Msaada wa Wakristu,
+            Malkia wa Malaika,
+            Malkia wa Mababu,
+            Malkia wa Manabii,
+            Malkia wa Mitume,
+            Malkia wa Mashaidi,
+            Malkia wa Waungama,
+            Malkia wa Mabikira,
+            Malkia wa Watakatifu wote,
+            Malkia uliyeumbwa, pasipo dhambi ya asili,
+            Malkia uliyepalizwa mbinguni,
+            Malkia wa Rozari takatifu,
+            Malkia wa amani.
+
+            Mwanakondoo wa Mungu uondoaye dhambi za ulimwengu, utusamehe, Bwana.
+            Mwanakondoo wa Mungu uondoaye dhambi za Ulimwengu, utusikilize, Bwana.
+            Mwanakondoo wa Mungu uondoaye dhambi za ulimwengu, utuhurumie.
+            K. Utuombee, Mzazi Mtakatifu wa Mungu.
+            W. Tujaliwe ahadi za Kristu.
+            
+            TUOMBE:
+            Ee Bwana Mungu, utujalie sisi watumishi wako afya ya roho na ya mwili sikuzote. Tuopolewe na mashaka ya sasa kwa maombezi ya Maria mtakatifu, Bikira daima, ili tupate na furaha ya milele.
+            Tunaomba hayo kwa njia ya Kristu Bwana wetu. Amina.">Bwana utuhurumie.
+            Bwana utuhurumie.
+
+            Kristo utuhurumie.
+            Kristo utuhurumie.
+
+            Bwana utuhurumie.
+            Bwana utuhurumie.
+
+            Kristo utusikie.
+            Kristo utusikilize
+
+            Baba wa mbinguni, Mungu, utuhurumie.
+            Mwana Mkombozi wa dunia, Mungu, utuhurumie.
+            Roho Mtakatifu, Mungu, utuhurumie.
+            Utatu Mtakatifu, Mungu mmoja, utuhurumie.
+
+            KIITIKIO: Utuombee
+
+            Maria Mtakatifu,
+            Mzazi Mtakatifu wa Mungu,
+            Bikira Mtakatifu, Mkuu wa mabikira,
+            Mama wa Kristu,
+            Mama wa neema ya Mungu,
+            Mama mtakatifu sana,
+            Mama mwenye usafi wa moyo,
+            Mama usiye na doa,
+            Mama usiye na dhambi,
+            Mama mpendelevu,
+            Mama mstaajabivu,
+            Mama wa shauri jema,
+            Mama wa Mwumba,
+            Mama wa Mkombozi,
+            Bikira mwenye utaratibu,
+            Bikira mwenye heshima,
+            Bikira mwenye sifa,
+            Bikira mwenye enzi,
+            Bikira mwenye huruma,
+            Bikira amini,
+            Kikao cha haki,
+            Kikao cha hekima,
+            Sababu ya furaha yetu,
+            Chombo cha neema,
+            Chombo cha heshima,
+            Chombo bora cha ibada,
+            Waridi lenye fumbo,
+            Mnara wa Daudi,
+            Mnara wa pembe,
+            Nyumba ya dhahabu,
+            Sanduku la Agano,
+            Mlango wa mbingu,
+            Nyota ya asubuhi,
+            Afya ya wagonjwa,
+            Makimbilio ya wakosefu,
+            Mfariji wa wenye uchungu,
+            Msaada wa Wakristu,
+            Malkia wa Malaika,
+            Malkia wa Mababu,
+            Malkia wa Manabii,
+            Malkia wa Mitume,
+            Malkia wa Mashaidi,
+            Malkia wa Waungama,
+            Malkia wa Mabikira,
+            Malkia wa Watakatifu wote,
+            Malkia uliyeumbwa, pasipo dhambi ya asili,
+            Malkia uliyepalizwa mbinguni,
+            Malkia wa Rozari takatifu,
+            Malkia wa amani.
+
+            Mwanakondoo wa Mungu uondoaye dhambi za ulimwengu, utusamehe, Bwana.
+            Mwanakondoo wa Mungu uondoaye dhambi za Ulimwengu, utusikilize, Bwana.
+            Mwanakondoo wa Mungu uondoaye dhambi za ulimwengu, utuhurumie.
+            K. Utuombee, Mzazi Mtakatifu wa Mungu.
+            W. Tujaliwe ahadi za Kristu.
+            
+            TUOMBE:
+            Ee Bwana Mungu, utujalie sisi watumishi wako afya ya roho na ya mwili sikuzote. Tuopolewe na mashaka ya sasa kwa maombezi ya Maria mtakatifu, Bikira daima, ili tupate na furaha ya milele.
+            Tunaomba hayo kwa njia ya Kristu Bwana wetu. Amina.</p>
+      </div>
+    </article>
+    </section>
+
+    <section id="Huruma ya Mungu" class="sub-section">
+
+      <article class="prayer">
+        
+        <h4 data-en="† In the Name of the Father and of the Son and the Holy Spirit. Amen." data-sw="† Kwa Jina la Baba na la Mwana na la Roho Mtakatifu. Amina">† Kwa Jina la Baba na la Mwana na la Roho Mtakatifu. Amina</h4>
+        
+      </article>
+
+      <article class="prayer">
+      <button class="prayer-button">
+        <span data-en="The beginning of the Rosary" data-sw="Mwanzo wa Rozari">Mwanzo wa Rozari</span>
+        <span class="toggle-icon">▼</span>
+      </button>
+
+      <div class="content">
+        <p class ="break" 
+        data-en="Optional Opening Prayers
+        St. Faustina’s Prayer for Sinners
+        O Jesus, eternal Truth, our Life, I call upon You and I beg Your mercy for poor sinners. O sweetest Heart of my Lord, full of pity and unfathomable mercy, I plead with You for poor sinners. O Most Sacred Heart, Fount of Mercy from which gush forth rays of inconceivable graces upon the entire human race, I beg of You light for poor sinners. O Jesus, be mindful of Your own bitter Passion and do not permit the loss of souls redeemed at so dear a price of Your most precious Blood. O Jesus, when I consider the great price of Your Blood, I rejoice at its immensity, for one drop alone would have been enough for the salvation of all sinners. Although sin is an abyss of wickedness and ingratitude, the price paid for us can never be equalled. Therefore, let every soul trust in the Passion of the Lord, and place its hope in His mercy. God will not deny His mercy to anyone. Heaven and earth may change, but God's mercy will never be exhausted. Oh, what immense joy burns in my heart when I contemplate Your incomprehensible goodness, O Jesus! I desire to bring all sinners to Your feet that they may glorify Your mercy throughout endless ages (Diary of Saint Maria Faustina Kowalska, 72).
+
+        You expired, Jesus, but the source of life gushed forth for souls, and the ocean of mercy opened up for the whole world. O Fount of Life, unfathomable Divine Mercy, envelop the whole world and empty Yourself out upon us.
+        (Repeat three times)
+        O Blood and Water, which gushed forth from the Heart of Jesus as a fount of mercy for us, I trust in You!
+
+
+        1. Our Father...
+        2. O lord Grant Us Faith--- Haily Mary...
+        3. O Lord Grand Us Hope--- Haily Mary...
+        4. O Lord Grant Us Charity--- Haily Mary...
+        5. The Apostel's Creed...
+        
+        
+        Then Follows the Rosary Beads..."
+        data-sw="1. Baba Yetu...
+        2. Ee Bwana Utujalie Imani--- Salamu Maria...
+        3. Ee Bwana Utujalie Matumaini--- Salamu Maria...
+        4. Ee Bwana Utujalie Mapendo--- Salamu Maria...
+        5. Kanuni ya Imani...
+        
+        Zinafwata Punje za Rozari hapo chini....">1. Baba Yetu...
+        2. Ee Bwana Utujalie Imani--- Salamu Maria...
+        3. Ee Bwana Utujalie Matumaini--- Salamu Maria...
+        4. Ee Bwana Utujalie Mapendo--- Salamu Maria...
+        5. Kanuni ya Imani...
+        
+        Zinafwata Punje za Rozari hapo chini....</p>
+      </div>
+      </article>
+
+      <article class="prayer">
+      <button class="prayer-button">
+        <span data-en="The beginning of the Rosary" data-sw="Mwanzo wa Rozari">Mwanzo wa Rozari</span>
+        <span class="toggle-icon">▼</span>
+      </button>
+
+      <div class="content">
+        <p class ="break" 
+        data-en="On the large Beads(instead of Our Father) in each Decade:
+        Eternal Father, I offer You the Body and Blood, Soul and Divinity of Your Dearly Beloved Son, Our Lord, Jesus Christ, in atonement for our sins and those of the whole world.
+
+        On the small Beads (instead of Hail Mary) 10 each Decade:
+        For the sake of His sorrowful Passion, have mercy on us and on the whole world.
+
+        Conclude with Holy God (Repeat three times):
+        Holy God, Holy Mighty One, Holy Immortal One, have mercy on us and on the whole world.
+        
+        Closing Prayer (optional)
+        (Diary, 950)
+        Eternal God, in whom mercy is endless and the treasury of compassion inexhaustible, look kindly upon us and increase your mercy in us, that in difficult moments we might not despair nor become despondent, but with great confidence submit ourselves to your holy will, which is Love and Mercy itself. Amen.
+
+        Or:
+
+        (Roman Missal, Votive Mass of the Mercy of God)
+        O God, whose mercies are without number and whose treasure of goodness is infinite, graciously increase the faith of the people consecrated to you, that all may grasp and rightly understand by whose love they have been created, through whose Blood they have been redeemed, and by whose Spirit they have been reborn. Through Christ our Lord. Amen."
+
+        data-sw="Kwenye Punje Kubwa (badala ya Baba Yetu):
+        Baba wa Milele, ninakutolea Mwili na Damu, Roho na Umungu, wa Mwanao Mpenzi sana Bwana wetu Yesu Kristo, kwa malipizi ya dhambi zetu, na dhambi za dunia nzima.
+        +
+        Kila penye punje ndogo (badala ya Salamu Maria):
+        Kwa ajili ya mateso makali ya Bwana Wetu Yesu Kristo...
+        Utuhurumie sisi na dunia nzima.
+
+        Mwisho wa Rozari sali mara tatu (3)sala ifuatayo :
+        Mungu Mtakatifu, Mtakatifu mwenye Enzi, Mtakatifu Usiyeweza kufa,
+        Utuhurumie sisi na dunia nzima.">Kwenye Punje Kubwa (badala ya Baba Yetu):
+        Baba wa Milele, ninakutolea Mwili na Damu, Roho na Umungu, wa Mwanao Mpenzi sana Bwana wetu Yesu Kristo, kwa malipizi ya dhambi zetu, na dhambi za dunia nzima.
+        +
+        Kila penye punje ndogo (badala ya Salamu Maria):
+        Kwa ajili ya mateso makali ya Bwana Wetu Yesu Kristo...
+        Utuhurumie sisi na dunia nzima.
+
+        Mwisho wa Rozari sali mara tatu (3)sala ifuatayo :
+        Mungu Mtakatifu, Mtakatifu mwenye Enzi, Mtakatifu Usiyeweza kufa,
+        Utuhurumie sisi na dunia nzima.</p>
+      </div>
+      </article>
+
+      <article class="prayer">
+      <button class="prayer-button">
+        <span data-en="Litany to the Divine Mercy" data-sw="Litania Ya Huruma ya Mungu">Litania Ya Huruma ya Mungu</span>
+        <span class="toggle-icon">▼</span>
+      </button>
+      <div class="content">
+        <p class ="break" data-en="[From St. Faustina Kowalska's Diary]
+            Divine Mercy, gushing forth from the bosom of the Father,
+            I trust in You.
+
+            Divine Mercy, greatest attribute of God,
+            I trust in You.
+
+            Divine Mercy, incomprehensible mystery,
+            I trust in You.
+
+            Divine Mercy, fountain gushing forth from the mystery of the Most Blessed Trinity,
+            I trust in You.
+
+            Divine Mercy, unfathomed by any intellect, human or angelic,
+            I trust in You.
+
+            Divine Mercy, from which wells forth all life and happiness,
+            I trust in You.
+
+            Divine Mercy, better than the heavens,
+            I trust in You.
+
+            Divine Mercy, source of miracles and wonders,
+            I trust in You.
+
+            Divine Mercy, encompassing the whole universe,
+            I trust in You.
+
+            Divine Mercy, descending to earth in the Person of the Incarnate Word,
+            I trust in You.
+
+            Divine Mercy, which flowed out from the open wound of the Heart of Jesus,
+            I trust in You.
+
+            Divine Mercy, enclosed in the Heart of Jesus for us, and especially for sinners,
+            I trust in You.
+
+            Divine Mercy, unfathomed in the institution of the Sacred Host,
+            I trust in You.
+
+            Divine Mercy, in the founding of the Holy Church,
+            I trust in You.
+
+            Divine Mercy, in the Sacrament of Holy Baptism,
+            I trust in You.
+
+            Divine Mercy, in our justification through Jesus Christ,
+            I trust in You.
+
+            Divine Mercy, accompanying us through our whole life,
+            I trust in You.
+
+            Divine Mercy, embracing us especially at the hour of death,
+            I trust in You.
+
+            Divine Mercy, endowing us with immortal life,
+            I trust in You.
+
+            Divine Mercy, accompanying us every moment of our life,
+            I trust in You.
+
+            Divine Mercy, shielding us from the fire of hell,
+            I trust in You.
+
+            Divine Mercy, in the conversion of hardened sinners,
+            I trust in You.
+
+            Divine Mercy, astonishment for Angels, incomprehensible to Saints,
+            I trust in You.
+
+            Divine Mercy, unfathomed in all the mysteries of God,
+            I trust in You.
+
+            Divine Mercy, lifting us out of every misery,
+            I trust in You.
+
+            Divine Mercy, source of our happiness and joy,
+            I trust in You.
+
+            Divine Mercy, in calling us forth from nothingness to existence,
+            I trust in You.
+
+            Divine Mercy, embracing all the works of His hands,
+            I trust in You.
+
+            Divine Mercy, crown of all God's handiwork,
+            I trust in You.
+
+            Divine Mercy, in which we are all immersed,
+            I trust in You.
+
+            Divine Mercy, sweet relief for anguished hearts,
+            I trust in You.
+
+            Divine Mercy, only hope of despairing souls,
+            I trust in You.
+
+            Divine Mercy, repose of hearts, peace amidst fear,
+            I trust in You.
+
+            Divine Mercy, delight and ecstasy of holy souls,
+            I trust in You.
+
+            Divine Mercy, inspiring hope against all hope,
+            I trust in You.
+
+            Let us pray:
+            Eternal God, in whom mercy is endless and the treasury of compassion inexhaustible, look kindly upon us and increase Your mercy in us, that in difficult moments we might not despair nor become despondent, but with great confidence submit ourselves to Your holy will, which is Love and Mercy itself. Amen."
+
+            data-sw="Bwana utuhurumie – Bwana utuhurumie.
+            Kristu utuhurumie – Kristu utuhurumie.
+            Bwana utuhurumie – Bwana utuhurumie.
+            Kristu utusikie – Kristu utusikilize.
+
+            Baba wa mbinguni Mungu – utuhurumie
+            Mwana Mkombozi wa dunia Mungu – utuhurumie
+            Roho Mtakatifu Mungu – utuhurumie
+            Utatu Mtakatifu Mungu mmoja –utuhurumie.
+
+            Huruma ya Mungu iliyo sifa kuu ya Muumba wetu ~Tunakutumainia 
+
+            [KIITIKIO: Tunakutumainia]
+
+            Huruma ya Mungu iliyo kilele cha ukamilifu wa Mwokozi wetu.
+            Huruma ya Mungu iliyo upendo usiopimika wa Roho Mtakasa.
+            Huruma ya Mungu fumbo lisilofahamika la Utatu Mtakatifu
+            Huruma ya Mungu iliyo ishara ya uwezo mkuu wa Mungu Mwenyezi.
+            Huruma ya Mungu iliyofumbuliwa katika kuziumba Roho za Malaika wa mbinguni.
+            Huruma ya Mungu iliyotuumba na kutuamuru tuwepo bila kutokana na chochote.
+            Huruma ya Mungu inayotujalia maisha ya kutokufa.
+            Huruma ya Mungu inayotukinga na adhabu tunazostahili.
+            Huruma ya Mungu inayotuinua tutoke katika taabu, unyonge na maumivu ya dhambi zetu.
+            Huruma ya Mungu inayotufanya wenye haki katika Neno aliyejifanya Mtu.
+            Huruma ya Mungu inayofurika kutoka katika majeraha ya Kristu.
+            Huruma ya Mungu inayobubujika kutoka ndani ya Moyo Mtakatifu wa Yesu.
+            Huruma ya Mungu iliyotupatia Bikira Maria Mtukufu awe kwetu Mama wa Huruma.
+            Huruma ya Mungu iliyoonyeshwa katika kuanzishwa Kanisa Katoliki.
+            Huruma ya Mungu inayopatikana katika mafumbo ya Sakramenti Takatifu.
+            Huruma ya Mungu inayotolewa kwa wanadamu wote kwa njia ya Sakramenti ya Ubatizo na Kitubio.
+            Huruma ya Mungu inayotolewa katika Sakramenti ya Ekaristi na Upadrisho.
+            Huruma ya Mungu inayoonyeshwa kwetu pale inapotuita na kutuingiza katika kuwatakatifuza wenye haki.
+            Huruma ya Mungu inayotimilika katika ukamilifu wa watu watakatifu.
+            Huruma ya Mungu chemchemi ya afya kwa wagonjwa na wote wanaoteseka.
+            Huruma ya Mungu iliyo faraja ya wote wenye uchungu moyoni.
+            Huruma ya Mungu iliyo tumaini la roho zinazosumbuliwa na mkato wa tamaa.
+            Huruma ya Mungu iliyo mwenzi wa daima na popote wa watu wote.
+            Huruma ya Mungu inayowahi kutuletea neema zake.
+            Huruma ya Mungu iliyo amani yao wanaokufa.
+            Huruma ya Mungu iliyo burudisho na faraja yao marehemu wa toharani.
+            Huruma ya Mungu iliyo furaha ya mbinguni kwa watakatifu wote.
+            Huruma ya Mungu iliyo taji la watakatifu wote.
+            Huruma ya Mungu chemchemi ya miujiza isiyokauka.
+
+            Mwanakondoo wa Mungu uliyetuonyesha huruma yako kuu katika kuikomboa dunia kwa msalaba wako mtakatifu, ~ Utusamehe Ee Bwana.
+            Mwanakondoo wa Mungu unayejitolea kwetu kwa mapendo na huruma katika kila adhimisho la Sadaka ya Misa Takatifu, ~ Utusikilize Ee Bwana.
+            Mwanakondoo wa Mungu anayeondoa dhambi za dunia kwa njia ya huruma yako isiyo na mwisho ~ Utuhurumie.
+
+            Kiongozi: Bwana utuhurumie –
+            Wote: Kristu utuhurumie, Bwana utuhurumie.
+            Kiongozi: Huruma anana za Bwana zi juu ya kazi zake zote –
+            Wote: Huruma za Bwana nitaziimba milele.
+
+            Tuombe:
+            Ee Mungu uliye na huruma isiyo na mwisho, na hazina za wema na upendo wako hazina mipaka. Tunakusihi ututazame sisi watu wako huku duniani na kutuongezea huruma yako tena na tena, ili itusaidie tusije tukakata tamaa hata mara moja, haidhuru tukumbane na majaribu makubwa kiasi gani, bali tuweze daima kuzielekea na kuzishika amri zako, kwa matumaini na kutimiza mapenzi yako matakatifu, ambayo ndiyo huruma yenyewe. Tunaomba hayo kwa njia ya Bwana wetu Yesu Kristu Mwanao, Mfalme wa Amani na Huruma, aishiye na kutawala nawe, na Roho Mtakatifu, kwa pamoja mkituonyesha huruma, daima na milele. Amina.">
+            Bwana utuhurumie – Bwana utuhurumie.
+            Kristu utuhurumie – Kristu utuhurumie.
+            Bwana utuhurumie – Bwana utuhurumie.
+            Kristu utusikie – Kristu utusikilize.
+
+            Baba wa mbinguni Mungu – utuhurumie
+            Mwana Mkombozi wa dunia Mungu – utuhurumie
+            Roho Mtakatifu Mungu – utuhurumie
+            Utatu Mtakatifu Mungu mmoja –utuhurumie.
+
+            Huruma ya Mungu iliyo sifa kuu ya Muumba wetu ~Tunakutumainia 
+
+            [KIITIKIO: Tunakutumainia]
+
+            Huruma ya Mungu iliyo kilele cha ukamilifu wa Mwokozi wetu.
+            Huruma ya Mungu iliyo upendo usiopimika wa Roho Mtakasa.
+            Huruma ya Mungu fumbo lisilofahamika la Utatu Mtakatifu
+            Huruma ya Mungu iliyo ishara ya uwezo mkuu wa Mungu Mwenyezi.
+            Huruma ya Mungu iliyofumbuliwa katika kuziumba Roho za Malaika wa mbinguni.
+            Huruma ya Mungu iliyotuumba na kutuamuru tuwepo bila kutokana na chochote.
+            Huruma ya Mungu inayotujalia maisha ya kutokufa.
+            Huruma ya Mungu inayotukinga na adhabu tunazostahili.
+            Huruma ya Mungu inayotuinua tutoke katika taabu, unyonge na maumivu ya dhambi zetu.
+            Huruma ya Mungu inayotufanya wenye haki katika Neno aliyejifanya Mtu.
+            Huruma ya Mungu inayofurika kutoka katika majeraha ya Kristu.
+            Huruma ya Mungu inayobubujika kutoka ndani ya Moyo Mtakatifu wa Yesu.
+            Huruma ya Mungu iliyotupatia Bikira Maria Mtukufu awe kwetu Mama wa Huruma.
+            Huruma ya Mungu iliyoonyeshwa katika kuanzishwa Kanisa Katoliki.
+            Huruma ya Mungu inayopatikana katika mafumbo ya Sakramenti Takatifu.
+            Huruma ya Mungu inayotolewa kwa wanadamu wote kwa njia ya Sakramenti ya Ubatizo na Kitubio.
+            Huruma ya Mungu inayotolewa katika Sakramenti ya Ekaristi na Upadrisho.
+            Huruma ya Mungu inayoonyeshwa kwetu pale inapotuita na kutuingiza katika kuwatakatifuza wenye haki.
+            Huruma ya Mungu inayotimilika katika ukamilifu wa watu watakatifu.
+            Huruma ya Mungu chemchemi ya afya kwa wagonjwa na wote wanaoteseka.
+            Huruma ya Mungu iliyo faraja ya wote wenye uchungu moyoni.
+            Huruma ya Mungu iliyo tumaini la roho zinazosumbuliwa na mkato wa tamaa.
+            Huruma ya Mungu iliyo mwenzi wa daima na popote wa watu wote.
+            Huruma ya Mungu inayowahi kutuletea neema zake.
+            Huruma ya Mungu iliyo amani yao wanaokufa.
+            Huruma ya Mungu iliyo burudisho na faraja yao marehemu wa toharani.
+            Huruma ya Mungu iliyo furaha ya mbinguni kwa watakatifu wote.
+            Huruma ya Mungu iliyo taji la watakatifu wote.
+            Huruma ya Mungu chemchemi ya miujiza isiyokauka.
+
+            Mwanakondoo wa Mungu uliyetuonyesha huruma yako kuu katika kuikomboa dunia kwa msalaba wako mtakatifu, ~ Utusamehe Ee Bwana.
+            Mwanakondoo wa Mungu unayejitolea kwetu kwa mapendo na huruma katika kila adhimisho la Sadaka ya Misa Takatifu, ~ Utusikilize Ee Bwana.
+            Mwanakondoo wa Mungu anayeondoa dhambi za dunia kwa njia ya huruma yako isiyo na mwisho ~ Utuhurumie.
+
+            Kiongozi: Bwana utuhurumie –
+            Wote: Kristu utuhurumie, Bwana utuhurumie.
+            Kiongozi: Huruma anana za Bwana zi juu ya kazi zake zote –
+            Wote: Huruma za Bwana nitaziimba milele.
+
+            Tuombe:
+            Ee Mungu uliye na huruma isiyo na mwisho, na hazina za wema na upendo wako hazina mipaka. Tunakusihi ututazame sisi watu wako huku duniani na kutuongezea huruma yako tena na tena, ili itusaidie tusije tukakata tamaa hata mara moja, haidhuru tukumbane na majaribu makubwa kiasi gani, bali tuweze daima kuzielekea na kuzishika amri zako, kwa matumaini na kutimiza mapenzi yako matakatifu, ambayo ndiyo huruma yenyewe. 
+            Tunaomba hayo kwa njia ya Bwana wetu Yesu Kristu Mwanao, Mfalme wa Amani na Huruma, aishiye na kutawala nawe, na Roho Mtakatifu, kwa pamoja mkituonyesha huruma, daima na milele. Amina.</p>
+      </div>
+      </article>
+
+
+
+
+
+
+
+
+   
+
+
+    </section>
+
+  </section>
+
+  </main>
+
+  <div id="settings">
+    <label for="languageSelect" data-en="Language:" data-sw="Lugha:">Language:</label>
+    <select id="languageSelect">
+      <option value="sw">Swahili</option>
+      <option value="en">English</option>
+    </select>
+
+    <label for="theme" data-en="Theme:" data-sw="Mandhari:">Theme:</label>
+    <select id="theme">
+      <option value="ordinary" data-en="Ordinary Time" data-sw="Kipindi cha kawaida">Ordinary Time</option>
+      <option value="Christmas"data-en="Christmas" data-sw="Krismasi">Christmas</option>
+      <option value="lent" data-en="Lent" data-sw="Kwaresima">Lent</option>
+      <option value="easter"data-en="Easter" data-sw="Pasaka">Easter</option>
+    </select>
+
+    <label for="darkMode" data-en="Dark Mode:" data-sw="Hali ya Giza:">Dark Mode:</label>
+    <input type="checkbox" id="darkMode">
+
+    <label for="fontSizeSlider" data-en="Font Size:" data-sw="Ukubwa wa Herufi:">Font Size:</label>
+    <input type="range" id="fontSizeSlider" min="14" max="24" value="16">
+  </div>
+
+  <button id="settingsBtn">⚙️</button>
+
+  <div id="searchResults" class="hidden"></div>
+  <script>
+  // File: script.js
+  const todaysVerses = [
+    { en: "I have the strength for everything through Him who empowers me.", sw: "Nayaweza mambo yote katika yeye anitiaye nguvu.", ref_en: "Philippians 4:13", ref_sw: "Wafilipi 4:13" },
+    { en: "This is the day that the Lord has made; let us rejoice and be glad.", sw: "Siku hii ndiyo aliyoifanya Bwana tutashangilia na kuifurahia.", ref_en: "Psalm 118:24", ref_sw: "Zaburi 118:24" },
+    { en: "Trust in the Lord with all your heart, on your own intelligence rely not; In all your ways be mindful of Him and He will make straight your paths.", 
+      sw: "Mtumaini Bwana kwa moyo wako wote, wala usizitegemeze akili zako mwenyewe; katika njia zako zote mkiri Yeye naye atayanyosha mapito yako.", ref_en: "Proverbs 3:5-6", ref_sw: "Methali 3:5-6" }
+      
+  ];
+  const themedVerses = {
+    hope: [ { en: "For I know the plans I have in mind for you says the Lord, plans for your welfare, not for woe! Plans to give you a future full of hope.", 
+              sw: "Maana nayajua mawazo ninayowawazia nyinyi, asema Bwana, ni mawazo ya amani, wala si ya mabaya, kuwapa nyinyi tumaini siku zenu za mwisho.", ref_en: "Jeremiah 29:11", ref_sw: "Yeremia 29:11" }, { en: "Why are you cast down, my soul, why do you groan within me? Hope in God, whom I shall praise again, my saviour and my God.", sw: "Nafsi yangu, kwa nini kuinama, na kufadhaika ndani yangu? Umtumaini Mungu; kwa maana nitakuja kumsifu, aliye afya ya uso wangu, na Mungu wangu", ref_en: "Psalm 42:11", ref_sw: "Zaburi 42:11" } ],
+    comfort: [ { en: "Come to me, all you who labor and are burdened, and I will give you rest.", sw: "Njoni kwangu, ninyi nyote msumbukao na wenye kulemewa na mizigo, nami nitawapumzisha.", ref_en: "Matthew 11:28", ref_sw: "Mathayo 11:28" }, { en: "Even when I walk through a dark valley, I fear no harm for you are at my side; your rod and staff give me courage.", sw: "Naam, nijapopita kati ya bonde la uvuli wa mauti, sitaogopa mabaya; kwa maana Wewe upo pamoja nami, gongo lako na fimbo yako vyanifariji.", ref_en: "Psalm 23:4", ref_sw: "Zaburi 23:4" } ],
+    wisdom: [ {en: "My Son, from your youth embrace discipline; thus will you find wisdom with greying hair.", sw: "Mwanangu, uchume maarifa tangu ujana hata kwa mwenye mvi, nawe utapata hekima.", ref_en:"Sirach 6:18", ref_sw:"Yoshua Bin Sira 6:18",}, { en: "But if any of you lacks wisdom, he should ask God who gives to all generously and ungrudgingly and he will be given it.", sw: "Lakini mtu wa kwenu akipungukiwa na hekima, na aombe dua kwa Mungu, awapaye wote kwa ukarimu, wala hakemei; naye atapewa.", ref_en: "James 1:5", ref_sw: "Yakobo 1:5" } ],
+    faith: [ { en: "Faith is the realisation of what is hoped for and evidence of things not seen. ", sw: "Basi imani ni kuwa na hakika ya mambo yatarajiwayo, ni bayana ya mambo yasiyoonekana.", ref_en: "Hebrews 11:1", ref_sw: "Waebrania 11:1" } ]
+  };
+  const rosarySets = {
+    Furaha: { en: ["The Annunciation\nOur Father\nHail Mary X10", "The Visitation\nOur Father\nHail Mary X10", "The Nativity\nOur Father\nHail Mary X10", "The Presentation\nOur Father\nHail Mary X10", "The Finding in the Temple\nOur Father\nHail Mary X10"], sw: ["Malaika anampasha habari Maria kama atakua Mama wa Mungu\nTumwombe Mungu atujalie unyenyekevu.\n\nBaba Yetu\nSalamu Maria X10\n", "Maria anakwenda kumtembelea Elizabeti\nTumwombe Mungu atujalie Mapendo ya jirani\n\nBaba Yetu\nSalamu Maria X10", "Yesu anazaliwa Bethlehemu\nTumwombe Mungu atujalie usafi wa moyo.\n\nBaba Yetu\nSalamu Maria X10", "Yesu anatolewa hekaluni\nTumwombe Mungu atujalie usafi wa moyo.\n\nBaba Yetu\nSalamu Maria X10", "Maria anamkuta Yesu hekaluni\nTumwombe Mungu atujalie kuwatii wakubwa wetu\n\nBaba Yetu\nSalamu Maria X10"] },
+    Uchungu: { en: ["The Agony in the Garden\nOur Father\nHail Mary X10", "The Scourging at the Pillar\nOur Father\nHail Mary X10", "The Crowning with Thorns\nOur Father\nHail Mary X10", "The Carrying of the Cross\nOur Father\nHail Mary X10", "The Crucifixion\nOur Father\nHail Mary X10"], sw: ["Yesu anatoka jasho la damu\nTumwombe Mungu atujalie sikitiko la dhambi.\n\nBaba Yetu\nSalamu Maria X10", "Yesu anapigwa mijeledi.\nTumwombe Mungu atujalie kuacha dhambi za uchafu.\n\nBaba Yetu\nSalamu Maria X10", "Yesu anatiwa miiba kichwani\nTumwombe Mungu atujalie kushinda kiburi.\n\nBaba Yetu\nSalamu Maria X10", "Yesu anachukua msalaba\nTumwombe Mungu atujalie kuvumilia taabu\n\nBaba Yetu\nSalamu Maria X10", "Yesu anakufa msalabani\nTumwombe Mungu atujalie kuwapenda Yesu na Maria.\n\nBaba Yetu\nSalamu Maria X10"] },
+    Utukufu: { en: ["The Resurrection\nOur Father\nHail Mary X10", "The Ascension\nOur Father\nHail Mary X10", "The Descent of the Holy Spirit\nOur Father\nHail Mary X10", "The Assumption of Mary\nOur Father\nHail Mary X10", "The Coronation of Mary\nOur Father\nHail Mary X10"], sw: ["Yesu anafufuka\nTumwombe Mungu atujalie kugeuka Watakatifu\n\nBaba Yetu\nSalamu Maria X10", "Yesu anapaa Mbinguni.\nTumwombe Mungu atujalie kwenda Mbinguni.\n\nBaba Yetu\nSalamu Maria X10", "Roho Mtakatifu anawashukia Mitume.\nTumwombe Mungu atujalie bidii katika dini yetu.\n\nBaba Yetu\nSalamu Maria X10", "Bikira Maria anapalizwa Mbinguni.\nTumwombe Mungu atujalie kufa vizuri\n\nBaba Yetu\nSalamu Maria X10", "Bikira Maria anawekwa Malkia Mbinguni\nTumwombe Mungu atujalie kudumu katika njia njema\n\nBaba Yetu\nSalamu Maria X10"] },
+    Mwanga: { en: ["The Baptism of Jesus\nOur Father\nHail Mary X10", "The Wedding at Cana\nOur Father\nHail Mary X10", "The Proclamation of the Kingdom\nOur Father\nHail Mary X10", "The Transfiguration\nOur Father\nHail Mary X10", "The Institution of the Eucharist\nOur Father\nHail Mary X10"], sw: ["Ubatizo wa Yesu Mto Yordani\nTumwombe Mungu atujalie uaminifu kwa ahadi zetu za ubatizo.\n\nBaba Yetu\nSalamu Maria X10", "Yesu anageuza maji kuwa divai huko Kana\nTumwombe Mungu atujalie kuukoleza ulimwengu kwa chachu ya Injili\n\nBaba Yetu\nSalamu Maria X10", "Yesu anatangaza Ufalme wa Mungu\nTumwombe Mungu atujalie kupokea Ufalme wake kwa toba ya kweli.\n\nBaba Yetu\nSalamu Maria X10", "Yesu anageuka sura\nTumwombe Mungu atujalie neema ya kuung'arisha ulimwengu kwa uso wa Yesu\n\nBaba Yetu\nSalamu Maria X10", "Kuwekwa kwa Ekaristi.\nTumwombe Mungu atujalie neema ya kujitoa sadaka kwa ajili ya wengine\n\nBaba Yetu\nSalamu Maria X10"] }
+  };
+  const translations = {
+    alert: { en: (name) => `Welcome, ${name}! Let us seek the Lord together!`, sw: (name) => `Karibu, ${name}! Kwa Pamoja Tumtafute Bwana!` },
+    greeting: { en: (name) => `Welcome, ${name}!`, sw: (name) => `Karibu, ${name}!` }
+  };
+
+  // --- REFACTORED SCRIPT LOGIC ---
+
+  // UTILITY FUNCTIONS
+  function getCurrentThemeBase() {
+    const theme = document.getElementById("theme").value;
+    const isDark = document.getElementById("darkMode").checked;
+    return `${theme}-${isDark ? "dark" : "light"}`;
+  }
+
+  function updateLanguage(lang) {
+    document.querySelectorAll("[data-en]").forEach(el => {
+      if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) {
+        el.placeholder = el.dataset[lang];
+      } else if (el.dataset[lang]) {
+        el.textContent = el.dataset[lang];
+      }
+    });
+    document.getElementById("languageSelectSetup").value = lang;
+    document.getElementById("languageSelect").value = lang;
+  }
+
+  function showCategory(categoryId) {
+  // Hide all main sections
+  document.querySelectorAll('.section').forEach(section => {
+    section.classList.remove('active');
+  });
+  
+  // Hide all sub-sections
+  document.querySelectorAll('.sub-section').forEach(section => {
+    section.classList.remove('active');
+  });
+  
+  // Update active category buttons (both main and sub)
+  document.querySelectorAll('.category').forEach(btn => {
+    btn.classList.remove('active');
+  });
+    
+    // Activate the selected category
+    const targetSection = document.getElementById(categoryId);
+    if (targetSection) {
+      targetSection.classList.add('active');
+      
+      // Find and activate the corresponding button
+      const activeButton = document.querySelector(`.category[data-category-id="${categoryId}"]`);
+      if (activeButton) {
+        activeButton.classList.add('active');
+      }
+      
+      // Special handling for Rosary category
+      if (categoryId === 'Rosary') {
+        const mariaSection = document.getElementById('Maria');
+        const mariaButton = document.querySelector('.rosary-categories .category[data-category-id="Maria"]');
+        if (mariaSection && mariaButton) {
+          mariaSection.classList.add('active');
+          mariaButton.classList.add('active');
+        }
+      }
+      
+      // If it's a sub-section, also activate its parent
+      if (targetSection.classList.contains('sub-section')) {
+        targetSection.closest('.section').classList.add('active');
+        const parentCategory = targetSection.closest('.section').id;
+        const parentButton = document.querySelector(`.category[data-category-id="${parentCategory}"]`);
+        if (parentButton) {
+          parentButton.classList.add('active');
+        }
+      }
+    }
+  }
+
+  function togglePrayer(button) {
+    const content = button.nextElementSibling;
+    content.classList.toggle('active');
+    button.querySelector('.toggle-icon').style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+  }
+  
+  function toggleSettings() {
+    document.getElementById('settings').classList.toggle('show');
+  }
+
+  function changeTheme(theme) {
+    document.body.className = getCurrentThemeBase();
+    localStorage.setItem("theme", theme);
+  }
+
+  function toggleDarkMode() {
+    document.body.className = getCurrentThemeBase();
+    localStorage.setItem("darkMode", document.getElementById("darkMode").checked);
+  }
+
+  function changeLanguage(lang) {
+    localStorage.setItem("language", lang);
+    updateLanguage(lang);
+    updateMysteryLabel();
+    updateMysteryButtons();
+    if (document.getElementById('mysteries-content').classList.contains('active')) {
+      const container = document.getElementById('dynamicMysteries');
+      const currentSetButton = document.querySelector('.mystery-set-selector button.active');
+      if (container && container.innerHTML && currentSetButton) {
+        renderMysteries(currentSetButton.dataset.set === 'Today' ? getTodaySet() : currentSetButton.dataset.set);
+      }
+    }
+  }
+  
+  function updateGreeting(name, lang) {
+    const greetingElement = document.getElementById("personalizedGreeting");
+    const originalEn = greetingElement.dataset.originalEn || greetingElement.dataset.en;
+    const originalSw = greetingElement.dataset.originalSw || greetingElement.dataset.sw;
+
+    if (!greetingElement.dataset.originalEn) {
+      greetingElement.dataset.originalEn = originalEn;
+      greetingElement.dataset.originalSw = originalSw;
+    }
+
+    if (name) {
+      greetingElement.textContent = translations.greeting[lang](name);
+      greetingElement.dataset.en = translations.greeting.en(name);
+      greetingElement.dataset.sw = translations.greeting.sw(name);
+    } else {
+      greetingElement.textContent = lang === 'sw' ? originalSw : originalEn;
+      greetingElement.dataset.en = originalEn;
+      greetingElement.dataset.sw = originalSw;
+    }
+  }
+
+  // SEARCH
+  function searchPrayers() {
+    const query = document.getElementById("searchInput").value.toLowerCase();
+    const resultsBox = document.getElementById("searchResults");
+    resultsBox.innerHTML = "";
+
+    if (!query) {
+      resultsBox.classList.add("hidden");
+      return;
+    }
+
+    const matches = [];
+    const currentLanguage = localStorage.getItem("language") || "en";
+
+    document.querySelectorAll(".prayer").forEach(prayer => {
+      const titleSpan = prayer.querySelector("button span[data-en]");
+      const title = titleSpan ? titleSpan.dataset[currentLanguage].toLowerCase() : "";
+      const content = prayer.querySelector(".content")?.textContent.toLowerCase() || "";
+      if (title.includes(query) || content.includes(query)) {
+        matches.push({
+          element: prayer,
+          title: titleSpan ? titleSpan.dataset[currentLanguage] : "Untitled Prayer"
+        });
+      }
+    });
+
+    if (matches.length === 0) {
+      resultsBox.classList.remove("hidden");
+      resultsBox.innerHTML = `<p>${currentLanguage === 'en' ? 'No matching prayers found.' : 'Hakuna sala zinazolingana zilizopatikana.'}</p>`;
+      return;
+    }
+
+    const ul = document.createElement("ul");
+    matches.forEach(match => {
+      const li = document.createElement("li");
+      li.textContent = match.title;
+      li.addEventListener('click', () => {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        match.element.closest('.section').classList.add('active');
+        match.element.closest('.section').querySelectorAll('.content.active').forEach(openContent => {
+          if (openContent !== match.element.querySelector('.content')) {
+            openContent.classList.remove('active');
+            openContent.previousElementSibling.querySelector('.toggle-icon').style.transform = 'rotate(0deg)';
+          }
+        });
+        const content = match.element.querySelector(".content");
+        if (!content.classList.contains('active')) {
+          content.classList.add("active");
+          match.element.querySelector(".toggle-icon").style.transform = 'rotate(180deg)';
+        }
+        match.element.scrollIntoView({ behavior: "smooth", block: "center" });
+        resultsBox.classList.add("hidden");
+      });
+      ul.appendChild(li);
+    });
+    resultsBox.appendChild(ul);
+    resultsBox.classList.remove("hidden");
+  }
+
+  // VERSE OF THE DAY
+  function setVerseContent(verse) {
+    const verseText = document.getElementById('verseText');
+    const verseRef = document.getElementById('verseReference');
+    fadeOutIn(() => {
+      verseText.dataset.en = verse.en;
+      verseText.dataset.sw = verse.sw;
+      verseRef.dataset.en = verse.ref_en;
+      verseRef.dataset.sw = verse.ref_sw;
+      const currentLang = localStorage.getItem("language") || 'en';
+      verseText.innerText = verseText.dataset[currentLang];
+      verseRef.innerText = verseRef.dataset[currentLang];
+    });
+  }
+
+  function fadeOutIn(callback) {
+    const verseText = document.getElementById('verseText');
+    const verseRef = document.getElementById('verseReference');
+    verseText.style.opacity = 0;
+    verseRef.style.opacity = 0;
+    setTimeout(() => {
+      callback();
+      verseText.style.opacity = 1;
+      verseRef.style.opacity = 1;
+    }, 300);
+  }
+  
+  function loadTodaysVerse() {
+    const today = new Date().getDate();
+    const verse = todaysVerses[today % todaysVerses.length];
+    setVerseContent(verse);
+  }
+
+  // ROSARY
+  function getTodaySet() {
+    const day = new Date().getDay(); // Sunday=0
+    if ([0, 3].includes(day)) return 'Utukufu';
+    if ([1, 6].includes(day)) return 'Furaha';
+    if ([2, 5].includes(day)) return 'Uchungu';
+    if (day === 4) return 'Mwanga';
+    return 'Furaha';
+  }
+
+  function toggleMysteries() {
+    const content = document.getElementById('mysteries-content');
+    const icon = document.querySelector('#rosary-mysteries .toggle-icon');
+    content.classList.toggle('active');
+    icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+    if (content.classList.contains('active') && !document.getElementById('dynamicMysteries').innerHTML) {
+      renderMysteries(getTodaySet());
+    }
+  }
+
+  function renderMysteries(set) {
+    const lang = localStorage.getItem('language') || 'en';
+    const mysteries = rosarySets[set][lang];
+    const container = document.getElementById('dynamicMysteries');
+    const setName = document.querySelector(`.mystery-set-selector button[data-set='${set}']`)?.dataset[lang] || set;
+    
+    let html = `<h3>${lang === 'sw' ? 'Matendo ya Rozari (' + setName + ')' : 'Rosary Mysteries (' + setName + ' Mysteries)'}</h3>`;
+    html += '<ol class="mysteries-list">';
+    mysteries.forEach(mystery => { html += `<li>${mystery}</li>`; });
+    html += '</ol>';
+    container.innerHTML = html;
+
+    document.querySelectorAll('.mystery-set-selector button').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.set === set || (btn.dataset.set === 'Today' && set === getTodaySet()));
+    });
+  }
+
+  function updateMysteryLabel() {
+    const lang = localStorage.getItem('language') || 'en';
+    const mysteryLabel = document.getElementById('mystery-label');
+    if (mysteryLabel) mysteryLabel.textContent = mysteryLabel.dataset[lang];
+  }
+  
+  function updateMysteryButtons() {
+    const lang = localStorage.getItem('language') || 'en';
+    document.querySelectorAll('.mystery-set-selector button').forEach(btn => {
+      if (btn.dataset[lang]) btn.textContent = btn.dataset[lang];
+    });
+  }
+
+  // --- APP INITIALIZATION ---
+  document.addEventListener("DOMContentLoaded", () => {
+    // Update About label on language change
+    function updateAboutLabel() {
+      const lang = localStorage.getItem('language') || 'en';
+      document.getElementById('aboutLabel').textContent = document.getElementById('aboutLabel').dataset[lang];
+    }
+    updateAboutLabel();
+    document.getElementById('languageSelect').addEventListener('change', updateAboutLabel);
+    // Restore settings from localStorage
+    const savedTheme = localStorage.getItem("theme") || "ordinary";
+    const isDark = localStorage.getItem("darkMode") === "true";
+    let language = localStorage.getItem("language");
+    const userName = localStorage.getItem("userName");
+    const savedSize = localStorage.getItem("fontSize");
+
+    // Apply saved settings
+    document.getElementById("theme").value = savedTheme;
+    document.getElementById("darkMode").checked = isDark;
+    document.body.className = `${savedTheme}-${isDark ? "dark" : "light"}`;
+    if (savedSize) {
+      document.documentElement.style.fontSize = savedSize;
+      document.getElementById("fontSizeSlider").value = parseInt(savedSize);
+    }
+
+    // Initial language and user setup
+    const setupModal = document.getElementById("setupModal");
+    if (!userName || !language) {
+      setupModal.style.display = "flex";
+    } else {
+      document.getElementById("languageSelect").value = language;
+      updateLanguage(language);
+      updateGreeting(userName, language);
+    }
+
+    // Initialize home screen content
+    showCategory('home');
+    loadTodaysVerse();
+    document.getElementById('backToToday').classList.add('active'); // <-- Add this line
+    updateMysteryLabel();
+    updateMysteryButtons();
+
+     document.querySelector('.rosary-categories').addEventListener('click', (event) => {
+    const categoryButton = event.target.closest('.category');
+    if (categoryButton && categoryButton.dataset.categoryId) {
+      // Remove active class from all rosary sub-category buttons
+      document.querySelectorAll('.rosary-categories .category').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      // Add active class to clicked button
+      categoryButton.classList.add('active');
+      // Show the selected sub-section
+      showCategory(categoryButton.dataset.categoryId);
+    }
+  });
+
+    // --- ATTACH ALL EVENT LISTENERS ---
+    // About Modal logic
+    const aboutBtn = document.getElementById('aboutBtn');
+    const aboutModal = document.getElementById('aboutModal');
+    const closeAbout = document.getElementById('closeAbout');
+    const aboutTitle = document.getElementById('aboutTitle');
+    const aboutText = document.getElementById('aboutText');
+
+    function showAboutModal() {
+      const lang = localStorage.getItem('language') || 'en';
+      aboutTitle.textContent = aboutTitle.dataset[lang];
+      aboutText.textContent = aboutText.dataset[lang];
+      aboutModal.style.display = 'flex';
+    }
+    function hideAboutModal() {
+      aboutModal.style.display = 'none';
+    }
+    aboutBtn.addEventListener('click', showAboutModal);
+    closeAbout.addEventListener('click', hideAboutModal);
+    aboutModal.addEventListener('click', function(e) {
+      if (e.target === aboutModal) hideAboutModal();
+    });
+    document.getElementById('languageSelect').addEventListener('change', function() {
+      if (aboutModal.style.display === 'flex') {
+        const lang = localStorage.getItem('language') || 'en';
+        aboutTitle.textContent = aboutTitle.dataset[lang];
+        aboutText.textContent = aboutText.dataset[lang];
+      }
+    });
+    
+    // Setup Modal
+    document.getElementById('saveUserDetailsBtn').addEventListener('click', () => {
+        const name = document.getElementById("userNameInput").value.trim();
+        const selectedLanguage = document.getElementById("languageSelectSetup").value;
+        if (name && selectedLanguage) {
+            localStorage.setItem("userName", name);
+            localStorage.setItem("language", selectedLanguage);
+            language = selectedLanguage;
+            updateLanguage(language);
+            updateGreeting(name, language);
+            setupModal.style.display = "none";
+            alert(translations.alert[language](name));
+        } else {
+            alert("Tafadhali jaza Jina Lako na Chagua Lugha / Please enter your name and select a language.");
+        }
+    });
+
+    // Main Navigation
+    document.querySelector('.categories').addEventListener('click', (event) => {
+        const categoryButton = event.target.closest('.category');
+        if (categoryButton && categoryButton.dataset.categoryId) {
+            showCategory(categoryButton.dataset.categoryId);
+        }
+    });
+
+    // Prayer Toggling (Event Delegation)
+    document.getElementById('prayer-content').addEventListener('click', (event) => {
+        const prayerButton = event.target.closest('.prayer-button');
+        if (prayerButton) {
+            if (prayerButton.id === 'rosary-mysteries-toggle') {
+                toggleMysteries();
+            } else {
+                togglePrayer(prayerButton);
+            }
+        }
+    });
+
+    // Search
+    document.getElementById('searchInput').addEventListener('keyup', searchPrayers);
+    document.addEventListener('click', (event) => {
+        const categoryButton = event.target.closest('.category');
+        if (categoryButton && categoryButton.dataset.categoryId) {
+          showCategory(categoryButton.dataset.categoryId);
+        }
+        const searchResults = document.getElementById('searchResults');
+        if (!searchResults.contains(event.target) && event.target !== document.getElementById('searchInput')) {
+            searchResults.classList.add('hidden');
+        }
+    });
+
+    // Settings Panel
+    document.getElementById('settingsBtn').addEventListener('click', toggleSettings);
+    document.getElementById('languageSelect').addEventListener('change', (e) => changeLanguage(e.target.value));
+    document.getElementById('theme').addEventListener('change', (e) => changeTheme(e.target.value));
+    document.getElementById('darkMode').addEventListener('change', toggleDarkMode);
+    document.getElementById('fontSizeSlider').addEventListener('input', (e) => {
+        const size = `${e.target.value}px`;
+        document.documentElement.style.fontSize = size;
+        localStorage.setItem("fontSize", size);
+    });
+    document.addEventListener('click', (event) => {
+        const settings = document.getElementById('settings');
+        if (!settings.contains(event.target) && event.target !== document.getElementById('settingsBtn')) {
+            settings.classList.remove('show');
+        }
+    });
+
+    // Verse Theming
+    document.querySelector('.verse-theme-selector').addEventListener('click', (event) => {
+        const themeButton = event.target.closest('.verse-theme');
+        if(themeButton){
+            const theme = themeButton.dataset.theme;
+            localStorage.setItem('selectedVerseTheme', theme);
+            document.querySelectorAll('.verse-theme').forEach(b => b.classList.remove('active'));
+            if (themeButton.id === 'backToToday') {
+            themeButton.classList.add('active');
+          } else {
+            themeButton.classList.add('active');
+            document.getElementById('backToToday').classList.remove('active');
+          }
+            const options = themedVerses[theme];
+            const verse = options[Math.floor(Math.random() * options.length)];
+            setVerseContent(verse);
+        }
+    });
+    
+    document.getElementById('backToToday').addEventListener('click', () => {
+      localStorage.removeItem('selectedVerseTheme');
+      document.querySelectorAll('.verse-theme').forEach(b => b.classList.remove('active'));
+      document.getElementById('backToToday').classList.add('active');
+      loadTodaysVerse();
+    });
+
+    // Rosary Mysteries (Event Delegation)
+    document.querySelector('.mystery-set-selector').addEventListener('click', (event) => {
+      const setButton = event.target.closest('button[data-set]');
+      if(setButton){
+        let set = setButton.dataset.set;
+        renderMysteries(set === 'Today' ? getTodaySet() : set);
+      }
+    });
+  });
+
+  
+  </script>
+</body>
+</html>
