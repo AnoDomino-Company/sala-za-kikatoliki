@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Catholic Prayer App</title>
-  <link rel="manifest" href="manifest.json">
-<style>
-:root {
+  <style>
+    :root {
   --transition: all 0.3s ease;
   --border-radius: 12px;
   --about-padding: 0.2em 1.5em;
@@ -16,6 +15,16 @@
   --about-h2-size: 1.2em;
   --about-p-size: 1em;
   --about-p-line: 1.5;
+}
+
+/* Styling for the Feast Name */
+#lit-feast {
+  font-style: italic;              /* Makes it italic */
+  font-family: 'Georgia', serif;   /* Elegant, traditional font */
+  font-weight: 500;                /* Slightly lighter than bold */
+  letter-spacing: 0.5px;           /* Adds a tiny bit of breathing room */
+  opacity: 0.95;                   /* Slight transparency for elegance */
+  font-weight: bold;               /* Bold for emphasis */
 }
 
 /* About Modal Styles */
@@ -41,6 +50,12 @@
   white-space: pre-line;
 
 }
+
+.userNameInputs::placeholder{
+  color: red;
+  opacity: 0.1;
+}
+
 /* Theme colors for modal */
 body.ordinary-light #aboutModal .about-content { background: #f8f8f8; color: #222; }
 body.ordinary-dark #aboutModal .about-content { background: #222; color: #f3f3f3; }
@@ -48,8 +63,13 @@ body.Christmas-light #aboutModal .about-content { background: #fff8f0; color: #a
 body.Christmas-dark #aboutModal .about-content { background: #3a1a1a; color: #ffe5e5; }
 body.lent-light #aboutModal .about-content { background: #f6f0ff; color: #5a2a7a; }
 body.lent-dark #aboutModal .about-content { background: #2a1a3a; color: #e0cfff; }
-body.easter-light #aboutModal .about-content { background: #f7fff0; color: #2c7a2c; }
-body.easter-dark #aboutModal .about-content { background: #1a3a1a; color: #e5ffe5; }
+body.advent-light #aboutModal .about-content { background: #f6f0ff; color: #5a2a7a; }
+body.advent-dark #aboutModal .about-content { background: #2a1a3a; color: #e0cfff; }
+/* 🌟 Updated Easter Modal - Radiant & Triumphant */
+body.easter-light #aboutModal .about-content { background: #ffffff; color: #8a6d00;}
+body.easter-dark #aboutModal .about-content { background: #3d3321; color: #FFD700;}
+body.red-light #aboutModal .about-content { background: #fff0f0; color: #5c0000; }
+body.red-dark #aboutModal .about-content { background: #1a0505; color: #ffcdd2; }
 #aboutModal .about-content h2 {
   margin-bottom: 0.7em;
   font-size: var(--about-h2-size);
@@ -98,13 +118,15 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
 
     @media (prefers-color-scheme: light) {
       input[type="text"]::placeholder {
-        color: black;
+        color: white;
+        opacity: 0.7;
       }
     }
 
     @media (prefers-color-scheme: dark) {
       input[type="text"]::placeholder {
-        color: white;
+        color: black;
+        opacity: 0.5;
       }
     }
 
@@ -148,7 +170,7 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
     body.Christmas-light {
       --primary-bg: #fff8f8;
       --text-color: #006400; /* Deep festive green */
-      --header-bg: linear-gradient(135deg, #D62828, #B82020); /* Festive Red */
+      --header-bg: linear-gradient(135deg, #d32f2f 30%, #f59e0b 100%); /* Vibrant red to gold gradient */
       --card-bg: rgba(255, 255, 255, 0.5);
       --settings-bg: #fdeaea;
       --settings-text: #000;
@@ -165,7 +187,7 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
     body.Christmas-dark {
       --primary-bg: #2A0E0E; /* Deep Velvety Red */
       --text-color: #ffffff;
-      --header-bg: linear-gradient(135deg, #A01C1C, #7D1E1E); /* Richer Red */
+      --header-bg: linear-gradient(135deg, #991b1b 30%, #b45309 100%); /* Deep red to rich gold gradient */
       --card-bg: rgba(255, 215, 153, 0.07);
       --settings-bg: #4d1a1a;
       --settings-text: #fff8f8;
@@ -179,6 +201,7 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
       --verse-theme-active-bg: #D62828;
       --verse-theme-active-text: #ffffff;
     }
+    
     /* 🎄 Fix for Active Category in Christmas Mode */
     body.Christmas-light .category.active,
     body.Christmas-dark .category.active {
@@ -222,42 +245,159 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
       --verse-theme-active-text: #ffffff;
     }
 
-    /* 🌟 Easter (Refined Theme) */
-    body.easter-light {
-      --primary-bg: #fffff0;
-      --text-color: #5d4037;
-      --header-bg: linear-gradient(135deg, #FFD700, #FFEC8B);
-      --card-bg: rgba(255, 255, 255, 0.6);
-      --settings-bg: #fefbeb;
+    /* 💜 advent (Enhanced Readability) */
+    body.advent-light {
+      --primary-bg: #f9f5ff;
+      --text-color: #31004f;
+      --header-bg: linear-gradient(135deg, #9B59B6, #8e44ad);
+      --card-bg: rgba(255, 255, 255, 0.4);
+      --settings-bg: #f4eef7;
       --settings-text: #000;
-      --search-result-bg: rgba(255, 255, 240, 0.9);
-      --search-result-hover: #fffada;
-      --daily-verse-bg: #fffde7; /* very light yellow */
-      --verse-panel-bg: #fff9c4;
+      --search-result-bg: rgba(255, 255, 255, 0.9);
+      --search-result-hover: #e8dff1;
+      --daily-verse-bg: #f6eaff; /* very light purple */
+      --verse-panel-bg: #f5effa;
+      --verse-panel-text: #31004f;
+      --verse-theme-bg: #b39ddb; /* medium purple, much deeper than daily-verse-bg */
+      --verse-theme-text: #31004f; /* Dark purple text */
+      --verse-theme-active-bg: #9B59B6;
+      --verse-theme-active-text: #ffffff;
+    }
+    body.advent-dark {
+      --primary-bg: #160a21;
+      --text-color: #e5cfff;
+      --header-bg: linear-gradient(135deg, #4C1A74, #3d155b);
+      --card-bg: rgba(229, 207, 255, 0.07);
+      --settings-bg: #2a1a38;
+      --settings-text: #f5f5f5;
+      --search-result-bg: rgba(42, 26, 56, 0.9);
+      --search-result-hover: rgba(61, 21, 91, 0.9);
+      --daily-verse-bg: #3d155b;
+      --verse-panel-bg: #2c1a3e;
+      --verse-panel-text: #e5cfff;
+      --verse-theme-bg: #4c2a74; /* darker muted purple for contrast */
+      --verse-theme-text: #e5cfff; /* Light purple text */
+      --verse-theme-active-bg: #8e44ad;
+      --verse-theme-active-text: #ffffff;
+    }
+
+
+
+    /* 🌟 Easter (Radiant & Triumphant Update) */
+    /* 🌟 Easter (Sun-Drenched & Radiant Update) */
+    body.easter-light {
+      --primary-bg: #fffdf5; /* Warm Dawn Ivory - not pure white */
+      --text-color: #4a3b00; /* Deep bronze-tinted text */
+      --header-bg: linear-gradient(135deg, #FFD700 100%, #fff1a8 50%, #FFD700 100%); /* Shining gold */  
+      --card-bg: rgba(255, 255, 255, 0.7);
+      --settings-bg: #fffcf0;
+      --settings-text: #4a3b00;
+      --search-result-bg: rgba(255, 255, 255, 0.95);
+      --search-result-hover: #fff9c4;
+      --daily-verse-bg: #fff9c4; /* Soft sunlight yellow */
+      --verse-panel-bg: #fffef0; /* Warm cream */
       --verse-panel-text: #5d4037;
-      --verse-theme-bg: #ffd54f; /* medium yellow, much deeper than daily-verse-bg */
-      --verse-theme-text: #5d4037; /* Brown text */
+      --verse-theme-bg: #ffecb3; /* Medium warm gold */
+      --verse-theme-text: #7b5e00; 
       --verse-theme-active-bg: #FFD700;
-      --verse-theme-active-text: #5d4037;
+      --verse-theme-active-text: #000000;
     }
+
     body.easter-dark {
-      --primary-bg: #1a1400;
-      --text-color: #fff5cc;
-      --header-bg: linear-gradient(135deg, #FFD700, #FFEC8B);
-      --card-bg: rgba(255, 245, 204, 0.07);
-      --settings-bg: #2a2100;
-      --settings-text: #fff5cc;
-      --search-result-bg: rgba(42, 33, 0, 0.9);
-      --search-result-hover: rgba(66, 53, 0, 0.9);
-      --daily-verse-bg: #4d3d00;
-      --verse-panel-bg: #332900;
-      --verse-panel-text: #fff5cc;
-      --verse-theme-bg: #a67c00; /* darker muted gold for contrast */
-      --verse-theme-text: #fff5cc; /* Light gold text */
+      --primary-bg: #1e1910; /* Warm Bronze-Black */
+      --text-color: #fff4d1; /* Ivory text */
+      --header-bg: linear-gradient(135deg, #b48608 0%, #FFD700 50%, #b48608 100%); /* Rich metallic gold */
+      --card-bg: rgba(255, 244, 209, 0.08); /* Slightly more visible glow */
+      --settings-bg: #2d2618;
+      --settings-text: #fff4d1;
+      --search-result-bg: rgba(30, 25, 16, 0.95);
+      --search-result-hover: #3d3321;
+      --daily-verse-bg: #3d3321;
+      --verse-panel-bg: #262014;
+      --verse-panel-text: #fff4d1;
+      --verse-theme-bg: #5c4d2d; 
+      --verse-theme-text: #FFD700; 
       --verse-theme-active-bg: #FFD700;
-      --verse-theme-active-text: #1a140a;
+      --verse-theme-active-text: #1e1910;
     }
-    
+
+    /* ✨ Easter Glow & Border Effects */
+    body.easter-light .category.active,
+    body.easter-dark .category.active {
+      background: #FFD700; 
+      color: #000;      
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); /* Easter Joy Glow */
+      border: 1px solid #fff;
+    }
+
+    /* Make the header text pop on the gold gradient */
+    body.easter-light header h1, 
+    body.easter-dark header h1 {
+      text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+      color: #333;
+    }
+
+    /* 🔥 Red (Martyrs & Holy Spirit) */
+    /* 🔥 Red (Martyrs & Holy Spirit) - Variable Based */
+    body.red-light {
+      --primary-bg: #fff0f0; /* Very soft rose tint */
+      --text-color: #5c0000; /* Deep Maroon */
+      --header-bg: linear-gradient(135deg, #d32f2f, #b71c1c); /* Crimson Gradient */
+      --card-bg: rgba(255, 255, 255, 0.5);
+      --settings-bg: #fff5f5;
+      --settings-text: #000;
+      --search-result-bg: rgba(255, 255, 255, 0.95);
+      --search-result-hover: #ffebee;
+      --daily-verse-bg: #ffebee;
+      --verse-panel-bg: #ffcdd2;
+      --verse-panel-text: #3e0000;
+      --verse-theme-bg: #ef9a9a; 
+      --verse-theme-text: #3e0000;
+      --verse-theme-active-bg: #d32f2f;
+      --verse-theme-active-text: #ffffff;
+    }
+
+    body.red-dark {
+      --primary-bg: #1a0505; /* Deep brownish-black (dried blood tone) */
+      --text-color: #ffcdd2; /* Pale Pink text */
+      --header-bg: linear-gradient(135deg, #8e0000, #5a0000); /* Dark Blood Red */
+      --card-bg: rgba(255, 205, 210, 0.05);
+      --settings-bg: #2b0b0b;
+      --settings-text: #ffebee;
+      --search-result-bg: rgba(43, 11, 11, 0.95);
+      --search-result-hover: rgba(80, 20, 20, 0.9);
+      --daily-verse-bg: #3e0e0e;
+      --verse-panel-bg: #2e0808;
+      --verse-panel-text: #ffcdd2;
+      --verse-theme-bg: #5a1a1a;
+      --verse-theme-text: #ffcdd2;
+      --verse-theme-active-bg: #d32f2f;
+      --verse-theme-active-text: #ffffff;
+    }
+    /* 🔴 Apply the Red Border (using your new variables) */
+    body.red-light .section,
+    body.red-dark .section {
+      border-left: 5px solid var(--verse-theme-active-bg);
+    }
+    /* 1. APPLY BORDER-LEFT COLOR DYNAMICALLY */
+    body.ordinary-light .section, body.ordinary-dark .section,
+    body.advent-light .section, body.advent-dark .section,
+    body.lent-light .section, body.lent-dark .section,
+    body.Christmas-light .section, body.Christmas-dark .section,
+    body.easter-light .section, body.easter-dark .section,
+    body.red-light .section, body.red-dark .section {
+      border-left: 5px solid var(--verse-theme-active-bg);
+    }
+
+    /* 🔥 Fix for Active Category in Red Mode */
+    body.red-light .category.active,
+    body.red-dark .category.active {
+      background: #d32f2f; 
+      color: #ffffff;      
+      box-shadow: 0 0 10px rgba(211, 47, 47, 0.4);
+      border: 1px solid #b71c1c;
+    }
+    /* --- GLOBAL STYLES --- */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -281,7 +421,7 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
       display: flex;
       flex-direction: column;
       gap: 0.5em;
-      position: sticky;
+      position: relative;
       top: 0;
       z-index: 1000;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
@@ -315,9 +455,9 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
     justify-content: flex-start; /* or space-between / center / flex-start based on your flavor */
     gap: 0.5rem;
     padding: 1rem;
-    background: rgba(255,255,255,0.3);
-    position:static;
-    top: 60px;
+    background: var(--settings-bg);
+    position:sticky;
+    top: 0px;
     z-index: 999;
     font-weight: bold;
     width: 100%; /* full width of parent */
@@ -330,7 +470,7 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
     padding: 0.75rem;
     border: none;
     border-radius:var(--border-radius);
-    background: rgba(0,0,0,0.05);
+    background: rgba(0,0,0,0.07);
     cursor: pointer;
     transition: var(--transition);
     font-weight: bold;
@@ -339,11 +479,6 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
     text-align: center;
     white-space: normal
   }
-
-
-
-
-    
     .category.active {
       background: var(--header-bg); /* Use a consistent highlight color */
       color: white;
@@ -400,57 +535,194 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
       opacity: 1;
     }
 
-    #settings {
-      position: fixed;
-      bottom: 90px;
-      right: 20px;
-      width: 90vw;
-      max-width: 320px;
-      background-color: var(--settings-bg);
-      color: var(--settings-text);
-      padding: 1rem;
-      border-radius: var(--border-radius);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-      opacity: 0;
-      visibility: hidden;
-      transform: scale(0.95);
-      transition: transform 0.3s, opacity 0.3s, visibility 0.3s;
-      z-index: 100;
-    }
-    #settings.show {
-      opacity: 1;
-      visibility: visible;
-      transform: scale(1);
-    }
-    #settings label,
-    #settings select,
-    #settings input[type="checkbox"] {
-      color: inherit;
-      background-color: transparent;
-      border: none;
-      font-size: 1em;
-      margin-bottom: 0.5em;
-    }
-    #settings select, #settings input[type="range"] {
-      width: 100%;
-      margin-bottom: 0.5em;
-    }
+    /* =====================================================
+   SETTINGS PANEL (FAB POPUP) — Modern Card Design
+   ===================================================== */
+#settings {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 92vw;
+  max-width: 300px;
 
-    #settingsBtn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 60px;
-      height: 60px;
-      font-size: 28px;
-      background: #f0f0f0;
-      color: #333;
-      border: none;
-      border-radius: var(--border-radius);
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      cursor: pointer;
-      transition: transform 0.2s ease-in-out;
-    }
+  /* Glassmorphism base that works with all themes */
+  background-color: var(--settings-bg);
+  color: var(--settings-text);
+
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.18),
+    0 2px 8px rgba(0, 0, 0, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px) scale(0.96);
+  transform-origin: bottom right;
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.25s ease,
+    visibility 0.25s;
+  z-index: 1100;
+}
+
+#settings.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+/* Panel header strip */
+#settings::before {
+  content: "Settings";
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.1rem 0.6rem;
+  opacity: 0.45;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+}
+
+/* Settings rows — each label+control pair */
+#settings label {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.93em;
+  font-weight: 600;
+  color: inherit;
+  opacity: 0.75;
+  padding: 0.7rem 1.1rem 0.1rem;
+  letter-spacing: 0.01em;
+}
+
+/* Full-width controls */
+#settings select {
+  display: block;
+  width: calc(100% - 2.2rem);
+  margin: 0 1.1rem 0.1rem;
+  padding: 0.55em 0.75em;
+  font-size: 0.95em;
+  color: var(--settings-text);
+  background: rgba(128, 128, 128, 0.12);
+  border: 1.5px solid rgba(128, 128, 128, 0.18);
+  border-radius: 10px;
+  cursor: pointer;
+  appearance: auto;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+#settings select:focus {
+  outline: none;
+  border-color: var(--verse-theme-active-bg, #3d803b);
+  background: rgba(128, 128, 128, 0.18);
+}
+
+/* Dark mode toggle row — special inline layout */
+#settings div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1.1rem;
+  border-top: 1px solid rgba(128, 128, 128, 0.1);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+  margin: 0.3rem 0;
+}
+#settings div label {
+  padding: 0;
+  margin: 0;
+  opacity: 0.8;
+  font-weight: 600;
+}
+
+/* Modern toggle switch for dark mode */
+#settings input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 42px;
+  height: 24px;
+  border-radius: 99px;
+  background: rgba(128,128,128,0.3);
+  border: 1.5px solid rgba(128,128,128,0.2);
+  position: relative;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease;
+  flex-shrink: 0;
+}
+#settings input[type="checkbox"]::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  top: 1px;
+  left: 1px;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+}
+#settings input[type="checkbox"]:checked {
+  background: var(--verse-theme-active-bg, #3d803b);
+  border-color: var(--verse-theme-active-bg, #3d803b);
+}
+#settings input[type="checkbox"]:checked::after {
+  transform: translateX(18px);
+}
+
+/* Font size slider section */
+#settings input[type="range"] {
+  display: block;
+  width: calc(100% - 2.2rem);
+  margin: 0.2rem 1.1rem 1.1rem;
+  accent-color: var(--verse-theme-active-bg, #3d803b);
+  cursor: pointer;
+  height: 4px;
+}
+
+#fontSizeSlider {
+  width: 100%;
+  accent-color: var(--verse-theme-active-bg, #3d803b);
+}
+
+/* =====================================================
+   FAB SETTINGS BUTTON
+   ===================================================== */
+#settingsBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  font-size: 24px;
+  background: var(--header-bg);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.25),
+    0 1px 4px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition:
+    transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.22s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#settingsBtn:hover {
+  transform: scale(1.1) translateY(-2px);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.28),
+    0 2px 6px rgba(0, 0, 0, 0.15);
+}
+#settingsBtn:active {
+  transform: scale(0.95);
+}
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
@@ -492,40 +764,97 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1300;
+      overflow-y: auto;
+    }
+
+    .modal.show {
+      display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      z-index: 1000;
     }
 
+    /* Fix for Modals to respect Dark Mode */
     .modal-content {
-      background: white;
-      color: #333; /* Modal text should be readable */
-      padding: 20px;
+      background-color: var(--settings-bg); /* Auto-changes with theme */
+      color: var(--settings-text);          /* Auto-changes with theme */
+      padding: 1.5rem;
       border-radius: var(--border-radius);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      text-align: center;
-      max-width: 400px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
       width: 90%;
+      max-width: 380px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin: auto;
     }
 
-    .modal-content h2 { margin-bottom: 1rem; }
-    .modal-content label { display: block; margin-top: 1rem; font-weight: bold; }
-    .modal-content input, .modal-content select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: var(--border-radius);
+    .modal-content h2 {
+      margin: 0 0 1.2rem 0;
+      font-size: 1.3rem;
     }
+
+    .modal-content label {
+      display: block;
+      margin: 0;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .modal-content input[type="text"],
+    .modal-content input[type="email"],
+    .modal-content input[type="number"],
+    .modal-content select {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.3rem;
+      margin-bottom: 0.8rem;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+      transition: border-color 0.2s ease;
+    }
+
+    .modal-content input[type="text"]:focus,
+    .modal-content input[type="email"]:focus,
+    .modal-content input[type="number"]:focus,
+    .modal-content select:focus {
+      outline: none;
+      border-color: var(--header-bg);
+    }
+
     .modal-content button {
-      margin-top: 1rem;
-      padding: 10px 20px;
-      background-color: #3d803b;
+      width: 100%;
+      margin-top: 0.8rem;
+      padding: 0.7rem;
+      background-color: var(--header-bg);
       color: white;
       border: none;
-      border-radius: var(--border-radius);
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-content button:hover {
+      opacity: 0.9;
+    }
+
+    .modal-content button:active {
+      opacity: 0.8;
+    }
+
+    /* Welcome modal animation */
+    #welcomeModal .modal-content {
+      text-align: center;
+      animation: popInWelcome 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      max-width: 350px;
+    }
+
+    /* Exit animation */
+    #welcomeModal.closing .modal-content {
+      animation: popOutWelcome 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
     .content .break{
@@ -534,27 +863,40 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
 
     #searchResults {
       position: fixed;
-      top: 100px;
+      top: 200px;  /* ⬆️ INCREASED: Pushes results below the taller header */
       left: 50%;
       transform: translateX(-50%);
-      width: 80%;
+      width: 90%;
+      max-width: 500px;
       max-height: 60vh;
       overflow-y: auto;
+      
+      /* Visual Improvements */
       background: var(--search-result-bg);
       color: var(--text-color);
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(8px); /* Blur the text behind it */
       border-radius: var(--border-radius);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); /* Stronger shadow for depth */
+      border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle highlight border */
+      
       z-index: 2000;
       padding: 1rem;
     }
     
+    /* On Laptops, move search results up slightly */
+    @media (min-width: 768px) {
+      #searchResults {
+        top: 140px; 
+      }
+    }
+
     #searchResults ul { list-style: none; margin: 0; padding: 0; }
     #searchResults li {
       padding: 0.5em;
       margin-bottom: 0.5em;
       cursor: pointer;
       border-bottom: 1px solid #ccc;
+      margin-top: auto;
     }
     #searchResults li:hover { background-color: var(--search-result-hover); }
 
@@ -764,6 +1106,8 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
         border-radius: var(--border-radius);
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         transition: var(--transition);
+        position: relative;
+        z-index: 100;
     }
 
     .rosary-categories .category {
@@ -813,11 +1157,299 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
             max-width: 100%;
         }
     }
+
+
+    /* Ensure header text doesn't break on small phones */
+    #liturgical-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      padding: 0 10px;
+    }
+
+    /* Header Feast Name - Interactive */
+    #liturgical-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      cursor: pointer; /* Shows hand icon */
+      transition: transform 0.2s, opacity 0.2s;
+      border-radius: 8px;
+    }
+
+    #liturgical-info:active {
+      transform: scale(0.95);
+      background-color: rgba(255,255,255,0.2);
+    }
+
+    /* Add a tiny "info" icon hint */
+    #lit-feast::after {
+      content: ' ⓘ';
+      font-size: 0.8em;
+      opacity: 0.7;
+      font-style: normal;
+    }
+
+    /* Notification Settings Modal Styles */
+    #notificationModal .modal-content {
+      max-width: 360px;
+      z-index: 3000;
+    }
+
+    #closeNotification {
+      float: right;
+      font-size: 1.5em;
+      cursor: pointer;
+      color: var(--settings-text);
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+      margin-bottom: 0.5rem;
+      line-height: 1;
+    }
+
+    #closeNotification:hover {
+      opacity: 1;
+    }
+
+    .notification-setting {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.8rem;
+      padding: 0.65rem;
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 8px;
+      gap: 1rem;
+    }
+
+    .notification-setting label {
+      margin: 0;
+      font-weight: 600;
+      font-size: 0.9rem;
+      flex: 1;
+    }
+
+    .notification-toggle {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 44px;
+      height: 24px;
+      border-radius: 99px;
+      background: rgba(128, 128, 128, 0.3);
+      position: relative;
+      cursor: pointer;
+      transition: background 0.25s ease, border-color 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .notification-toggle::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: white;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .notification-toggle:checked {
+      background: var(--header-bg);
+      border-color: var(--header-bg);
+    }
+
+    .notification-toggle:checked::after {
+      transform: translateX(18px);
+    }
+
+    #notificationSettingsBtn {
+      width: 100%;
+      padding: 0.7rem;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: white;
+      background: var(--header-bg);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    #notificationSettingsBtn:hover {
+      opacity: 0.9;
+    }
+
+    #notificationSettingsBtn:active {
+      opacity: 0.8;
+    }
+
+    #saveNotificationSettingsBtn {
+      width: 100%;
+      padding: 0.7rem;
+      margin-top: 0.8rem;
+      background: var(--header-bg);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: opacity 0.2s ease;
+    }
+
+    #saveNotificationSettingsBtn:hover {
+      opacity: 0.9;
+    }
+
+    #saveNotificationSettingsBtn:active {
+      opacity: 0.8;
+    }
+
+    /* Welcome Modal Styles */
+    .welcomeModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .welcomeModal.show {
+      display: flex;
+      animation: slideInWelcome 0.4s ease-out;
+    }
+
+    .welcomeModal-content {
+      background-color: var(--settings-bg);
+      color: var(--settings-text);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      max-width: 350px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      animation: popInWelcome 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .welcomeModal-content h2 {
+      margin: 0 0 1rem 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .welcomeModal-content p {
+      margin: 0;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      opacity: 0.9;
+    }
+
+    @keyframes slideInWelcome {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes popInWelcome {
+      0% {
+        transform: scale(0.6);
+        opacity: 0;
+      }
+      60% {
+        transform: scale(1.08);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes popOutWelcome {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(0.6);
+        opacity: 0;
+      }
+    }
+
+    /* setupModal styles */
+    .setupmodal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    /* Fix for Modals to respect Dark Mode */
+    .setupmodal-content {
+      background-color: var(--settings-bg); /* Auto-changes with theme */
+      color: var(--settings-text);          /* Auto-changes with theme */
+      
+      padding: 20px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for dark mode */
+    }
+
+    .setupmodal-content h2 { margin-bottom: 1rem; }
+    .setupmodal-content label { display: block; margin-top: 1rem; font-weight: bold; }
+    .setupmodal-content input, .setupmodal-content select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+      font-size:medium;
+    }
+    .setupmodal-content button {
+      margin-top: 1rem;
+      padding: 10px 20px;
+      background-color: var(--verse-theme-active-bg);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 1rem;
+    }
   </style>
 </head>
 <body class="ordinary-light">
   <header>
     <h1 data-en="Catholic Daily Prayers." data-sw="Sala za Kikatoliki.">Catholic Daily Prayers.</h1>
+    
+    <div id="liturgical-info" style="text-align: center; font-size: 1.1em; margin: 0.5em 0; font-weight: bold; color: inherit; text-shadow: 0 1px 2px rgba(0,0,0,0.2);">
+        <span id="lit-feast">Loading Calendar...</span> 
+        <span id="lit-color-dot" style="display:inline-block; width:12px; height:12px; border-radius:50%; margin-left:8px; border:2px solid white;"></span>
+    </div>
+
     <div class="header-buttons">
       <input type="text" id="searchInput" placeholder data-en="Search..." data-sw="Tafuta sala..." />
       <div style="display:flex;flex-direction:column;align-items:center;">
@@ -825,21 +1457,22 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
         <span id="aboutLabel" data-en="About" data-sw="Kuhusu">About</span>
       </div>
     </div>
-  </header>
+</header>
 
-  <div id="setupModal" class="modal">
-    <div class="modal-content">
+  <div id="setupModal" class="setupmodal">
+    <div class="setupmodal-content">
       <h2>Karibu Sala za Kikatoliki.</h2>
-      <p>Tafadhali Chagua lugha yako na andika jina lako \ Please select your preferred language and enter your name:</p>
-      <label for="languageSelectSetup">Lugha\Language:</label>
+      <p>Tafadhali Chagua lugha yako na andika jina lako: </p>
+      <p>Please select your preferred language and enter your name:</p>
+      <label for="languageSelectSetup">Lugha / Language:</label>
       <select id="languageSelectSetup">
          <option value="sw">Swahili</option>
          <option value="en">English</option>
       </select>
-      <label for="userNameInput">Jina Lako / Your Name:</label>
-      <input type="text" id="userNameInput" placeholder="Ingiza Jina Lako./Enter your name." />
-      <button id="saveUserDetailsBtn">Save</button>
-      <p style="font-size: smaller; font-weight: bold;">©AnoDomino-2025</p>
+        <label for="userNameInput">Jina Lako / Your Name:</label>
+        <input type="text" id="userNameInput" class="userNameInputs" placeholder="Ingiza Jina Lako ---- Enter your name." />
+        <button id="saveUserDetailsBtn">Save</button>
+        <p style="font-size: smaller; font-weight: bold;">©AnoDomino-2025</p>
     </div>
   </div>
   <!-- About Modal -->
@@ -848,7 +1481,7 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
       <button id="closeAbout">✖️</button>
       <h2 id="aboutTitle" data-en="About This App" data-sw="Kuhusu App Hii"></h2>
       <p class="break" id="aboutText" data-en="All Glory Be To God ,
-        AnoDomino Technologies presents a digital sanctuary for prayer, spiritual growth,  scripture, and designed in both Kiswahili and English languages, following the Catholic Liturgy. The app aims at helping users draw closer to God. It is our prayer that it will fulfill that aim.
+        AnoDomino Company presents a digital sanctuary for prayer, spiritual growth,  scripture, and designed in both Kiswahili and English languages, following the Catholic Liturgy. The app aims at helping users draw closer to God. It is our prayer that it will fulfill that aim.
 
         This app makes use of prayers from the website of Radio Maria and EWTN, and also “Chuo Kidogo cha Sala”.
         The Scriptures are taken from The African Bible (St Paul Communications/Daughters of St Paul, 1999) for English, and from Biblia Takatifu (T.M.P. Book Department, Tabora, 1967;) for Swahili.
@@ -864,7 +1497,7 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
 
         May the Lord bless you all.
         -Anollian Mushi." data-sw="Utukufu wote ni wa Mungu,
-        AnoDomino Technologies inawasilisha hekalu la kidijitali kwa ajili ya sala, ukuaji wa kiroho, maandiko, na iliyoundwa kwa lugha zote Kiswahili na Kingereza, ikifuata utaratibu wa Kikatoliki. Programu hii inalenga kusaidia watumiaji kujiweka karibu na Mungu. Ni sala yetu kwamba itafanikiwa kufikia lengo hilo.
+        AnoDomino Company inawasilisha hekalu la kidijitali kwa ajili ya sala, ukuaji wa kiroho, maandiko, na iliyoundwa kwa lugha zote Kiswahili na Kingereza, ikifuata utaratibu wa Kikatoliki. Programu hii inalenga kusaidia watumiaji kujiweka karibu na Mungu. Ni sala yetu kwamba itafanikiwa kufikia lengo hilo.
 
         Program hii imetumia sala kutoka katika tovuti za Radio Maria Tanzania na EWTN pamoja na “Chuo Kidogo cha Sala”.
         Maadiko Matakatifu yamechukuliwa kutoka Bibilia ya The African Bible (St Paul Communications/Daughters of St Paul, 1999) kwa lugha ya Kiingereza na kutoka Biblia Takatifu (T.M.P. Book Department, Tabora, 1967;) kwa lugha ya Kiswahili.
@@ -880,12 +1513,30 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
 
         Mungu awabariki nyote.
         -Anollian Mushi"></p>
-              <p style="font-size: smaller; font-weight: bold;">©AnoDomino Technologies-2025</p>
+              <p style="font-size: smaller; font-weight: bold;">©AnoDomino Company-2025</p>
     </div>
   </div>
+
+  <!-- Welcome Modal -->
+  <div id="welcomeModal" class="welcomeModal">
+    <div class="modal-content">
+      <h2 id="welcomeTitle"></h2>
+      <p id="welcomeBody"></p>
+    </div>
   </div>
 
-  <nav class="categories">
+  <!-- Feast Modal -->
+  <div id="feastModal" class="modal">
+    <div class="modal-content" style="text-align: left; max-height: 70vh; overflow-y: auto;">
+      <span id="closeFeast" style="float:right; font-size:1.5em; cursor:pointer;">&times;</span>
+      <h2 id="feastPopupTitle" style="color: var(--header-bg); border-bottom: 2px solid #ccc; padding-bottom: 10px;"></h2>
+      <p id="feastPopupDesc" style="white-space: pre-wrap; line-height: 1.6; margin-top: 15px;"></p>
+    </div>
+  </div>
+
+  </div>
+  
+    <nav class="categories">
     <button class="category" data-category-id="home"><span class="icon" role="img" aria-label="Prayer hands">🙏</span><span data-en="Home" data-sw="Nyumbani">Home</span></button>
     <button class="category" data-category-id="Basic Prayers"><span data-en="Basic Prayers" data-sw="Sala Muhimu">Basic Prayers</span></button>
     <button class="category" data-category-id="Special prayers"><span data-en="Special prayers" data-sw="Sala Maalumu">Special prayers</span></button>
@@ -979,6 +1630,95 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
           world without end." data-sw=" Atukuzwe baba na mwana na roho mtakatifu kama mwanzo
           na sasa na Siku zote na milele Amina">Atukuzwe baba na mwana na roho mtakatifu kama
            mwanzo na sasa na Siku zote na milele Amina</p>
+      </article>
+
+
+      <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Morning Prayer" data-sw="Sala ya Asubuhi">Sala ya Asubuhi</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p class="break" data-en="O my God! I offer Thee all my actions of this day for the intentions and for the glory of the Sacred Heart of Jesus. I desire to sanctify every beat of my heart, my every thought, my simplest works, by uniting them to Its infinite merits; and I wish to make reparation for my sins by casting them into the furnace of Its Merciful Love.
+
+          O my God! I ask of Thee for myself and for those whom I hold dear, the grace to fulfill perfectly Thy Holy Will, to accept for love of Thee the joys and sorrows of this passing life, so that we may one day be united together in heaven for all Eternity.
+
+          Amen." 
+          data-sw="Ee Baba yetu Mungu mkuu,
+          Umenilinda usiku huu.
+          Nakushukuru kwa moyo,
+          Ee Baba, Mwana na Roho.
+          Nilinde tena siku hii,
+          Niache dhambi, nikutii.
+          Naomba sana Baba wee,
+          Baraka zako nipokee.
+          Bikira safi, Ee Maria
+          Nisipotee nisimamie.
+          Mlinzi mkuu malaika wee,
+          Kwa Mungu wetu niombee
+          Nitake nitende mema tu,
+          Na mwisho nije kwako juu. Amina.
+
+          •NIA NJEMA.
+          Kumheshimu Mungu wangu
+          Namtolea roho yangu,
+          Nifanye kazi nipumzike Amri zake tu nishike
+          Wazo, neno, tendo lote Namtolea Mungu pote
+          Roho, mwili chote changu, Pendo na uzima wangu
+          Mungu wangu nitampenda, Wala dhambi sitatenda.
+          Jina lako nasifia, Utakalo hutimia.
+          Kwa utii navumilia Teso na matata pia.
+          Nipe, Bwana, neema zako Niongeze sifa yako. Amina.
+
+          •SALA YA MATOLEO.
+          Ee Yesu, kwa mikono ya Bikira Maria, na kwa maungano na sadaka yako kuu, ninakutolea sala, matendo, masumbuko na furaha zangu zote za leo. Ee Yesu, ufalme wako utufikie."></p>...</p>
+        </div>
+      </article>
+
+      <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Evening Prayer" data-sw="Sala za Jioni">Sala za Jioni</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p class="break" data-en="O my God, at the end of this day I thank You most heartily for all the graces I have received from You. I am sorry that I have not made a better use of them. I am sorry for all the sins I have committed against You. Forgive me, O my God, and graciously protect me this night. Blessed Virgin Mary, my dear heavenly mother, take me under your protection. St. Joseph, my dear Guardian Angel, and all you saints of God, pray for me. Sweet Jesus, have pity on all poor sinners, and save them from hell. Have mercy on the suffering souls in purgatory... (followed by an Act of Contrition)" 
+          data-sw="Kwa jina la Baba na la Mwana na la Roho Mtakatifu, Amina.
+          Tunakushukuru ee Mungu kwa mema yote uliyotujalia sikuu hii ya leo.
+          BABA YETU...
+          SALAMU MARIA...
+
+          SALA YA IMANI...
+          SALA YA MATUMAINI...
+          SALA YA MAPENDO...
+
+          UNGAMO LA DHAMBI...
+          Na tuwaze katika moyo makoda yote ya leo tuliyomkosea Mungu, kwa mawazo, kwa maneno na kwa matendo(………………………)
+          Namuungamia Mungu Mwenyezi, nanyi ndugu zangu, kwani nimekosa mno, kwa mawazo, kwa maneno, kwa vitendo na kwa kutokutimiza wajibu, nimekosa mimi, nimekosa mimi, nimekosa sana. Ndio maana nakuomba Maria mwenyeheri, Bikira daima, malaika na watakatifu wote, nanyi ndugu zangu, niombeeni kwa Bwana Mungu wetu.
+          +Mungu Mwenyezi atuhurumie, atusamehe dhambi zetu na atufukishe kwenye uzima wa milele, Amina.
+
+          SALA YA KUTUBU...
+          SALA KWA MALAIKA MLINZI.
+          Malaika mlinzi wangu, unilinde katika hatari zote, za roho na za mwili. Amina.
+          Atukuzwe Baba na Mwana na Roho Mtakatifu. Kama mwanzo na sasa na siku zote na milele. Amina">
+          Kwa jina la Baba na la Mwana na la Roho Mtakatifu, Amina.
+          Tunakushukuru ee Mungu kwa mema yote uliyotujalia sikuu hii ya leo.
+          BABA YETU...
+          SALAMU MARIA...
+
+          SALA YA IMANI...
+          SALA YA MATUMAINI...
+          SALA YA MAPENDO...
+
+          UNGAMO LA DHAMBI...
+          Na tuwaze katika moyo makoda yote ya leo tuliyomkosea Mungu, kwa mawazo, kwa maneno na kwa matendo(………………………)
+          Namuungamia Mungu Mwenyezi, nanyi ndugu zangu, kwani nimekosa mno, kwa mawazo, kwa maneno, kwa vitendo na kwa kutokutimiza wajibu, nimekosa mimi, nimekosa mimi, nimekosa sana. Ndio maana nakuomba Maria mwenyeheri, Bikira daima, malaika na watakatifu wote, nanyi ndugu zangu, niombeeni kwa Bwana Mungu wetu.
+          +Mungu Mwenyezi atuhurumie, atusamehe dhambi zetu na atufukishe kwenye uzima wa milele, Amina.
+
+          SALA YA KUTUBU...
+          SALA KWA MALAIKA MLINZI.
+          Malaika mlinzi wangu, unilinde katika hatari zote, za roho na za mwili. Amina.
+          Atukuzwe Baba na Mwana na Roho Mtakatifu. Kama mwanzo na sasa na siku zote na milele. Amina</p>
+        </div>
       </article>
 
       <article class="prayer">
@@ -1107,6 +1847,52 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
         </div>
       </article>
 
+
+      <article class="prayer">
+        <button class="prayer-button">
+          <span data-en="Evening Prayer" data-sw="Sala za Jioni">Sala za Jioni</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="content">
+          <p class="break" data-en="O my God, at the end of this day I thank You most heartily for all the graces I have received from You. I am sorry that I have not made a better use of them. I am sorry for all the sins I have committed against You. Forgive me, O my God, and graciously protect me this night. Blessed Virgin Mary, my dear heavenly mother, take me under your protection. St. Joseph, my dear Guardian Angel, and all you saints of God, pray for me. Sweet Jesus, have pity on all poor sinners, and save them from hell. Have mercy on the suffering souls in purgatory... (followed by an Act of Contrition)" 
+          data-sw="Kwa jina la Baba na la Mwana na la Roho Mtakatifu, Amina.
+          Tunakushukuru ee Mungu kwa mema yote uliyotujalia sikuu hii ya leo.
+          BABA YETU...
+          SALAMU MARIA...
+
+          SALA YA IMANI...
+          SALA YA MATUMAINI...
+          SALA YA MAPENDO...
+
+          UNGAMO LA DHAMBI...
+          Na tuwaze katika moyo makoda yote ya leo tuliyomkosea Mungu, kwa mawazo, kwa maneno na kwa matendo(………………………)
+          Namuungamia Mungu Mwenyezi, nanyi ndugu zangu, kwani nimekosa mno, kwa mawazo, kwa maneno, kwa vitendo na kwa kutokutimiza wajibu, nimekosa mimi, nimekosa mimi, nimekosa sana. Ndio maana nakuomba Maria mwenyeheri, Bikira daima, malaika na watakatifu wote, nanyi ndugu zangu, niombeeni kwa Bwana Mungu wetu.
+          +Mungu Mwenyezi atuhurumie, atusamehe dhambi zetu na atufukishe kwenye uzima wa milele, Amina.
+
+          SALA YA KUTUBU...
+          SALA KWA MALAIKA MLINZI.
+          Malaika mlinzi wangu, unilinde katika hatari zote, za roho na za mwili. Amina.
+          Atukuzwe Baba na Mwana na Roho Mtakatifu. Kama mwanzo na sasa na siku zote na milele. Amina">
+          Kwa jina la Baba na la Mwana na la Roho Mtakatifu, Amina.
+          Tunakushukuru ee Mungu kwa mema yote uliyotujalia sikuu hii ya leo.
+          BABA YETU...
+          SALAMU MARIA...
+
+          SALA YA IMANI...
+          SALA YA MATUMAINI...
+          SALA YA MAPENDO...
+
+          UNGAMO LA DHAMBI...
+          Na tuwaze katika moyo makoda yote ya leo tuliyomkosea Mungu, kwa mawazo, kwa maneno na kwa matendo(………………………)
+          Namuungamia Mungu Mwenyezi, nanyi ndugu zangu, kwani nimekosa mno, kwa mawazo, kwa maneno, kwa vitendo na kwa kutokutimiza wajibu, nimekosa mimi, nimekosa mimi, nimekosa sana. Ndio maana nakuomba Maria mwenyeheri, Bikira daima, malaika na watakatifu wote, nanyi ndugu zangu, niombeeni kwa Bwana Mungu wetu.
+          +Mungu Mwenyezi atuhurumie, atusamehe dhambi zetu na atufukishe kwenye uzima wa milele, Amina.
+
+          SALA YA KUTUBU...
+          SALA KWA MALAIKA MLINZI.
+          Malaika mlinzi wangu, unilinde katika hatari zote, za roho na za mwili. Amina.
+          Atukuzwe Baba na Mwana na Roho Mtakatifu. Kama mwanzo na sasa na siku zote na milele. Amina</p>
+        </div>
+      </article>
       <article class="prayer">
         <button class="prayer-button">
           <span data-en="Act of Faith." data-sw="Sala ya Imani.">Sala ya Imani.</span>
@@ -1232,7 +2018,6 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
         
         </article>
 
-
        <article class="prayer">
             <button class="prayer-button">
               <span data-en="Prayer to Saint Joseph." data-sw="Sala kwa Mt.Yosefu.">Sala kwa Mt.Joseph.</span>
@@ -1357,7 +2142,27 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
               Atukuzwe Baba...(Mara 3).</p>
           </article>
 
+          <article class="prayer">
+            <button class="prayer-button">
+              <span data-en="Prayer to Saint Rita" data-sw="Sala kwa Mt. Rita">Sala kwa Mt. Rita</span>
+              <span class="toggle-icon">▼</span>
+            </button>
+            <div class="content">
+              <p class="break" data-en="O powerful St. Rita, rightly called Saint of the Impossible, I come to you with confidence in my great need. You know well my trials, for you yourself were many times burdened in this life. 
+               Come to my help, speak for me, pray with me, intercede on my behalf before the Father. I know that God has a most generous heart and that he is a most loving Father.Join your prayers to mine and obtain for me the grace I desire 
+               
+               (here mention your request). 
 
+               You who were so very pleasing to God on earth and are so much so now in heaven, I promise to use this favor, when granted, to better my life, to proclaim God's mercy, and to make you more widely known and loved.
+               Amen." data-sw="Ee Mtakatifu Rita wa mambo yaliyoshindikana na mwombezi wa waliokata tamaa, nakuja kwako kuomba unisikilize na kunisaidia katika shida yangu hii kubwa. Najua kuwa wewe ni mwombezi wa shida kubwa na msaada wa waliokata tamaa,basi nakuomba dhihirisha uwezo na nguvu yako kwa kunijalia toka kwa Mungu hitaji langu
+                *(hapa omba hitaji unalotaka Mungu akujalie kupitia maombezi ya Mt Rita wa Kashia).*
+                Wewe unajua mahangaiko na maumivu yangu ,njoo hima,Ee Rita unisaidie.Ninaamini kuwa ombi langu litapata suluhisho na shida yangu itakwisha kabisa kupitia maombezi yako yenye nguvu. Ee Mtakatifu Rita wa Kashia mwombezi wa shida kubwa, uniombee. 
+              Amina.">...</p>
+            </div>
+         </article>
+
+
+         
           <article class="prayer">
             <button class="prayer-button">
               <span data-en="Prayer to Saint Agatha." data-sw="Sala kwa Mt.Agatha.">Sala kwa Mt.Agatha.</span>
@@ -1473,7 +2278,8 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
         <h4 data-en="† In the Name of the Father and of the Son and the Holy Spirit. Amen." data-sw="† Kwa Jina la Baba na la Mwana na la Roho Mtakatifu. Amina">† Kwa Jina la Baba na la Mwana na la Roho Mtakatifu. Amina</h4>
         
         </article>
-
+      
+      
       <article class="prayer">
         <button class="prayer-button">
           <span data-en="Prayer for the sick." data-sw="Sala ya kuwaombea wagonjwa.">Sala ya kuwaombea wagonjwa.</span>
@@ -1490,6 +2296,22 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
           Utujalie sisi sote amani na furaha zote za ufalme wako huko unakoishi daima na milele.Amina</p>
       </article>
 
+      <article class="prayer">
+            <button class="prayer-button">
+              <span data-en="Prayer for Vocations" data-sw="Sala kuombea Miito">Sala kuombea Miito</span>
+              <span class="toggle-icon">▼</span>
+            </button>
+            <div class="content">
+              <p class= "break" data-en="O Holy Spirit, Spirit of wisdom and divine love, impart Your knowledge, understanding, and counsel to youth that they may know the vocation wherein they can best serve God. Give them courage and strength to follow God's holy will. Guide their uncertain steps, strengthen their resolutions, shield their chastity, fashion their minds, conquer their hearts, and lead them to the vineyards where they will labor in God's holy service. 
+                Amen." data-sw="Ee Yesu mpole, uvumilie mateso makali mpaka kufa kwa ajili ya kutuokoa sisi binadamu, tunakuomba utujalie tupate mapadri, mabruda, masista na makatekista wengi walio watakatifu.
+                Tunawahitaji sana katika Parokia zetu, jimbo letu, Nchini mwetu na katika Kanisa lote.
+                Uwajalie vijana wetu, wavulana na wasichana, neema ya kuitikia wito wako mtakatifu.
+                Uwajalie pia neema ya kuwa wasikivu wakati wa malezi yao katika seminari, katika nyumba za kitawa na mahali popote watakapoishi hatimaye waufikie wito wao. Amina.">Ee Yesu mpole, uvumilie mateso makali mpaka kufa kwa ajili ya kutuokoa sisi binadamu, tunakuomba utujalie tupate mapadri, mabruda, masista na makatekista wengi walio watakatifu.
+                Tunawahitaji sana katika Parokia zetu, jimbo letu, Nchini mwetu na katika Kanisa lote.
+                Uwajalie vijana wetu, wavulana na wasichana, neema ya kuitikia wito wako mtakatifu.
+                Uwajalie pia neema ya kuwa wasikivu wakati wa malezi yao katika seminari, katika nyumba za kitawa na mahali popote watakapoishi hatimaye waufikie wito wao. Amina.</p>
+            </div>
+      </article>
 
       <article class="prayer">
         <button class="prayer-button">
@@ -2285,17 +3107,6 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
             Tunaomba hayo kwa njia ya Bwana wetu Yesu Kristu Mwanao, Mfalme wa Amani na Huruma, aishiye na kutawala nawe, na Roho Mtakatifu, kwa pamoja mkituonyesha huruma, daima na milele. Amina.</p>
       </div>
       </article>
-
-
-
-
-
-
-
-
-   
-
-
     </section>
 
   </section>
@@ -2314,503 +3125,2155 @@ body[class*="dark"] #aboutBtn { color: #f3f3f3; }
       <option value="ordinary" data-en="Ordinary Time" data-sw="Kipindi cha kawaida">Ordinary Time</option>
       <option value="Christmas"data-en="Christmas" data-sw="Krismasi">Christmas</option>
       <option value="lent" data-en="Lent" data-sw="Kwaresima">Lent</option>
+      <option value="advent" data-en="Advent" data-sw="Majilio">Advent</option>
       <option value="easter"data-en="Easter" data-sw="Pasaka">Easter</option>
+      <option value="red" data-en="Martyrs" data-sw="Wafiadini">Red</option>
     </select>
-
-    <label for="darkMode" data-en="Dark Mode:" data-sw="Hali ya Giza:">Dark Mode:</label>
+    <div>
+    <label for="darkMode" data-en="Dark Mode:" data-sw="Muonekano wa Giza:">Dark Mode:</label>
     <input type="checkbox" id="darkMode">
-
-    <label for="fontSizeSlider" data-en="Font Size:" data-sw="Ukubwa wa Herufi:">Font Size:</label>
+    </div>
+    <label for="fontSizeSlider" data-en="Font Size:" data-sw="Kubadilisha Ukubwa wa Herufi:">Font Size:</label>
     <input type="range" id="fontSizeSlider" min="14" max="24" value="16">
+    <button id="notificationSettingsBtn" data-en="🔔 Notifications" data-sw="🔔 Arifa">🔔 Notifications</button>
+  </div>
+
+  <!-- Notification Settings Modal -->
+  <div id="notificationModal" class="modal">
+    <div class="modal-content">
+      <span id="closeNotification">&times;</span>
+      <h2 id="notificationTitle" data-en="Notification Settings" data-sw="Mipango ya Arifa">Notification Settings</h2>
+      
+      <div class="notification-setting">
+        <label for="notificationMorning" data-en="🌅 Angelus (Morning)" data-sw="🌅 Malkia wa Bwana...(Asubuhi)">🌅 Angelus (Morning)</label>
+        <input type="checkbox" id="notificationMorning" checked class="notification-toggle">
+      </div>
+
+      <div class="notification-setting">
+        <label for="notificationMidday" data-en="☀️ Angelus (Noon)" data-sw="☀️ Malkia wa Bwana... (Mchana)">☀️ Angelus (Noon)</label>
+        <input type="checkbox" id="notificationMidday" checked class="notification-toggle">
+      </div>
+
+      <div class="notification-setting">
+        <label for="notificationAfternoon" data-en="🕊️ Afternoon Prayer (3:00 PM)" data-sw="🕊️ Sala ya Alasiri (9:00)">🕊️ Afternoon Prayer (3:00 PM)</label>
+        <input type="checkbox" id="notificationAfternoon" checked class="notification-toggle">
+      </div>
+
+      <div class="notification-setting">
+        <label for="notificationEvening" data-en="🌆 Angelus (Evening)" data-sw="🌆 Malkia wa Bwana... (Jioni)">🌆 Angelus (Evening)</label>
+        <input type="checkbox" id="notificationEvening" checked class="notification-toggle">
+      </div>
+
+      <div class="notification-setting">
+        <label for="notificationNight" data-en="🌙 Night Prayer" data-sw="🌙 Sala ya Usiku">🌙 Night Prayer (9:00 PM)</label>
+        <input type="checkbox" id="notificationNight" checked class="notification-toggle">
+      </div>
+
+      <div class="notification-setting">
+        <label for="notificationSaints" data-en="🎉 Feast/Saint Days" data-sw="🎉 Sikukuu/Watakatifu">🎉 Feast/Saint Days</label>
+        <input type="checkbox" id="notificationSaints" checked class="notification-toggle">
+      </div>
+
+      <button id="saveNotificationSettingsBtn" data-en="Save Settings" data-sw="Hifadhi Mipango">Save Settings</button>
+    </div>
   </div>
 
   <button id="settingsBtn">⚙️</button>
 
   <div id="searchResults" class="hidden"></div>
-  <script>
-  // File: script.js
-  const todaysVerses = [
-    { en: "I have the strength for everything through Him who empowers me.", sw: "Nayaweza mambo yote katika yeye anitiaye nguvu.", ref_en: "Philippians 4:13", ref_sw: "Wafilipi 4:13" },
-    { en: "This is the day that the Lord has made; let us rejoice and be glad.", sw: "Siku hii ndiyo aliyoifanya Bwana tutashangilia na kuifurahia.", ref_en: "Psalm 118:24", ref_sw: "Zaburi 118:24" },
-    { en: "Trust in the Lord with all your heart, on your own intelligence rely not; In all your ways be mindful of Him and He will make straight your paths.", 
-      sw: "Mtumaini Bwana kwa moyo wako wote, wala usizitegemeze akili zako mwenyewe; katika njia zako zote mkiri Yeye naye atayanyosha mapito yako.", ref_en: "Proverbs 3:5-6", ref_sw: "Methali 3:5-6" }
-      
-  ];
-  const themedVerses = {
-    hope: [ { en: "For I know the plans I have in mind for you says the Lord, plans for your welfare, not for woe! Plans to give you a future full of hope.", 
-              sw: "Maana nayajua mawazo ninayowawazia nyinyi, asema Bwana, ni mawazo ya amani, wala si ya mabaya, kuwapa nyinyi tumaini siku zenu za mwisho.", ref_en: "Jeremiah 29:11", ref_sw: "Yeremia 29:11" }, { en: "Why are you cast down, my soul, why do you groan within me? Hope in God, whom I shall praise again, my saviour and my God.", sw: "Nafsi yangu, kwa nini kuinama, na kufadhaika ndani yangu? Umtumaini Mungu; kwa maana nitakuja kumsifu, aliye afya ya uso wangu, na Mungu wangu", ref_en: "Psalm 42:11", ref_sw: "Zaburi 42:11" } ],
-    comfort: [ { en: "Come to me, all you who labor and are burdened, and I will give you rest.", sw: "Njoni kwangu, ninyi nyote msumbukao na wenye kulemewa na mizigo, nami nitawapumzisha.", ref_en: "Matthew 11:28", ref_sw: "Mathayo 11:28" }, { en: "Even when I walk through a dark valley, I fear no harm for you are at my side; your rod and staff give me courage.", sw: "Naam, nijapopita kati ya bonde la uvuli wa mauti, sitaogopa mabaya; kwa maana Wewe upo pamoja nami, gongo lako na fimbo yako vyanifariji.", ref_en: "Psalm 23:4", ref_sw: "Zaburi 23:4" } ],
-    wisdom: [ {en: "My Son, from your youth embrace discipline; thus will you find wisdom with greying hair.", sw: "Mwanangu, uchume maarifa tangu ujana hata kwa mwenye mvi, nawe utapata hekima.", ref_en:"Sirach 6:18", ref_sw:"Yoshua Bin Sira 6:18",}, { en: "But if any of you lacks wisdom, he should ask God who gives to all generously and ungrudgingly and he will be given it.", sw: "Lakini mtu wa kwenu akipungukiwa na hekima, na aombe dua kwa Mungu, awapaye wote kwa ukarimu, wala hakemei; naye atapewa.", ref_en: "James 1:5", ref_sw: "Yakobo 1:5" } ],
-    faith: [ { en: "Faith is the realisation of what is hoped for and evidence of things not seen. ", sw: "Basi imani ni kuwa na hakika ya mambo yatarajiwayo, ni bayana ya mambo yasiyoonekana.", ref_en: "Hebrews 11:1", ref_sw: "Waebrania 11:1" } ]
-  };
-  const rosarySets = {
-    Furaha: { en: ["The Annunciation\nOur Father\nHail Mary X10", "The Visitation\nOur Father\nHail Mary X10", "The Nativity\nOur Father\nHail Mary X10", "The Presentation\nOur Father\nHail Mary X10", "The Finding in the Temple\nOur Father\nHail Mary X10"], sw: ["Malaika anampasha habari Maria kama atakua Mama wa Mungu\nTumwombe Mungu atujalie unyenyekevu.\n\nBaba Yetu\nSalamu Maria X10\n", "Maria anakwenda kumtembelea Elizabeti\nTumwombe Mungu atujalie Mapendo ya jirani\n\nBaba Yetu\nSalamu Maria X10", "Yesu anazaliwa Bethlehemu\nTumwombe Mungu atujalie usafi wa moyo.\n\nBaba Yetu\nSalamu Maria X10", "Yesu anatolewa hekaluni\nTumwombe Mungu atujalie usafi wa moyo.\n\nBaba Yetu\nSalamu Maria X10", "Maria anamkuta Yesu hekaluni\nTumwombe Mungu atujalie kuwatii wakubwa wetu\n\nBaba Yetu\nSalamu Maria X10"] },
-    Uchungu: { en: ["The Agony in the Garden\nOur Father\nHail Mary X10", "The Scourging at the Pillar\nOur Father\nHail Mary X10", "The Crowning with Thorns\nOur Father\nHail Mary X10", "The Carrying of the Cross\nOur Father\nHail Mary X10", "The Crucifixion\nOur Father\nHail Mary X10"], sw: ["Yesu anatoka jasho la damu\nTumwombe Mungu atujalie sikitiko la dhambi.\n\nBaba Yetu\nSalamu Maria X10", "Yesu anapigwa mijeledi.\nTumwombe Mungu atujalie kuacha dhambi za uchafu.\n\nBaba Yetu\nSalamu Maria X10", "Yesu anatiwa miiba kichwani\nTumwombe Mungu atujalie kushinda kiburi.\n\nBaba Yetu\nSalamu Maria X10", "Yesu anachukua msalaba\nTumwombe Mungu atujalie kuvumilia taabu\n\nBaba Yetu\nSalamu Maria X10", "Yesu anakufa msalabani\nTumwombe Mungu atujalie kuwapenda Yesu na Maria.\n\nBaba Yetu\nSalamu Maria X10"] },
-    Utukufu: { en: ["The Resurrection\nOur Father\nHail Mary X10", "The Ascension\nOur Father\nHail Mary X10", "The Descent of the Holy Spirit\nOur Father\nHail Mary X10", "The Assumption of Mary\nOur Father\nHail Mary X10", "The Coronation of Mary\nOur Father\nHail Mary X10"], sw: ["Yesu anafufuka\nTumwombe Mungu atujalie kugeuka Watakatifu\n\nBaba Yetu\nSalamu Maria X10", "Yesu anapaa Mbinguni.\nTumwombe Mungu atujalie kwenda Mbinguni.\n\nBaba Yetu\nSalamu Maria X10", "Roho Mtakatifu anawashukia Mitume.\nTumwombe Mungu atujalie bidii katika dini yetu.\n\nBaba Yetu\nSalamu Maria X10", "Bikira Maria anapalizwa Mbinguni.\nTumwombe Mungu atujalie kufa vizuri\n\nBaba Yetu\nSalamu Maria X10", "Bikira Maria anawekwa Malkia Mbinguni\nTumwombe Mungu atujalie kudumu katika njia njema\n\nBaba Yetu\nSalamu Maria X10"] },
-    Mwanga: { en: ["The Baptism of Jesus\nOur Father\nHail Mary X10", "The Wedding at Cana\nOur Father\nHail Mary X10", "The Proclamation of the Kingdom\nOur Father\nHail Mary X10", "The Transfiguration\nOur Father\nHail Mary X10", "The Institution of the Eucharist\nOur Father\nHail Mary X10"], sw: ["Ubatizo wa Yesu Mto Yordani\nTumwombe Mungu atujalie uaminifu kwa ahadi zetu za ubatizo.\n\nBaba Yetu\nSalamu Maria X10", "Yesu anageuza maji kuwa divai huko Kana\nTumwombe Mungu atujalie kuukoleza ulimwengu kwa chachu ya Injili\n\nBaba Yetu\nSalamu Maria X10", "Yesu anatangaza Ufalme wa Mungu\nTumwombe Mungu atujalie kupokea Ufalme wake kwa toba ya kweli.\n\nBaba Yetu\nSalamu Maria X10", "Yesu anageuka sura\nTumwombe Mungu atujalie neema ya kuung'arisha ulimwengu kwa uso wa Yesu\n\nBaba Yetu\nSalamu Maria X10", "Kuwekwa kwa Ekaristi.\nTumwombe Mungu atujalie neema ya kujitoa sadaka kwa ajili ya wengine\n\nBaba Yetu\nSalamu Maria X10"] }
-  };
-  const translations = {
-    alert: { en: (name) => `Welcome, ${name}! Let us seek the Lord together!`, sw: (name) => `Karibu, ${name}! Kwa Pamoja Tumtafute Bwana!` },
-    greeting: { en: (name) => `Welcome, ${name}!`, sw: (name) => `Karibu, ${name}!` }
-  };
+  
+</body>
+<script>
+  //import { LocalNotifications } from '@capacitor/local-notifications';
+// File: script.js
+// ==========================================
+// PART 1: LITURGICAL ENGINE & CONFIGURATION
+// ==========================================
 
-  // --- REFACTORED SCRIPT LOGIC ---
+// === 1.1 LITURGICAL CONFIGURATION ===
+const LIT_CONFIG = {
+  transferEpiphanyToSunday: true,
+  transferAscensionToSunday: true,
+  transferCorpusChristiToSunday: true
+};
 
-  // UTILITY FUNCTIONS
-  function getCurrentThemeBase() {
-    const theme = document.getElementById("theme").value;
-    const isDark = document.getElementById("darkMode").checked;
-    return `${theme}-${isDark ? "dark" : "light"}`;
+// === 1.2 UTILITY FUNCTIONS FOR DATE HANDLING ===
+function addDays(date, days) { const d = new Date(date); d.setDate(d.getDate() + days); return d; }
+function stripTime(date) { return new Date(date.getFullYear(), date.getMonth(), date.getDate()); }
+function dayDiff(d1, d2) { return Math.floor((stripTime(d1).getTime() - stripTime(d2).getTime()) / (1000 * 60 * 60 * 24)); }
+
+class LiturgicalEngine {
+  constructor() { 
+      this.cache = {}; 
+      this.dayNamesEn = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      this.dayNamesSw = ["Jumapili", "Jumatatu", "Jumanne", "Jumatano", "Alhamisi", "Ijumaa", "Jumamosi"];
+    }
+
+  getEasterDate(year) {
+    const a = year % 19, b = Math.floor(year / 100), c = year % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451), month = Math.floor((h + l - 7 * m + 114) / 31), day = ((h + l - 7 * m + 114) % 31) + 1;
+    return new Date(year, month - 1, day);
   }
 
-  function updateLanguage(lang) {
-    document.querySelectorAll("[data-en]").forEach(el => {
-      if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) {
-        el.placeholder = el.dataset[lang];
-      } else if (el.dataset[lang]) {
-        el.textContent = el.dataset[lang];
-      }
-    });
-    document.getElementById("languageSelectSetup").value = lang;
-    document.getElementById("languageSelect").value = lang;
+  getAnchors(year) {
+    if (this.cache[year]) return this.cache[year];
+    const easter = this.getEasterDate(year);
+    const christmas = new Date(year, 11, 25);
+    const xmasDay = christmas.getDay();
+    const advent4 = addDays(christmas, -(xmasDay === 0 ? 7 : xmasDay));
+    const advent1 = addDays(advent4, -21);
+    const ashWed = addDays(easter, -46);
+    const pentecost = addDays(easter, 49);
+
+    let epiphany = LIT_CONFIG.transferEpiphanyToSunday ? addDays(new Date(year, 0, 2), (7 - new Date(year, 0, 2).getDay()) % 7) : new Date(year, 0, 6);
+    let baptism = LIT_CONFIG.transferEpiphanyToSunday ? addDays(epiphany, 1) : addDays(new Date(year, 0, 6), (new Date(year, 0, 6).getDay() === 0) ? 1 : (7 - new Date(year, 0, 6).getDay() + 1));
+    let ascension = LIT_CONFIG.transferAscensionToSunday ? addDays(easter, 42) : addDays(easter, 39);
+    let corpusChristi = LIT_CONFIG.transferCorpusChristiToSunday ? addDays(easter, 63) : addDays(easter, 60);
+    let sacredHeart = addDays(corpusChristi, LIT_CONFIG.transferCorpusChristiToSunday ? 5 : 8);
+    let christKing = addDays(advent1, -7);
+
+    const anchors = { easter, ashWed, pentecost, advent1, christmas, epiphany, baptism, ascension, corpusChristi, sacredHeart, christKing, holyTrinity: addDays(easter, 56), palmSunday: addDays(easter, -7), goodFriday: addDays(easter, -2), divineMercy: addDays(easter, 7) };
+    this.cache[year] = anchors;
+    return anchors;
   }
 
-  function showCategory(categoryId) {
-  // Hide all main sections
-  document.querySelectorAll('.section').forEach(section => {
-    section.classList.remove('active');
-  });
-  
-  // Hide all sub-sections
-  document.querySelectorAll('.sub-section').forEach(section => {
-    section.classList.remove('active');
-  });
-  
-  // Update active category buttons (both main and sub)
-  document.querySelectorAll('.category').forEach(btn => {
-    btn.classList.remove('active');
-  });
-    
-    // Activate the selected category
-    const targetSection = document.getElementById(categoryId);
-    if (targetSection) {
-      targetSection.classList.add('active');
-      
-      // Find and activate the corresponding button
-      const activeButton = document.querySelector(`.category[data-category-id="${categoryId}"]`);
-      if (activeButton) {
-        activeButton.classList.add('active');
+  getPrecedence(date, anchors, fixedFeast) {
+    const dt = stripTime(date).getTime(), weekday = date.getDay();
+
+    // 1. Highest Rank (Triduum & Major Solemnities)
+    if (dt >= addDays(anchors.easter, -3).getTime() && dt <= anchors.easter.getTime()) {
+      if (dt === anchors.easter.getTime()) return {
+        name_en: "Easter Sunday", name_sw: "Jumapili ya Pasaka", color: "White", season: "easter",
+        info_en: "The greatest feast of the Church, celebrating the Resurrection of Jesus Christ from the dead.",
+        info_sw: "Sikukuu kubwa ya Kanisa, inayoadhimisha Ufufuko wa Yesu Kristo kutoka kwa wafu."
+      };
+      if (dt === anchors.goodFriday.getTime()) return {
+        name_en: "Good Friday", name_sw: "Ijumaa Kuu", color: "Red", season: "lent",
+        info_en: "The commemoration of the Passion and Death of Jesus Christ on the Cross.",
+        info_sw: "Ukumbusho wa Mateso na Kifo cha Yesu Kristo pale Msalabani."
+      };
+      if (dt === addDays(anchors.easter, -3).getTime()) return {
+        name_en: "Holy Thursday", name_sw: "Alhamisi Kuu", color: "White", season: "lent",
+        info_en: "Commemorating the Last Supper and the institution of the Eucharist and the Priesthood.",
+        info_sw: "Kuadhimisha Karamu ya Mwisho na kuwekwa kwa sakramenti ya Ekaristi na Daraja Takatifu."
+      };
+      return {
+        name_en: "Holy Saturday", name_sw: "Jumamosi Kuu", color: "Violet", season: "lent",
+        info_en: "A day of silence and waiting at the tomb of the Lord.",
+        info_sw: "Siku ya ukimya na kungoja penye kaburi la Bwana."
+      };
+    }
+
+    if (dt === anchors.christmas.getTime()) return {
+      name_en: "Christmas", name_sw: "Sikukuu Ya Noeli (Krismasi)", color: "White", season: "Christmas",
+      info_en: "The Nativity of our Lord Jesus Christ.",
+      info_sw: "Kuzaliwa kwa Bwana wetu Yesu Kristo."
+    };
+    if (dt === anchors.epiphany.getTime()) return {
+      name_en: "Epiphany", name_sw: "Epifania: Tokeo la Bwana", color: "White", season: "Christmas",
+      info_en: "The manifestation of Christ to the Gentiles, represented by the Magi.",
+      info_sw: "Tokeo la Bwana kwa mataifa yote, likiwakilishwa na mamajusi."
+    };
+    if (dt === anchors.ascension.getTime()) return {
+      name_en: "Ascension", name_sw: "Kupaa kwa Bwana", color: "White", season: "easter",
+      info_en: "Celebrating Jesus ascending to heaven 40 days after His resurrection.",
+      info_sw: "Kuadhimisha kupaa kwa Yesu mbinguni siku 40 baada ya ufufuko wake."
+    };
+    if (dt === anchors.pentecost.getTime()) return {
+      name_en: "Pentecost", name_sw: "Pentekoste", color: "Red", season: "easter",
+      info_en: "The descent of the Holy Spirit upon the Apostles and the birth of the Church.",
+      info_sw: "Kushuka kwa Roho Mtakatifu juu ya Mitume na kuzaliwa kwa Kanisa."
+    };
+    if (dt === anchors.corpusChristi.getTime()) return {
+      name_en: "Corpus Christi", name_sw: "Mwili na Damu ya Yesu Kristo", color: "White", season: "ordinary",
+      info_en: "The Solemnity of the Most Holy Body and Blood of Christ.",
+      info_sw: "Sikukuu ya Mwili na Damu Takatifu ya Kristo."
+    };
+
+    // 2. Strong Seasons & Moveable Solemnities
+    let seasonObj = this.getSeason(date, anchors);
+    if (seasonObj.rank === 90 && weekday === 0) return seasonObj;
+
+    if (dt === anchors.palmSunday.getTime()) return {
+      name_en: "Palm Sunday", name_sw: "Jumapili ya Matawi", color: "Red", season: "lent",
+      info_en: "Commemorating Jesus' triumphal entry into Jerusalem and the beginning of Holy Week.",
+      info_sw: "Kuadhimisha kuingia kwa ushindi kwa Yesu huko Yerusalemu na mwanzo wa Juma Kuu."
+    };
+    if (dt === anchors.ashWed.getTime()) return {
+      name_en: "Ash Wednesday", name_sw: "Jumatano ya Majivu", color: "Violet", season: "lent",
+      info_en: "The beginning of Lent; a day of fasting and repentance.",
+      info_sw: "Mwanzo wa Kwaresima; siku ya kufunga na toba."
+    };
+    if (dt === anchors.divineMercy.getTime()) return {
+      name_en: "Divine Mercy Sunday", name_sw: "Jumapili ya Huruma ya Mungu", color: "White", season: "easter",
+      info_en: "Celebrating God's infinite mercy as revealed to St. Faustina.",
+      info_sw: "Kuadhimisha huruma ya Mungu isiyo na mwisho kama ilivyofunuliwa kwa Mtakatifu Faustina."
+    };
+    if (dt === anchors.holyTrinity.getTime()) return {
+      name_en: "Holy Trinity", name_sw: "Utatu Mtakatifu", color: "White", season: "ordinary",
+      info_en: "Solemnity of the Father, Son, and Holy Spirit.",
+      info_sw: "Sikukuu ya Mungu Mmoja katika nafsi tatu: Baba, Mwana, na Roho Mtakatifu."
+    };
+    if (dt === anchors.sacredHeart.getTime()) return {
+      name_en: "Sacred Heart", name_sw: "Moyo Mtakatifu wa Yesu", color: "White", season: "ordinary",
+      info_en: "The feast of the love of Jesus for humanity symbolized by His heart.",
+      info_sw: "Sikukuu ya upendo wa Yesu kwa wanadamu unaoonyeshwa na Moyo wake."
+    };
+    if (dt === anchors.christKing.getTime()) return {
+      name_en: "Christ the King", name_sw: "Kristo Mfalme", color: "White", season: "ordinary",
+      info_en: "The final Sunday of the Liturgical year, celebrating Christ as the Lord of all creation.",
+      info_sw: "Jumapili ya mwisho ya mwaka wa Kanisa, inayomwadhimisha Kristo kama Bwana wa viumbe vyote."
+    };
+
+    // 3. Fixed Feasts Comparison
+    let winningEvent = seasonObj;
+    if (fixedFeast) {
+      if (fixedFeast.rank > winningEvent.rank) winningEvent = fixedFeast;
+      else if (fixedFeast.isLord && fixedFeast.rank >= 60 && winningEvent.season === "ordinary" && weekday === 0) winningEvent = fixedFeast;
+    }
+
+    // 4. Formatting Ordinary Sundays
+    if (winningEvent.rank === 50 && (winningEvent.name_en === "Sunday" || winningEvent.name_en.includes("Sunday"))) {
+      winningEvent.name_en = this.getOrdinarySundayName(date, anchors, 'en');
+      winningEvent.name_sw = this.getOrdinarySundayName(date, anchors, 'sw');
+    }
+    return winningEvent;
+  }
+
+  getSeason(date, anchors) {
+    const dt = stripTime(date).getTime(), weekday = date.getDay(), isSunday = weekday === 0;
+    const dayEn = this.dayNamesEn[weekday];
+    const daySw = this.dayNamesSw[weekday];
+
+    // --- SEASONAL INFO DICTIONARY ---
+    // These short descriptions will appear when the user taps the button
+    const info = {
+      advent: {
+        en: "A season of preparation and waiting for the birth of Jesus Christ our Lord at Christmas and His second coming.",
+        sw: "Majilio ni Kipindi cha maandalizi na kungojea kuzaliwa kwa Bwana Wetu Yesu Kristo wakati wa Noeli na kuja kwake kwa mara ya pili."
+      },
+      christmas: {
+        en: "Celebrating the incarnation of the Word of God, who became man for our salvation.",
+        sw: "Kuadhimisha Kuzaliwa kwa Bwana Wetu Yesu Kristo, aliyefanyika mwanadamu kwa ajili wokovu wetu."
+      },
+      lent: {
+        en: "A 40-day season of prayer, fasting, and almsgiving in preparation for the Resurrection of Christ.",
+        sw: "Kipindi cha siku 40 cha kusali, kufunga, na kutoa sadaka kwa wahitaji kama maandalizi ya Pasaka."
+      },
+      easter: {
+        en: "The 50-day celebration of Christ's victory over sin and death leading to Pentecost. Every day is a 'little Easter'.",
+        sw: "Kipindi cha Pasaka ni siku 50 za ushindi wa Yesu Kristo juu ya dhambi na mauti, kuelekea Sikukuu ya Pentekoste. Kila siku ni 'Pasaka ndogo'."
+      },
+      ordinary: {
+        en: "A time to reflect on the life, teachings, and miracles of Jesus in our daily lives.",
+        sw: "Kipindi cha kutafakari maisha, mafundisho, na miujiza ya Yesu katika maisha yetu ya kila siku."
       }
+    };
+
+    // 1. ADVENT
+    if (dt >= anchors.advent1.getTime() && dt < anchors.christmas.getTime()) {
+      const week = Math.floor(dayDiff(date, anchors.advent1) / 7) + 1;
       
-      // Special handling for Rosary category
-      if (categoryId === 'Rosary') {
-        const mariaSection = document.getElementById('Maria');
-        const mariaButton = document.querySelector('.rosary-categories .category[data-category-id="Maria"]');
-        if (mariaSection && mariaButton) {
-          mariaSection.classList.add('active');
-          mariaButton.classList.add('active');
+      if (isSunday) {
+        // Default values for Advent Sundays
+        let name_en = `${week}${this.ord(week)} Sunday of Advent`;
+        let name_sw = `Dominika ya ${week} ya Majilio`;
+        let rank = 90;
+        let color = "Violet";
+        let season = "advent";
+        let info_en = "";
+        let info_sw = "";
+
+        // Assign specific themes based on the week
+        if (week === 1) {
+          info_en = "The First Sunday of Advent. We light the first purple candle, the Prophet's Candle, symbolizing Hope.";
+          info_sw = "Jumapili ya kwanza ya Majilio. Tunawasha mshumaa wa kwanza wa zambarau, Mshumaa wa Manabii, unaoashiria Tumaini.";
+        } else if (week === 2) {
+          info_en = "The Second Sunday of Advent. We light the second purple candle, the Bethlehem Candle, symbolizing Peace.";
+          info_sw = "Jumapili ya pili ya Majilio. Tunawasha mshumaa wa pili wa zambarau, Mshumaa wa Bethlehemu, unaoashiria Amani.";
+        } else if (week === 3) {
+          name_en = "Gaudete Sunday";
+          name_sw = "Jumapili ya 3 ya Majilio ya Furaha";
+          color = "Rose"; // Pink candle
+          info_en = "Gaudete (Joy) Sunday! We light the rose candle, the Shepherd's Candle, symbolizing Joy because the Lord is near.";
+          info_sw = "Jumapili ya Furaha! Tunawasha mshumaa wa pinki, Mshumaa wa Wachungaji, unaoashiria Furaha kuwa Bwana yu karibu.";
+        } else if (week === 4) {
+          info_en = "The Fourth Sunday of Advent. We light the final purple candle, the Angel's Candle, symbolizing Love.";
+          info_sw = "Jumapili ya nne ya Majilio. Tunawasha mshumaa wa mwisho wa zambarau, Mshumaa wa Malaika, unaoashiria Upendo.";
         }
+
+        return { name_en, name_sw, rank, color, season, info_en, info_sw };
       }
       
-      // If it's a sub-section, also activate its parent
-      if (targetSection.classList.contains('sub-section')) {
-        targetSection.closest('.section').classList.add('active');
-        const parentCategory = targetSection.closest('.section').id;
-        const parentButton = document.querySelector(`.category[data-category-id="${parentCategory}"]`);
-        if (parentButton) {
-          parentButton.classList.add('active');
-        }
+      // For normal Advent weekdays
+      return { 
+        name_en: `${week}${this.ord(week)} Week of Advent`, 
+        name_sw: `Juma la ${week} la Majilio`, 
+        rank: 10, color: "Violet", season: "advent", 
+        info_en: info.advent.en, info_sw: info.advent.sw
+      };
+    }
+
+    // 2. CHRISTMAS SEASON
+    if (dt >= anchors.christmas.getTime() || (dt <= anchors.baptism.getTime() && (date.getMonth() === 0 || date.getMonth() === 11))) {
+      return { 
+        name_en: isSunday ? "Sunday in Christmas Time" : `Christmas Season`, 
+        name_sw: isSunday ? "Jumapili ya Noeli" : `Kipindi cha Noeli`, 
+        rank: isSunday ? 70 : 10, color: "White", season: "Christmas",
+        info_en: info.christmas.en, info_sw: info.christmas.sw
+      };
+    }
+
+    // 3. LENT
+    if (dt > anchors.ashWed.getTime() && dt < anchors.easter.getTime()) {
+      const firstSunday = addDays(anchors.ashWed, 4);
+      if (dt < firstSunday.getTime()) {
+        return { 
+          name_en: `${dayEn} after Ash Wednesday`, name_sw: `${daySw} baada ya Jumatano ya Majivu`, 
+          rank: 10, color: "Violet", season: "lent", info_en: "These first days of Lent help us enter the spirit of penance.", info_sw: "Siku hizi za kwanza za Kwaresima zinatusaidia kuingia katika roho ya toba."
+        };
       }
-    }
-  }
-
-  function togglePrayer(button) {
-    const content = button.nextElementSibling;
-    content.classList.toggle('active');
-    button.querySelector('.toggle-icon').style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
-  }
-  
-  function toggleSettings() {
-    document.getElementById('settings').classList.toggle('show');
-  }
-
-  function changeTheme(theme) {
-    document.body.className = getCurrentThemeBase();
-    localStorage.setItem("theme", theme);
-  }
-
-  function toggleDarkMode() {
-    document.body.className = getCurrentThemeBase();
-    localStorage.setItem("darkMode", document.getElementById("darkMode").checked);
-  }
-
-  function changeLanguage(lang) {
-    localStorage.setItem("language", lang);
-    updateLanguage(lang);
-    updateMysteryLabel();
-    updateMysteryButtons();
-    if (document.getElementById('mysteries-content').classList.contains('active')) {
-      const container = document.getElementById('dynamicMysteries');
-      const currentSetButton = document.querySelector('.mystery-set-selector button.active');
-      if (container && container.innerHTML && currentSetButton) {
-        renderMysteries(currentSetButton.dataset.set === 'Today' ? getTodaySet() : currentSetButton.dataset.set);
+      const week = Math.floor(dayDiff(date, firstSunday) / 7) + 1;
+      if (isSunday) {
+        if (week === 4) return { 
+          name_en: "Laetare Sunday", name_sw: "Jumapili ya Shangwe", rank: 90, color: "Rose", season: "lent",
+          info_en: "A day of encouragement in the middle of Lent, looking forward to the joy of Easter.",
+          info_sw: "Siku ya kutoa moyo katikati ya Kwaresima, tukitazamia furaha ya Pasaka."
+        };
+        return { 
+          name_en: `${week}${this.ord(week)} Sunday of Lent`, name_sw: `Dominika ya ${week} ya Kwaresima`, rank: 90, color: "Violet", season: "lent",
+          info_en: info.lent.en, info_sw: info.lent.sw
+        };
       }
+      return { 
+        name_en: `${week}${this.ord(week)} Week of Lent`, name_sw: `Juma la ${week} la Kwaresima`, 
+        rank: 10, color: "Violet", season: "lent", info_en: info.lent.en, info_sw: info.lent.sw
+      };
     }
+
+    // 4. EASTER SEASON
+    if (dt >= anchors.easter.getTime() && dt <= anchors.pentecost.getTime()) {
+      if (dt > anchors.easter.getTime() && dt < addDays(anchors.easter, 7).getTime()) {
+        return { 
+          name_en: `${dayEn} within the Octave of Easter`, name_sw: `${daySw} ndani ya Oktava ya Pasaka`, 
+          rank: 80, color: "White", season: "easter",
+          info_en: "The first eight days of Easter are celebrated as one long feast day of the Resurrection.",
+          info_sw: "Siku nane za kwanza za Pasaka huadhimishwa kama mwendelezo wa Sherehe ya Ufufuko wa Bwana Wetu Yesu Kristo, yaani Pasaka."
+        };
+      }
+      const week = Math.floor(dayDiff(date, anchors.easter) / 7) + 1;
+      if (isSunday) {
+        return { 
+          name_en: `${week}${this.ord(week)} Sunday of Easter`, name_sw: `Dominika ya ${week} ya Pasaka`, rank: 90, color: "White", season: "easter",
+          info_en: info.easter.en, info_sw: info.easter.sw
+        };
+      }
+      return { 
+        name_en: `${week}${this.ord(week)} Week of Easter`, name_sw: `Juma la ${week} la Pasaka`, 
+        rank: 10, color: "White", season: "easter", info_en: info.easter.en, info_sw: info.easter.sw
+      };
+    }
+
+    // 5. ORDINARY TIME
+    const weekNum = this.getOrdinaryWeekNum(date, anchors);
+    if (isSunday) {
+      return { 
+        name_en: `${weekNum}${this.ord(weekNum)} Sunday in Ordinary Time`, name_sw: `Dominika ya ${weekNum}`, 
+        rank: 50, color: "Green", season: "ordinary", info_en: info.ordinary.en, info_sw: info.ordinary.sw
+      };
+    }
+    return { 
+      name_en: `${weekNum}${this.ord(weekNum)} Week in Ordinary Time`, name_sw: `Juma la ${weekNum} Kipindi cha Kawaida`, 
+      rank: 10, color: "Green", season: "ordinary", info_en: info.ordinary.en, info_sw: info.ordinary.sw
+    };
   }
-  
-  function updateGreeting(name, lang) {
-    const greetingElement = document.getElementById("personalizedGreeting");
-    const originalEn = greetingElement.dataset.originalEn || greetingElement.dataset.en;
-    const originalSw = greetingElement.dataset.originalSw || greetingElement.dataset.sw;
 
-    if (!greetingElement.dataset.originalEn) {
-      greetingElement.dataset.originalEn = originalEn;
-      greetingElement.dataset.originalSw = originalSw;
-    }
-
-    if (name) {
-      greetingElement.textContent = translations.greeting[lang](name);
-      greetingElement.dataset.en = translations.greeting.en(name);
-      greetingElement.dataset.sw = translations.greeting.sw(name);
+  // Helper to centralize week calculation for Ordinary Time
+  getOrdinaryWeekNum(date, anchors) {
+    if (date.getTime() <= anchors.ashWed.getTime()) {
+      return 1 + Math.floor(dayDiff(date, anchors.baptism) / 7);
     } else {
-      greetingElement.textContent = lang === 'sw' ? originalSw : originalEn;
-      greetingElement.dataset.en = originalEn;
-      greetingElement.dataset.sw = originalSw;
+      return 34 - Math.floor(dayDiff(anchors.christKing, date) / 7);
     }
   }
+  getOrdinarySundayName(date, anchors, lang) {
+    const weekNum = this.getOrdinaryWeekNum(date, anchors);
+    return lang === 'en' ? `${weekNum}${this.ord(weekNum)} Sunday in Ordinary Time` : `Dominika ya ${weekNum}`;
+  }
 
-  // SEARCH
-  function searchPrayers() {
-    const query = document.getElementById("searchInput").value.toLowerCase();
-    const resultsBox = document.getElementById("searchResults");
-    resultsBox.innerHTML = "";
+  ord(n) { const s = ["th", "st", "nd", "rd"], v = n % 100; return (s[(v - 20) % 10] || s[v] || s[0]); }
+}
 
-    if (!query) {
-      resultsBox.classList.add("hidden");
-      return;
+// ==========================================
+// PART 2: FIXED FEAST DATA (CALENDAR & SAINTS)
+// ==========================================
+
+const LIT_FIXED_DATA = {
+  // ==================== JANUARY ====================
+  "1-1": {
+    name_en: "Mary, Mother of God",
+    name_sw: "Sherehe ya Bikira Maria Mama wa Mungu",
+    rank: 80, color: "White", season: "Christmas",
+    info_en: "The Octave of Christmas honors Mary as 'Theotokos' (God-bearer). This dogma, affirmed at the Council of Ephesus (431 AD), reminds us that Jesus was fully God and fully man, and Mary is truly the Mother of God.",
+    info_sw: "Siku ya nane ya Noeli tunadhimisha umama wa Mungu wa Bikira Maria (Theotokos). Dogma hii ya Mtaguso wa Efeso (431 BK) inathibitisha kuwa Yesu ni Mungu kweli na mtu kweli, hivyo Maria ni Mama wa Mungu."
+  },
+  "1-2": {
+    name_en: "Sts. Basil and Gregory Nazianzen",
+    name_sw: "Mt. Basili na Gregori wa Nazianzo",
+    rank: 40, color: "White", season: "Christmas",
+    info_en: "Great 4th-century bishops and Doctors of the Church from Cappadocia. Known as the 'Cappadocian Fathers,' they defended the divinity of the Holy Spirit against heresies and shaped the theology of the Trinity.",
+    info_sw: "Maaskofu wakuu wa karne ya 4 na Walimu wa Kanisa kutoka Kapadokia. Walijulikana kama 'Mababa wa Kapadokia' na walitetea umungu wa Roho Mtakatifu na kufafanua imani juu ya Utatu Mtakatifu."
+  },
+  "1-6": {
+    name_en: "Epiphany of the Lord",
+    name_sw: "Epifania (Tokeo la Bwana)",
+    rank: 80, color: "White", season: "Christmas",
+    info_en: "Commemorates the manifestation of Christ to the Gentiles, represented by the Magi (Wise Men). It signifies that Jesus came to save all nations, not just the chosen people of Israel.",
+    info_sw: "Inaadhimisha kujidhihirisha kwa Kristo kwa Mataifa yote, kukiwakilishwa na Mamajusi. Inaashiria kuwa Yesu alikuja kuwaokoa watu wa mataifa yote, sio Israeli pekee."
+  },
+  "1-17": {
+    name_en: "St. Anthony, Abbot",
+    name_sw: "Mt. Antoni, Abati",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "The 'Father of Monasticism.' He gave away his wealth to live in the Egyptian desert in prayer and fasting. His victory over demonic temptations inspired the tradition of desert spirituality.",
+    info_sw: "Baba wa Umonaki. Aligawa mali zake na kuishi jangwani Misri kwa sala na kufunga. Ushindi wake dhidi ya majaribu ya shetani uliweka msingi wa maisha ya kiroho ya jangwani."
+  },
+  "1-20": {
+    name_en: "Bl. Cyprian Michael Iwene Tansi",
+    name_sw: "Mwenye Heri Sipriani Tansi",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "A Nigerian priest who became a Trappist monk in England. Known for his intense asceticism, humility, and dedication to catechizing his people before entering the monastery.",
+    info_sw: "Padri wa Nigeria aliyekuwa mmonaki wa Trapisti. Anajulikana kwa maisha ya kujikana, unyenyekevu, na bidii ya kufundisha dini kabla ya kuingia utawani."
+  },
+  "1-21": {
+    name_en: "St. Agnes",
+    name_sw: "Mt. Agnesi, Bikira na Shahidi",
+    rank: 40, color: "Red", season: "ordinary",
+    info_en: "A young Roman noblewoman martyred at age 12. She refused marriage to pagan suitors to preserve her purity for Christ. She is a symbol of youthful courage and chastity.",
+    info_sw: "Msichana wa Roma aliyeuawa shahidi akiwa na miaka 12 kwa kukataa kuolewa na wapagani ili kulinda usafi wake kwa Kristo. Ni alama ya ujasiri wa vijana na usafi wa moyo."
+  },
+  "1-24": {
+    name_en: "St. Francis de Sales",
+    name_sw: "Mt. Fransisko wa Sales",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Bishop of Geneva and Doctor of the Church. Famous for 'Introduction to the Devout Life,' teaching that holiness is possible in everyday life. Patron of journalists for his gentle pamphlets.",
+    info_sw: "Askofu wa Geneva na Mwalimu wa Kanisa. Aliandika 'Njia ya Ibada,' akifundisha kuwa utakatifu unawezekana katika maisha ya kawaida. Msimamizi wa waandishi kwa sababu ya vitabu vyake."
+  },
+  "1-25": {
+    name_en: "Conversion of St. Paul",
+    name_sw: "Kuongoka kwa Mt. Paulo Mtume",
+    rank: 60, color: "White", season: "ordinary",
+    info_en: "Celebrates the pivotal moment on the road to Damascus where Saul, a persecutor of Christians, was blinded by Christ's light and transformed into Paul, the great Apostle to the Gentiles.",
+    info_sw: "Tukio la barabara ya Damasko ambapo Sauli, mtesaji wa Wakristo, alipofushwa na mwanga wa Kristo na kubadilika kuwa Paulo, Mtume mkuu wa Mataifa."
+  },
+  "1-26": {
+    name_en: "Sts. Timothy and Titus",
+    name_sw: "Mt. Timotheo na Tito",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Close companions and disciples of St. Paul. Timothy led the church in Ephesus, and Titus in Crete. They received the 'Pastoral Epistles' containing rules for church leadership.",
+    info_sw: "Wanafunzi na wenzake Mt. Paulo. Timotheo aliongoza kanisa la Efeso, na Tito la Krete. Walipokea Nyaraka za Kichungaji zenye maelekezo ya uongozi wa Kanisa."
+  },
+  "1-28": {
+    name_en: "St. Thomas Aquinas",
+    name_sw: "Mt. Thomas Akwino",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "The 'Angelic Doctor' and a Dominican friar. His masterpiece, the 'Summa Theologica,' harmonized faith and reason (Aristotle), remaining the foundation of Catholic theology.",
+    info_sw: "'Mwalimu wa Malaika' na mtawa Mdominiko. Kitabu chake 'Summa Theologica' kiliunganisha imani na akili, na kinabaki kuwa msingi mkuu wa teolojia Katoliki."
+  },
+  "1-31": {
+    name_en: "St. John Bosco",
+    name_sw: "Mt. Yohane Bosco",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Italian priest and educator who founded the Salesians. He dedicated his life to rescuing poor and homeless youth, using 'Reason, Religion, and Kindness' as his method.",
+    info_sw: "Padri na mlezi wa Italia aliyeanzisha Wasalesiani. Alijitolea maisha yake kuokoa vijana maskini na wa mitaani, akitumia njia ya 'Akili, Dini, na Wema.'"
+  },
+
+  // ==================== FEBRUARY ====================
+  "2-1": {
+    name_en: "Bl. Benedict Daswa",
+    name_sw: "Mwenye Heri Benedikto Daswa, Shahidi",
+    rank: 40, color: "Red", season: "ordinary",
+    info_en: "The first South African martyr. A school principal and father who was beaten to death for refusing to pay a fee for witchcraft rituals to bring rain, standing firm against superstition.",
+    info_sw: "Shahidi wa kwanza wa Afrika Kusini. Mwalimu mkuu na baba aliyeuawa kwa kukataa kutoa fedha kwa ajili ya ibada za uchawi za kuleta mvua, akisimama imara dhidi ya ushirikina."
+  },
+  "2-2": {
+    name_en: "Presentation of the Lord",
+    name_sw: "Sikukuu ya Kutolewa Bwana Hekaluni",
+    rank: 60, color: "White", season: "ordinary", isLord: true,
+    info_en: "Also called Candlemas. Mary and Joseph presented Jesus in the Temple 40 days after his birth. Simeon hailed Him as 'a light for revelation to the Gentiles.'",
+    info_sw: "Maria na Yosefu walimtoa Yesu Hekaluni siku 40 baada ya kuzaliwa. Simeoni alimtabiri kama 'nuru ya kuwaangazia Mataifa.'"
+  },
+  "2-3": {
+    name_en: "St. Blaise",
+    name_sw: "Mt. Blasi, Askofu na Shahidi",
+    rank: 40, color: "Red", season: "ordinary",
+    info_en: "Bishop of Sebaste and martyr. He is famous for the 'Blessing of Throats' because he miraculously saved a boy who was choking on a fishbone.",
+    info_sw: "Askofu na shahidi. Anajulikana kwa 'Baraka ya Kooni' kwa sababu alimwokoa mtoto aliyekuwa akiaibika na mfupa wa samaki."
+  },
+  "2-5": {
+    name_en: "St. Agatha",
+    name_sw: "Mt. Agatha, Bikira na Shahidi",
+    rank: 40, color: "Red", season: "ordinary",
+    info_en: "A virgin martyr from Sicily who suffered gruesome torture, including the cutting off of her breasts, for refusing to betray her faith. Patron against breast cancer and fire.",
+    info_sw: "Bikira shahidi wa Sisilia aliyeteswa vikali, ikiwemo kukatwa matiti, kwa kukataa kukana imani yake. Msimamizi dhidi ya saratani ya matiti na moto."
+  },
+  "2-6": {
+    name_en: "St. Paul Miki & Companions",
+    name_sw: "Mt. Paulo Miki na Wenzake, Wafiadini",
+    rank: 40, color: "Red", season: "ordinary",
+    info_en: "The 26 Martyrs of Nagasaki, Japan (1597). Including priests, brothers, and lay people (some children), they were marched 600 miles and crucified, preaching forgiveness from the cross.",
+    info_sw: "Wafiadini 26 wa Nagasaki, Japani (1597). Wakiwemo mapadri, mabrata na walei, walitembezwa maili 600 na kusulubiwa, wakihubiri msamaha wakiwa msalabani."
+  },
+  "2-8": {
+    name_en: "St. Josephine Bakhita",
+    name_sw: "Mt. Josefina Bakhita",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Born in Darfur, Sudan, she was kidnapped into slavery at age 9 and suffered greatly. Later finding freedom in Italy, she became a Canossian sister, known for her sweet smile and forgiveness of her captors.",
+    info_sw: "Mzaliwa wa Darfur, Sudan, alitekwa utumwani akiwa na miaka 9 na kuteseka sana. Baadaye alipata uhuru Italia na kuwa sista, akijulikana kwa tabasamu na kuwasamehe watesaji wake."
+  },
+  "2-10": {
+    name_en: "St. Scholastica",
+    name_sw: "Mt. Skolastika, Bikira",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Twin sister of St. Benedict. She founded the women's branch of Benedictine monasticism. Famous for praying for a storm to keep her brother with her for one last spiritual conversation.",
+    info_sw: "Dada pacha wa Mt. Benedikto na mwanzilishi wa watawa wanawake wa Kibenedikto. Alisali na kuleta dhoruba ili kaka yake asiondoke, wapate muda zaidi wa maongezi ya kiroho."
+  },
+  "2-11": {
+    name_en: "Our Lady of Lourdes",
+    name_sw: "Bikira Maria wa Lurdi",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Celebrates the 1858 apparitions of Mary to St. Bernadette in France. Mary revealed herself as 'The Immaculate Conception.' The site is famous for miraculous healings.",
+    info_sw: "Inaadhimisha kutokea kwa Maria kwa Mt. Bernadeta huko Ufaransa (1858). Maria alijitambulisha kama 'Mkingiwa Dhambi ya Asili.' Ni mahali pa uponyaji wa kimiujiza."
+  },
+  "2-14": {
+    name_en: "St. Valentine",
+    name_sw: "Mt. Valentino, Shahidi",
+    rank: 20, color: "Red", season: "ordinary",
+    info_en: "A 3rd-century Roman priest martyred for ministering to persecuted Christians and performing secret weddings. He is the patron saint of love, young people, and happy marriages.",
+    info_sw: "Padri wa Roma wa karne ya 3 aliyeuawa kwa kuhudumia Wakristo na kufungisha ndoa za siri. Ni msimamizi wa upendo, vijana, na ndoa zenye furaha."
+  },
+  "2-14": {
+    name_en: "Sts. Cyril and Methodius",
+    name_sw: "Mt. Sirili na Methodi",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Brothers and 'Apostles to the Slavs.' They translated the liturgy into the Slavonic language and invented the Cyrillic alphabet, bridging Eastern and Western Christianity.",
+    info_sw: "Ndugu wawili na 'Mitume kwa Waslavu.' Walitafsiri liturujia katika lugha ya Kislavoni na kubuni alfabeti inayotumika huko, wakiunganisha Ukristo wa Mashariki na Magharibi."
+  },
+  "2-22": {
+    name_en: "Chair of St. Peter",
+    name_sw: "Kiti cha Mt. Petro Mtume",
+    rank: 60, color: "White", season: "ordinary",
+    info_en: "Celebrates the teaching authority (Magisterium) of the Pope as the successor of Peter. The 'Chair' symbolizes the unity of the Church founded upon the Apostle Peter.",
+    info_sw: "Tunaadhimisha mamlaka ya kufundisha ya Papa kama mrithi wa Petro. 'Kiti' ni alama ya umoja wa Kanisa uliojengwa juu ya Mtume Petro."
+  },
+
+  // ==================== MARCH ====================
+  "3-7": {
+    name_en: "Sts. Perpetua and Felicity",
+    name_sw: "Mt. Perpetua na Felista, Wafiadini",
+    rank: 60, color: "Red", season: "lent",
+    info_en: "Noblewoman and slave from Carthage (North Africa) who were martyred together in 203 AD. Perpetua's diary recounts their courage as they left their nursing babies to face the wild beasts.",
+    info_sw: "Mama wa koo na mtumwa kutoka Karta (Afrika Kaskazini) waliouawa mwaka 203 BK. Walionyesha ujasiri mkuu kwa kuacha watoto wao wachanga na kukabiliana na wanyama wakali."
+  },
+  "3-17": {
+    name_en: "St. Patrick",
+    name_sw: "Mt. Patriki, Askofu",
+    rank: 40, color: "White", season: "lent",
+    info_en: "The Apostle of Ireland. Captured as a slave, he escaped but returned to evangelize the pagan Irish, using the shamrock to explain the Holy Trinity.",
+    info_sw: "Mtume wa Ireland. Alitekwa utumwani, akatoroka lakini akarudi kuhubiri Injili. Alitumia jani la 'shamrock' kuelezea Utatu Mtakatifu."
+  },
+  "3-19": {
+    name_en: "St. Joseph, Spouse of Mary",
+    name_sw: "Sherehe ya Mt. Yosefu, Mume wa Bikira Maria",
+    rank: 80, color: "White", season: "lent",
+    info_en: "Solemnity of the Foster-father of Jesus and Patron of the Universal Church. A just man of silence who protected the Holy Family and taught Jesus the dignity of work.",
+    info_sw: "Sherehe ya Baba Mlishi wa Yesu na Msimamizi wa Kanisa la Ulimwengu. Mtu wa haki na ukimya aliyelinda Familia Takatifu na kumfundisha Yesu hadhi ya kazi."
+  },
+  "3-25": {
+    name_en: "Annunciation of the Lord",
+    name_sw: "Sherehe ya Kupashwa Habari Bikira Maria",
+    rank: 80, color: "White", season: "lent", isLord: true,
+    info_en: "The Angel Gabriel announces to Mary that she will conceive the Son of God by the Holy Spirit. Mary's 'Fiat' (Let it be done) marks the moment of the Incarnation.",
+    info_sw: "Malaika Gabrieli anampasha habari Maria kwamba atapata mimba ya Mwana wa Mungu. 'Ndiyo' ya Maria inaashiria wakati Neno alipofanyika mwili."
+  },
+
+  // ==================== APRIL ====================
+  "4-16": {
+    name_en: "St. Bernadette Soubirous",
+    name_sw: "Mt. Bernadeta Soubirous",
+    rank: 40, color: "White", season: "easter",
+    info_en: "The visionary of Lourdes. Despite poor health and lack of education, she was chosen by Mary. She lived a life of humility, saying 'I am the broom Our Lady used, now put back in the corner.'",
+    info_sw: "Mwonaji wa Lurdi. Ingawa alikuwa maskini na asiye na elimu, alichaguliwa na Maria. Aliishi kwa unyenyekevu akisema 'Mimi ni ufagio tu uliotumiwa na Mama, sasa umewekwa pembeni.'"
+  },
+  "4-23": {
+    name_en: "St. George",
+    name_sw: "Mt. Joji, Shahidi",
+    rank: 40, color: "Red", season: "easter",
+    info_en: "A soldier martyr of the early church. The legend of him slaying a dragon symbolizes his powerful protection against evil. He is the patron of soldiers and scouts.",
+    info_sw: "Askari shahidi wa kanisa la awali. Simulizi la kumuua joka linaashiria ulinzi wake wenye nguvu dhidi ya uovu. Ni msimamizi wa askari na skauti."
+  },
+  "4-25": {
+    name_en: "St. Mark, Evangelist",
+    name_sw: "Sikukuu ya Mt. Marko Mwinjili",
+    rank: 60, color: "Red", season: "easter",
+    info_en: "Author of the second Gospel, often associated with Peter's teachings. He founded the Church in Alexandria (Egypt). His symbol is the winged lion.",
+    info_sw: "Mwandishi wa Injili ya pili, mara nyingi akihusishwa na mafundisho ya Petro. Alianzisha Kanisa la Alexandria (Misri). Alama yake ni simba mwenye mabawa."
+  },
+  "4-29": {
+    name_en: "St. Catherine of Siena",
+    name_sw: "Mt. Katerina wa Siena",
+    rank: 40, color: "White", season: "easter",
+    info_en: "Dominican mystic and Doctor of the Church. She influenced the Pope to return to Rome from Avignon and wrote 'The Dialogue,' a masterpiece of spiritual literature.",
+    info_sw: "Mwanafumbo Mdominiko na Mwalimu wa Kanisa. Alimshawishi Papa kurudi Roma kutoka Avignon na kuandika 'Mazungumzo,' kitabu kikuu cha maisha ya kiroho."
+  },
+
+  // ==================== MAY ====================
+  "5-1": {
+    name_en: "St. Joseph the Worker",
+    name_sw: "Mt. Yosefu Mfanyakazi",
+    rank: 20, color: "White", season: "easter",
+    info_en: "Honors the dignity of human labor through the example of Joseph the carpenter. It reminds us that work is a way to participate in God's creation.",
+    info_sw: "Inaheshimu hadhi ya kazi ya mwanadamu kupitia mfano wa Yosefu Seremala. Inatukumbusha kuwa kazi ni njia ya kushiriki katika uumbaji wa Mungu."
+  },
+  "5-3": {
+    name_en: "Sts. Philip and James, Apostles",
+    name_sw: "Sikukuu ya Mt. Filipo na Yakobo, Mitume",
+    rank: 60, color: "Red", season: "easter",
+    info_en: "Philip preached in Phrygia and is known for asking to 'see the Father.' James the Less was the first Bishop of Jerusalem and wrote the Epistle of James.",
+    info_sw: "Filipo alihubiri Frigia na alimwomba Yesu 'tuonyeshe Baba.' Yakobo Mdogo alikuwa Askofu wa kwanza wa Yerusalemu na aliandika Waraka wa Yakobo."
+  },
+  "5-13": {
+    name_en: "Our Lady of Fatima",
+    name_sw: "Bikira Maria wa Fatima",
+    rank: 40, color: "White", season: "easter",
+    info_en: "Commemorates the 1917 apparitions of Mary to three shepherd children in Portugal. She called for prayer, penance, and the recitation of the Rosary to save sinners.",
+    info_sw: "Inakumbuka kutokea kwa Maria kwa watoto wachungaji watatu Ureno (1917). Aliomba sala, toba, na kusali Rozari ili kuokoa wakosefu."
+  },
+  "5-14": {
+    name_en: "St. Matthias, Apostle",
+    name_sw: "Sikukuu ya Mt. Matia, Mtume",
+    rank: 60, color: "Red", season: "easter",
+    info_en: "The apostle chosen by lot to replace Judas Iscariot after the Ascension, restoring the number of the Twelve. He witnessed the Resurrection.",
+    info_sw: "Mtume aliyechaguliwa kwa kura kuchukua nafasi ya Yuda Iskarioti, ili kukamilisha idadi ya Kumi na Wawili. Alikuwa shahidi wa Ufufuko."
+  },
+  "5-22": {
+    name_en: "St. Rita of Cascia",
+    name_sw: "Mt. Rita wa Cascia",
+    rank: 40, color: "White", season: "easter",
+    info_en: "Patroness of Impossible Causes. She was a wife, mother, widow, and later an Augustinian nun who bore a stigmatic thorn on her forehead. A model of patience and forgiveness.",
+    info_sw: "Msimamizi wa mambo yaliyoshindikana. Alikuwa mke, mama, mjane, na baadaye mtawa aliyepata mwiba wa taji la Kristo kwenye paji lake. Mfano wa uvumilivu na msamaha."
+  },
+  "5-31": {
+    name_en: "Visitation of the B.V. Mary",
+    name_sw: "Sikukuu ya Bikira Maria Kumtembelea Elizabeti",
+    rank: 60, color: "White", season: "easter",
+    info_en: "Mary visits her pregnant cousin Elizabeth. John the Baptist leaps in the womb, sanctified by Jesus' presence, and Mary sings her great hymn, the Magnificat.",
+    info_sw: "Maria anamtembelea binamu yake Elizabeti. Yohane Mbatizaji anaruka tumboni kwa furaha, na Maria anaimba wimbo wake mkuu, Magnificat."
+  },
+
+  // ==================== JUNE ====================
+  "6-1": {
+    name_en: "St. Justin, Martyr",
+    name_sw: "Mt. Justini, Shahidi",
+    rank: 40, color: "Red", season: "ordinary",
+    info_en: "Early Christian philosopher and apologist (2nd century). He wrote famous defenses of the faith to the Roman Emperor and provides the earliest detailed description of the Mass.",
+    info_sw: "Mwanafalsafa na mtetezi wa imani wa karne ya 2. Aliandika utetezi wa Ukristo kwa Mfalme wa Roma na kutoa maelezo ya kwanza ya kina kuhusu Misa."
+  },
+  "6-3": {
+    name_en: "St. Charles Lwanga & Companions",
+    name_sw: "Kumbukumbu ya Mt. Karoli Lwanga na Wenzake",
+    rank: 60, color: "Red", season: "ordinary",
+    info_en: "The Uganda Martyrs (1885-1887). Charles Lwanga protected the royal pages from the King's immorality. 22 Catholic converts were burned alive for refusing to renounce their faith.",
+    info_sw: "Wafiadini wa Uganda. Karoli Lwanga aliwalinda vijana wa mfalme dhidi ya uchafu. Wakatoliki 22 walichomwa moto kwa kukataa kukana imani yao."
+  },
+  "6-11": {
+    name_en: "St. Barnabas, Apostle",
+    name_sw: "Mt. Barnaba, Mtume",
+    rank: 40, color: "Red", season: "ordinary",
+    info_en: "A Levite and early disciple who introduced Paul to the Apostles. Known as the 'Son of Encouragement,' he traveled with Paul on his first missionary journey.",
+    info_sw: "Mlawi na mwanafunzi wa mapema aliyemtambulisha Paulo kwa Mitume. Aliitwa 'Mwana wa Faraja' na kusafiri na Paulo katika safari ya kwanza ya umisionari."
+  },
+  "6-13": {
+    name_en: "St. Anthony of Padua",
+    name_sw: "Mt. Antoni wa Padua",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Franciscan friar and Doctor of the Church. Famous for his eloquent preaching and miracles. He is the beloved patron saint of lost items and the poor.",
+    info_sw: "Mtawa Mfransisko na Mwalimu wa Kanisa. Maarufu kwa mahubiri yake na miujiza. Ni msimamizi mpendwa wa vitu vilivyopotea na maskini."
+  },
+  "6-21": {
+    name_en: "St. Aloysius Gonzaga",
+    name_sw: "Mt. Aloisi Gonzaga",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Patron saint of youth. A young Jesuit noble who gave up his inheritance to serve God. He died young after caring for plague victims in Rome, carrying the sick on his back.",
+    info_sw: "Msimamizi wa vijana. Mjesuiti kijana aliyeacha urithi wake kumtumikia Mungu. Alikufa kijana baada ya kuwahudumia wagonjwa wa tauni Roma."
+  },
+  "6-24": {
+    name_en: "Nativity of John the Baptist",
+    name_sw: "Sherehe ya Kuzaliwa Mt. Yohane Mbatizaji",
+    rank: 80, color: "White", season: "ordinary",
+    info_en: "Celebrates the birth of the Forerunner of Christ. Born to the elderly Elizabeth and Zechariah, his birth was announced by an angel. He is the only saint besides Mary whose birthday is a Solemnity.",
+    info_sw: "Inaadhimisha kuzaliwa kwa Mtangulizi wa Kristo. Alizaliwa na wazee Elizabeti na Zakaria. Ni mtakatifu pekee (zaidi ya Maria) ambaye kuzaliwa kwake ni Sherehe."
+  },
+  "6-29": {
+    name_en: "Sts. Peter and Paul",
+    name_sw: "Sherehe ya Mt. Petro na Paulo, Mitume",
+    rank: 80, color: "Red", season: "ordinary",
+    info_en: "The two pillars of the Church. Peter held the Keys of the Kingdom as the first Pope; Paul was the Sword of the Spirit to the Gentiles. Both were martyred in Rome.",
+    info_sw: "Miamba miwili ya Kanisa. Petro alishika Funguo za Ufalme kama Papa wa kwanza; Paulo alikuwa Upanga wa Roho kwa Mataifa. Wote waliuawa Roma."
+  },
+
+  // ==================== JULY ====================
+  "7-3": {
+    name_en: "St. Thomas, Apostle",
+    name_sw: "Sikukuu ya Mt. Thomas, Mtume",
+    rank: 60, color: "Red", season: "ordinary",
+    info_en: "Known as 'Doubting Thomas' for demanding to touch Christ's wounds, leading to the confession 'My Lord and my God.' Tradition says he brought the Gospel to India.",
+    info_sw: "Anajulikana kwa kutia shaka lakini baadaye alikiri 'Bwana wangu na Mungu wangu' baada ya kugusa majeraha ya Yesu. Mapokeo yanasema alipeleka Injili India."
+  },
+  "7-6": {
+    name_en: "St. Maria Goretti",
+    name_sw: "Mt. Maria Goretti, Bikira na Shahidi",
+    rank: 40, color: "Red", season: "ordinary",
+    info_en: "A young Italian girl martyred at age 11 while defending her purity. Before dying, she forgave her attacker, Alessandro, who later repented. Patroness of youth and forgiveness.",
+    info_sw: "Msichana wa Italia aliyeuawa akiwa na miaka 11 akitetea usafi wake. Kabla ya kufa, alimsamehe muuaji wake, Alessandro. Msimamizi wa vijana na msamaha."
+  },
+  "7-11": {
+    name_en: "St. Benedict",
+    name_sw: "Mt. Benedikto, Abati",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Father of Western Monasticism. His 'Rule' (Ora et Labora - Pray and Work) balanced spiritual life with daily labor, shaping European civilization and preserving learning.",
+    info_sw: "Baba wa Umonaki wa Magharibi. 'Kanuni' yake (Sali na Fanya Kazi) iliweka uwiano wa maisha ya kiroho na kazi, ikijenga ustaarabu na kuhifadhi elimu."
+  },
+  "7-22": {
+    name_en: "St. Mary Magdalene",
+    name_sw: "Sikukuu ya Mt. Maria Magdalena",
+    rank: 60, color: "White", season: "ordinary",
+    info_en: "The 'Apostle to the Apostles.' Freed from seven demons, she followed Jesus faithfully to the Cross and was the first to witness the Risen Lord, commissioned to tell the others.",
+    info_sw: "'Mtume kwa Mitume.' Alitolewa pepo saba na kumfuata Yesu hadi Msalabani. Alikuwa wa kwanza kumwona Bwana Mfufuka na kutumwa kutangaza habari hiyo."
+  },
+  "7-24": {
+    name_en: "St. Charbel Makhlouf",
+    name_sw: "Mt. Sharbel Makhlouf",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Lebanese Maronite monk and hermit. He lived a life of strict silence and penance. Since his death, thousands of miracles have been attributed to his intercession.",
+    info_sw: "Mmonaki na mkaapweke wa Lebanoni. Aliishi maisha ya ukimya na toba kali. Tangu kifo chake, maelfu ya miujiza imetokea kwa maombezi yake."
+  },
+  "7-25": {
+    name_en: "St. James, Apostle",
+    name_sw: "Sikukuu ya Mt. Yakobo, Mtume",
+    rank: 60, color: "Red", season: "ordinary",
+    info_en: "James the Greater, brother of John. He was the first apostle to be martyred (Acts 12:2). His shrine in Santiago de Compostela is a major pilgrimage site.",
+    info_sw: "Yakobo Mkuu, kaka yake Yohane. Mtume wa kwanza kuuawa shahidi. Kaburi lake huko Santiago de Compostela ni mahali patakatifu pa uhujaji."
+  },
+  "7-26": {
+    name_en: "Sts. Joachim and Anne",
+    name_sw: "Mt. Yoakimu na Ana, Wazazi wa B. Maria",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "The parents of the Virgin Mary. Though not in the Bible, tradition honors them for raising Mary in faith. They are the patron saints of grandparents.",
+    info_sw: "Wazazi wa Bikira Maria. Mapokeo yanawaheshimu kwa kumlea Maria katika imani. Ni wasimamizi wa babu na bibi."
+  },
+  "7-29": {
+    name_en: "Sts. Martha, Mary and Lazarus",
+    name_sw: "Mt. Martha, Maria na Lazaro",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "The siblings of Bethany and close friends of Jesus. They represent active service (Martha), contemplative listening (Mary), and the hope of resurrection (Lazarus).",
+    info_sw: "Ndugu wa Bethania na marafiki wa Yesu. Wanawakilisha huduma (Martha), kusikiliza neno (Maria), na tumaini la ufufuko (Lazaro)."
+  },
+  "7-31": {
+    name_en: "St. Ignatius of Loyola",
+    name_sw: "Mt. Inyasi wa Loyola",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Founder of the Jesuits. Formerly a soldier, his conversion led him to write the 'Spiritual Exercises,' a guide for discerning God's will. Motto: Ad Majorem Dei Gloriam (For the Greater Glory of God).",
+    info_sw: "Mwanzilishi wa Wajesuiti. Alikuwa askari, lakini wongofu wake ulimfanya aandike 'Mazoezi ya Kiroho.' Kauli mbiu: Kwa Sifa Kuu ya Mungu."
+  },
+
+  // ==================== AUGUST ====================
+  "8-4": {
+    name_en: "St. John Vianney",
+    name_sw: "Mt. Yohane Vianney, Padri",
+    rank: 60, color: "White", season: "ordinary",
+    info_en: "The Cure of Ars. Patron saint of parish priests. He struggled with Latin in seminary but became a master of souls, spending up to 16 hours a day hearing confessions.",
+    info_sw: "Paroko wa Ars. Msimamizi wa mapadri wa parokia. Alipata shida kimasomo lakini akawa mtaalamu wa roho, akikaa hadi saa 16 kila siku kuungamisha."
+  },
+  "8-6": {
+    name_en: "Transfiguration of the Lord",
+    name_sw: "Sikukuu ya Kugeuka Sura Bwana",
+    rank: 60, color: "White", season: "ordinary", isLord: true,
+    info_en: "Jesus reveals His divine glory to Peter, James, and John on Mount Tabor. Moses and Elijah appear, showing Jesus as the fulfillment of the Law and Prophets.",
+    info_sw: "Yesu anafunua utukufu wake wa kimungu mlimani Tabor. Musa na Eliya wanatokea, wakionyesha kuwa Yesu ndiye utimilifu wa Sheria na Manabii."
+  },
+  "8-8": {
+    name_en: "St. Dominic",
+    name_sw: "Mt. Dominiko",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Founder of the Dominicans (Order of Preachers). He combated the Albigensian heresy through preaching and the Rosary. Legend says Mary gave him the Rosary.",
+    info_sw: "Mwanzilishi wa Wadominiko. Alipambana na uzushi kupitia mahubiri na Rozari. Mapokeo yanasema Maria alimpa Rozari."
+  },
+  "8-10": {
+    name_en: "St. Lawrence, Deacon",
+    name_sw: "Sikukuu ya Mt. Laurenti, Shemasi na Shahidi",
+    rank: 60, color: "Red", season: "ordinary",
+    info_en: "A deacon of Rome. When ordered to hand over the Church's treasures, he brought the poor and sick. He was martyred on a gridiron, famously joking, 'Turn me over, I'm done on this side.'",
+    info_sw: "Shemasi wa Roma. Alipoagizwa kutoa hazina za Kanisa, aliwaleta maskini. Alichomwa moto juu ya chuma, akitania 'Nigeuze, nimeiva upande huu.'"
+  },
+  "8-11": {
+    name_en: "St. Clare",
+    name_sw: "Mt. Klara",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Follower of St. Francis and founder of the Poor Clares. She lived an enclosed life of extreme poverty. Once, she turned away invaders by holding up the Monstrance with the Eucharist.",
+    info_sw: "Mfuasi wa Mt. Fransisko na mwanzilishi wa Waklara. Aliishi maisha ya ndani ya umaskini mkuu. Siku moja aliwafukuza wavamizi kwa kuinua Ostia Takatifu."
+  },
+  "8-12": {
+    name_en: "Bl. Isidore Bakanja",
+    name_sw: "Mwenye Heri Isidori Bakanja, Shahidi",
+    rank: 40, color: "Red", season: "ordinary",
+    info_en: "A young Congolese layman martyred by a colonial supervisor for refusing to remove his Brown Scapular and for catechizing other workers. A martyr of the Scapular.",
+    info_sw: "Mlei kijana wa Kongo aliyeuawa na msimamizi wa kikoloni kwa kukataa kuvua Skapulari yake na kwa kufundisha wengine imani. Shahidi wa Skapulari."
+  },
+  "8-14": {
+    name_en: "St. Maximilian Kolbe",
+    name_sw: "Mt. Maksimilian Kolbe",
+    rank: 40, color: "Red", season: "ordinary",
+    info_en: "Polish Franciscan priest who volunteered to die of starvation in place of a stranger at Auschwitz concentration camp. He is a 'Martyr of Charity.'",
+    info_sw: "Padri Mfransisko aliyejitolea kufa njaa badala ya mfungwa mwingine huko Auschwitz. Ni 'Shahidi wa Upendo.'"
+  },
+  "8-15": {
+    name_en: "Assumption of Mary",
+    name_sw: "Sherehe ya Kupalizwa Mbinguni Bikira Maria",
+    rank: 80, color: "White", season: "ordinary",
+    info_en: "Solemnity celebrating that the Virgin Mary, having completed her earthly life, was taken up body and soul into heavenly glory. It anticipates our own resurrection.",
+    info_sw: "Sherehe ya Bikira Maria kupalizwa mbinguni mwili na roho baada ya maisha yake duniani. Ni kielelezo cha ufufuko wetu wenyewe."
+  },
+  "8-20": {
+    name_en: "St. Bernard of Clairvaux",
+    name_sw: "Mt. Bernardo, Abati na Mwalimu",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Cistercian abbot, mystic, and Doctor of the Church. He revitalized the Benedictine order and wrote movingly about the Virgin Mary. Known as the 'Honey-Sweet Doctor.'",
+    info_sw: "Abati Msistercia na Mwalimu wa Kanisa. Alifufua shirika la Kibenedikto na kuandika kwa hisia kuhusu Bikira Maria. Anaitwa 'Mwalimu Mtamu kama Asali.'"
+  },
+  "8-21": {
+    name_en: "St. Pius X, Pope",
+    name_sw: "Mt. Pio wa Kumi, Papa",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "The 'Pope of the Eucharist.' He encouraged frequent Holy Communion and lowered the age for First Communion to the 'age of reason' (around 7).",
+    info_sw: "'Papa wa Ekaristi.' Alihimiza Komunio ya mara kwa mara na kupunguza umri wa Komunio ya Kwanza kwa watoto hadi 'umri wa akili' (miaka 7)."
+  },
+  "8-22": {
+    name_en: "Queenship of Mary",
+    name_sw: "Bikira Maria Malkia",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Celebrates Mary as Queen of Heaven and Earth. As the mother of the King of Kings, she intercedes for us with royal authority and maternal love.",
+    info_sw: "Inaadhimisha Maria kama Malkia wa Mbingu na Dunia. Kama mama wa Mfalme wa Wafalme, anatuombea kwa mamlaka ya kifalme na upendo wa kiumama."
+  },
+  "8-24": {
+    name_en: "St. Bartholomew, Apostle",
+    name_sw: "Sikukuu ya Mt. Bartholomayo, Mtume",
+    rank: 60, color: "Red", season: "ordinary",
+    info_en: "Identified with Nathanael. Jesus called him 'an Israelite without deceit.' Tradition says he preached in Armenia and India and was martyred by being flayed alive.",
+    info_sw: "Anatambulika kama Nathanaeli. Yesu alimwita 'Mwisraeli asiye na hila.' Alihubiri Armenia na India na kuuawa kwa kuchunwa ngozi akiwa hai."
+  },
+  "8-27": {
+    name_en: "St. Monica",
+    name_sw: "Mt. Monika",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "North African saint and mother of St. Augustine. For years she wept and prayed for her son's conversion. She is the patron saint of mothers with difficult children.",
+    info_sw: "Mtakatifu wa Afrika Kaskazini na mama wa Mt. Augustino. Kwa miaka mingi alilia na kusali kwa ajili ya wongofu wa mwanae. Msimamizi wa akina mama wenye watoto wagumu."
+  },
+  "8-28": {
+    name_en: "St. Augustine",
+    name_sw: "Mt. Augustino, Askofu na Mwalimu",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Bishop of Hippo (Africa) and one of the greatest theologians in history. After a restless youth, he converted, writing 'Confessions' and 'City of God.'",
+    info_sw: "Askofu wa Hippo (Afrika) na mmoja wa wanateolojia wakuu. Baada ya ujana wa anasa, aliongoka na kuandika 'Maungamo' na 'Mji wa Mungu.'"
+  },
+  "8-28": {
+    // Note: Same day as Augustine often, but significant for Africa
+    name_en: "St. Moses the Black",
+    name_sw: "Mt. Musa Mwafrika (wa Ethiopia)",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "A former gang leader and robber in Egypt who became a desert monk. He is famous for his conversion to non-violence and extreme hospitality. A Desert Father.",
+    info_sw: "Aliyekuwa jambazi huko Misri na kubadilika kuwa mmonaki wa jangwani. Maarufu kwa wongofu wake wa kuwa mpole na mkarimu sana."
+  },
+  "8-29": {
+    name_en: "Passion of St. John the Baptist",
+    name_sw: "Kumbukumbu ya Kuuawa Mt. Yohane Mbatizaji",
+    rank: 40, color: "Red", season: "ordinary",
+    info_en: "Commemorates the beheading of the Baptist by King Herod. He died a martyr for truth and the sanctity of marriage, having rebuked Herod's adulterous union.",
+    info_sw: "Inakumbuka kukatwa kichwa kwa Mbatizaji na Mfalme Herode. Alikufa shahidi wa ukweli na utakatifu wa ndoa, baada ya kukemea dhambi ya Herode."
+  },
+
+  // ==================== SEPTEMBER ====================
+  "9-5": {
+    name_en: "St. Teresa of Calcutta",
+    name_sw: "Mt. Teresa wa Kalkuta",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Mother Teresa, founder of the Missionaries of Charity. She served the 'poorest of the poor' in India and worldwide, seeing the thirsting Christ in the dying and unwanted.",
+    info_sw: "Mama Teresa, mwanzilishi wa Wamisionari wa Upendo. Aliwahudumia 'maskini wa mwisho' akimwona Kristo mwenye kiu ndani ya wanaokufa na wasiotakiwa."
+  },
+  "9-8": {
+    name_en: "Nativity of the B.V. Mary",
+    name_sw: "Sikukuu ya Kuzaliwa Bikira Maria",
+    rank: 60, color: "White", season: "ordinary",
+    info_en: "Celebrates the birth of Mary, the 'Dawn of Salvation.' Her birth heralded the coming of Christ, the Sun of Justice. One of only three birthdays celebrated in the liturgy.",
+    info_sw: "Inaadhimisha kuzaliwa kwa Maria, 'Mapambazuko ya Wokovu.' Kuzaliwa kwake kulitangaza kuja kwa Kristo. Moja ya siku za kuzaliwa tatu zinazosherehekewa."
+  },
+  "9-9": {
+    name_en: "St. Peter Claver",
+    name_sw: "Mt. Petro Claver, Padri",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Jesuit missionary to Colombia. He declared himself 'the slave of the slaves forever,' meeting slave ships from Africa with medicine and food, baptizing over 300,000 people.",
+    info_sw: "Mmisionari Mjesuiti Kolombia. Alijiita 'mtumwa wa watumwa milele,' akipokea meli za watumwa kutoka Afrika kwa dawa na chakula, na kubatiza watu 300,000."
+  },
+  "9-13": {
+    name_en: "St. John Chrysostom",
+    name_sw: "Mt. Yohane Krisostomo, Askofu",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Archbishop of Constantinople and Doctor of the Church. Called 'Golden Mouthed' for his preaching. He suffered exile for criticizing the corruption of the royal court.",
+    info_sw: "Askofu Mkuu wa Konstantinopoli. Aliitwa 'Mwenye Mdomo wa Dhahabu' kwa mahubiri yake. Alipelekwa uhamishoni kwa kukemea ufisadi wa ikulu."
+  },
+  "9-14": {
+    name_en: "Exaltation of the Holy Cross",
+    name_sw: "Sikukuu ya Kutukuka kwa Msalaba",
+    rank: 60, color: "Red", season: "ordinary", isLord: true,
+    info_en: "Celebrates the discovery of the True Cross by St. Helena and honors the Cross not as a tool of torture, but as the instrument of our salvation and sign of Christ's victory.",
+    info_sw: "Inaadhimisha kugunduliwa kwa Msalaba Halisi na Mt. Helena. Tunauheshimu Msalaba si kama chombo cha mateso, bali kama chombo cha wokovu na ushindi."
+  },
+  "9-15": {
+    name_en: "Our Lady of Sorrows",
+    name_sw: "Kumbukumbu ya Bikira Maria wa Mateso",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Commemorates the seven sorrows of Mary, especially her suffering beneath the Cross. As the Sorrowful Mother (Mater Dolorosa), she shares in Christ's redemptive suffering.",
+    info_sw: "Inakumbuka mateso saba ya Maria, hasa chini ya Msalaba. Kama Mama wa Mateso, anashiriki katika mateso ya ukombozi ya Kristo."
+  },
+  "9-21": {
+    name_en: "St. Matthew, Evangelist",
+    name_sw: "Sikukuu ya Mt. Mathayo, Mtume na Mwinjili",
+    rank: 60, color: "Red", season: "ordinary",
+    info_en: "A tax collector called by Jesus to be an apostle. He wrote the first Gospel, primarily for Jewish Christians, showing Jesus as the Messiah fulfilling the Scriptures.",
+    info_sw: "Mtoza ushuru aliyeitwa na Yesu kuwa mtume. Aliandika Injili ya kwanza kwa ajili ya Wayahudi, akimwonyesha Yesu kama Masiha anayetimiza Maandiko."
+  },
+  "9-23": {
+    name_en: "St. Pius of Pietrelcina (Padre Pio)",
+    name_sw: "Mt. Pio wa Pietrelcina",
+    rank: 60, color: "White", season: "ordinary",
+    info_en: "Italian Capuchin priest who bore the Stigmata (wounds of Christ) for 50 years. Famous for his gifts of reading souls in confession, healing, and bi-location.",
+    info_sw: "Padri Mkapuchini aliyekuwa na Stigmata (majeraha ya Kristo) kwa miaka 50. Maarufu kwa karama ya kusoma roho katika maungamo na uponyaji."
+  },
+  "9-27": {
+    name_en: "St. Vincent de Paul",
+    name_sw: "Mt. Vinsenti wa Paulo",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Apostle of charity. He dedicated his life to serving the poor and founded the Vincentians and the Daughters of Charity. He taught that we must serve the poor 'with gentleness and love.'",
+    info_sw: "Mtume wa upendo. Alijitolea kuhudumia maskini na kuanzisha mashirika ya kuwatunza. Alifundisha kuwa lazima tuwahudumie maskini 'kwa upole na upendo.'"
+  },
+  "9-29": {
+    name_en: "Sts. Michael, Gabriel, Raphael",
+    name_sw: "Sikukuu ya Malaika Wakuu",
+    rank: 60, color: "White", season: "ordinary",
+    info_en: "The three Archangels: Michael ('Who is like God?' - Protector), Gabriel ('Strength of God' - Messenger), and Raphael ('God Heals' - Healer/Guide).",
+    info_sw: "Malaika Wakuu watatu: Mikaeli ('Nani kama Mungu?' - Mlinzi), Gabrieli ('Nguvu ya Mungu' - Mjumbe), na Rafaeli ('Mungu Anaponya' - Mponyaji)."
+  },
+  "9-30": {
+    name_en: "St. Jerome",
+    name_sw: "Mt. Yeromu, Padri na Mwalimu",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Scholar and hermit who translated the Bible into Latin (the Vulgate). Known for his fiery temper and love for the Word. He said, 'Ignorance of Scripture is ignorance of Christ.'",
+    info_sw: "Msomi aliyetafsiri Biblia katika Kilatini (Vulgata). Alijulikana kwa ukali wake na kupenda Neno. Alisema, 'Kutojua Maandiko ni kutomjua Kristo.'"
+  },
+
+  // ==================== OCTOBER ====================
+  "10-1": {
+    name_en: "St. Thérèse of the Child Jesus",
+    name_sw: "Mt. Teresa wa Mtoto Yesu",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "The 'Little Flower.' A Carmelite nun who taught the 'Little Way' of trusting God like a child and doing small things with great love. Patroness of Missions.",
+    info_sw: "'Ua Dogo.' Mtawa Mkarmeli aliyefundisha 'Njia Ndogo' ya kumtumainia Mungu kama mtoto na kufanya mambo madogo kwa upendo mkuu. Msimamizi wa Misioni."
+  },
+  "10-2": {
+    name_en: "Guardian Angels",
+    name_sw: "Kumbukumbu ya Malaika Walinzi",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Honors the angels assigned by God to protect and guide each individual soul from birth to death. It reminds us of God's personal care for us.",
+    info_sw: "Inaheshimu malaika waliowekwa na Mungu kulinda na kuongoza roho ya kila mtu. Inatukumbusha jinsi Mungu anavyotujali binafsi."
+  },
+  "10-4": {
+    name_en: "St. Francis of Assisi",
+    name_sw: "Mt. Fransisko wa Assisi",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Founder of the Franciscans. He embraced Lady Poverty and saw all creation as brothers and sisters. He was the first recorded saint to receive the Stigmata.",
+    info_sw: "Mwanzilishi wa Wafransisko. Alikumbatia Umaskini na kuona uumbaji wote kama ndugu. Alikuwa mtakatifu wa kwanza kupata Stigmata (Majeraha ya Yesu)."
+  },
+  "10-5": {
+    name_en: "St. Faustina Kowalska",
+    name_sw: "Mt. Faustina Kowalska",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Polish nun and 'Secretary of Divine Mercy.' Jesus appeared to her, asking for the feast of Divine Mercy and the Chaplet, promising great graces to those who trust in His mercy.",
+    info_sw: "Sista wa Poland na 'Katibu wa Huruma ya Mungu.' Yesu alimtokea na kuanzisha ibada ya Huruma ya Mungu, akiahidi neema kwa wanaomtumainia."
+  },
+  "10-7": {
+    name_en: "Our Lady of the Rosary",
+    name_sw: "Kumbukumbu ya Bikira Maria wa Rozari",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Commemorates the naval victory at Lepanto (1571) attributed to the recitation of the Rosary. It encourages the faithful to pray the Rosary for the Church's protection.",
+    info_sw: "Inakumbuka ushindi wa Lepanto (1571) uliotokana na kusali Rozari. Inahimiza waamini kusali Rozari kwa ajili ya ulinzi wa Kanisa."
+  },
+  "10-10": {
+    name_en: "St. Daniel Comboni",
+    name_sw: "Mt. Danieli Comboni, Askofu",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "The 'Apostle of Central Africa' and founder of the Comboni Missionaries. He fought against the slave trade and believed in 'Saving Africa through Africa.'",
+    info_sw: "'Mtume wa Afrika ya Kati' na mwanzilishi wa Wamisionari wa Comboni. Alipambana na utumwa na kuamini katika 'Kuokoa Afrika kwa Waafrika.'"
+  },
+  "10-15": {
+    name_en: "St. Teresa of Jesus (Avila)",
+    name_sw: "Mt. Teresa wa Yesu (Avila)",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Spanish mystic, reformer of the Carmelites, and first female Doctor of the Church. Her book 'The Interior Castle' describes the soul's journey to union with God.",
+    info_sw: "Mwanafumbo wa Hispania, mrekebishaji wa Wakarmeli, na Mwalimu wa Kanisa. Kitabu chake 'Ngome ya Ndani' kinaelezea safari ya roho kuungana na Mungu."
+  },
+  "10-17": {
+    name_en: "St. Ignatius of Antioch",
+    name_sw: "Mt. Ignasi wa Antiokia, Askofu na Shahidi",
+    rank: 40, color: "Red", season: "ordinary",
+    info_en: "Disciple of Apostle John and Bishop of Antioch. Taken to Rome to be fed to lions, he wrote 7 letters describing himself as 'God's wheat' to be ground into the 'bread of Christ.'",
+    info_sw: "Mwanafunzi wa Yohane na Askofu wa Antiokia. Alipelekwa Roma kuliwa na simba. Aliandika kuwa yeye ni 'ngano ya Mungu' itakayosagwa kuwa 'mkate wa Kristo.'"
+  },
+  "10-18": {
+    name_en: "St. Luke, Evangelist",
+    name_sw: "Sikukuu ya Mt. Luka, Mwinjili",
+    rank: 60, color: "Red", season: "ordinary",
+    info_en: "Physician and companion of Paul. Author of the Gospel of Luke and Acts. He emphasizes God's mercy, the role of women, and the poor. Patron of doctors and artists.",
+    info_sw: "Tabibu na mwandani wa Paulo. Mwandishi wa Injili ya Luka na Matendo. Anasisitiza huruma ya Mungu, nafasi ya wanawake, na maskini. Msimamizi wa madaktari."
+  },
+  "10-20": {
+    name_en: "Bl. Daudi Okelo and Jildo Irwa",
+    name_sw: "Wenye Heri Daudi Okelo na Jildo Irwa",
+    rank: 40, color: "Red", season: "ordinary",
+    info_en: "Young catechists and martyrs from Paimol, Uganda (1918). They volunteered to teach the Gospel in a dangerous area and were speared to death for their faith.",
+    info_sw: "Makatekista vijana na wafiadini kutoka Uganda (1918). Walijitolea kufundisha Injili mahali pa hatari na kuuawa kwa mikuki kwa ajili ya imani."
+  },
+  "10-22": {
+    name_en: "St. John Paul II, Pope",
+    name_sw: "Mt. Yohane Paulo II, Papa",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "One of the longest-serving Popes. He traveled the world, loved Africa, helped end communism, and established World Youth Day. His motto was 'Totus Tuus' (Totally Yours, Mary).",
+    info_sw: "Papa aliyesafiri duniani kote na kuipenda Afrika sana. Alianzisha Siku ya Vijana Duniani. Kauli mbiu yake ilikuwa 'Totus Tuus' (Mali yako yote, Maria)."
+  },
+  "10-28": {
+    name_en: "Sts. Simon and Jude, Apostles",
+    name_sw: "Sikukuu ya Mt. Simoni na Yuda, Mitume",
+    rank: 60, color: "Red", season: "ordinary",
+    info_en: "Simon was a Zealot; Jude Thaddeus is the patron of impossible causes. They preached in Persia and were martyred together. Jude's letter is in the New Testament.",
+    info_sw: "Simoni Zelote na Yuda Thadei (msimamizi wa mambo yaliyoshindikana). Walihubiri Uajemi na kuuawa pamoja. Waraka wa Yuda umo katika Agano Jipya."
+  },
+
+  // ==================== NOVEMBER ====================
+  "11-1": {
+    name_en: "All Saints Day",
+    name_sw: "Sherehe ya Watakatifu Wote",
+    rank: 80, color: "White", season: "ordinary",
+    info_en: "Solemnity honoring all the holy men and women in heaven, known and unknown. It celebrates the 'Church Triumphant' and reminds us of our universal call to holiness.",
+    info_sw: "Inaheshimu watakatifu wote wa mbinguni, wanaojulikana na wasiojulikana. Inasherehekea 'Kanisa la Washindi' na kutukumbusha wito wetu wa utakatifu."
+  },
+  "11-2": {
+    name_en: "All Souls Day",
+    name_sw: "Kumbukumbu ya Marehemu Wote",
+    rank: 75, color: "Violet", season: "ordinary",
+    info_en: "Day of prayer for the Faithful Departed in Purgatory (the 'Church Suffering'). We offer Masses and prayers to help them attain the beatific vision of God.",
+    info_sw: "Siku ya kuwaombea Marehemu Waamini walioko Toharani ('Kanisa linaloteseka'). Tunatoa Misa na sala ili kuwasaidia kufika mbinguni."
+  },
+  "11-3": {
+    name_en: "St. Martin de Porres",
+    name_sw: "Mt. Martino wa Porres",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Afro-Peruvian Dominican lay brother. He faced racial discrimination with humility and served the sick and poor with miraculous powers. Known for his love of animals.",
+    info_sw: "Bruda Mdominiko mwenye asili ya Afrika na Peru. Alikabili ubaguzi kwa unyenyekevu na kuhudumia wagonjwa kwa miujiza. Alipenda sana wanyama."
+  },
+  "11-4": {
+    name_en: "St. Charles Borromeo",
+    name_sw: "Mt. Karoli Borromeo, Askofu",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Archbishop of Milan and a key figure in the Catholic Reformation. He implemented the Council of Trent, established seminaries for priests, and cared for plague victims.",
+    info_sw: "Askofu Mkuu wa Milano na kiongozi wa Matengenezo ya Katoliki. Alitekeleza Mtaguso wa Trento, kuanzisha semina za mapadri, na kuhudumia wenye tauni."
+  },
+  "11-9": {
+    name_en: "Dedication of Lateran Basilica",
+    name_sw: "Sikukuu ya Kutabaruku Kanisa la Laterano",
+    rank: 60, color: "White", season: "ordinary", isLord: true,
+    info_en: "Feast of the Pope's cathedral in Rome (St. John Lateran), the 'Mother and Head of all churches.' It symbolizes the unity of the Church around the successor of Peter.",
+    info_sw: "Sikukuu ya kanisa kuu la Papa huko Roma, 'Mama na Kichwa cha makanisa yote.' Inaashiria umoja wa Kanisa chini ya mrithi wa Petro."
+  },
+  "11-10": {
+    name_en: "St. Leo the Great",
+    name_sw: "Mt. Leo Mkuu, Papa",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Pope and Doctor of the Church. He defended the doctrine of the Incarnation at the Council of Chalcedon and famously persuaded Attila the Hun not to attack Rome.",
+    info_sw: "Papa na Mwalimu wa Kanisa. Alitetea imani juu ya Umwilisho na kumshawishi Attila kutoishambulia Roma kwa nguvu ya maneno yake."
+  },
+  "11-11": {
+    name_en: "St. Martin of Tours",
+    name_sw: "Mt. Martini wa Tours, Askofu",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "A Roman soldier who cut his cloak in half to share with a cold beggar (who was Christ). He later became a monk and Bishop, spreading Christianity in France.",
+    info_sw: "Askari aliyekata joho lake nusu kumpa ombaomba (aliyekuwa Kristo). Baadaye akawa mmonaki na Askofu, akieneza Ukristo Ufaransa."
+  },
+  "11-17": {
+    name_en: "St. Elizabeth of Hungary",
+    name_sw: "Mt. Elisabeth wa Hungaria",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "A young queen who was devoted to the poor. Despite her royal status, she built hospitals and served the sick personally. Patroness of Catholic charities.",
+    info_sw: "Malkia kijana aliyejitolea kwa maskini. Licha ya hadhi yake, alijenga hospitali na kuwahudumia wagonjwa mwenyewe. Msimamizi wa mashirika ya hisani."
+  },
+  "11-21": {
+    name_en: "Presentation of B.V. Mary",
+    name_sw: "Kumbukumbu ya Kutolewa Bikira Maria Hekaluni",
+    rank: 40, color: "White", season: "ordinary",
+    info_en: "Commemorates the dedication of Mary to God from her childhood. Tradition says she was brought to the Temple at age 3, signifying her complete consecration to God's will.",
+    info_sw: "Inakumbuka kutolewa kwa Maria kwa Mungu tangu utoto wake (miaka 3). Inaashiria kujitoa kwake kamili kwa mapenzi ya Mungu."
+  },
+  "11-22": {
+    name_en: "St. Cecilia",
+    name_sw: "Mt. Sesilia, Bikira na Shahidi",
+    rank: 40, color: "Red", season: "ordinary",
+    info_en: "Roman martyr who vowed virginity to God. Legend says she 'sang in her heart to the Lord' during her wedding. Patroness of musicians and church music.",
+    info_sw: "Shahidi wa Roma aliyeweka nadhiri ya ubikira. Alimwimbia Mungu moyoni mwake wakati wa harusi yake. Msimamizi wa wanamuziki."
+  },
+  "11-25": {
+    name_en: "St. Catherine of Alexandria",
+    name_sw: "Mt. Katerina wa Aleksandria",
+    rank: 40, color: "Red", season: "ordinary",
+    info_en: "Egyptian virgin martyr renowned for her wisdom. She debated 50 pagan philosophers and converted them. Martyred on a spiked wheel. Patron of students.",
+    info_sw: "Bikira shahidi wa Misri mwenye hekima. Alishinda wanafalsafa 50 wa kipagani kwa hoja na kuwaongoa. Msimamizi wa wanafunzi."
+  },
+  "11-30": {
+    name_en: "St. Andrew, Apostle",
+    name_sw: "Sikukuu ya Mt. Andrea, Mtume",
+    rank: 60, color: "Red", season: "ordinary",
+    info_en: "The 'First-Called' apostle and brother of Peter. He brought Peter to Jesus. He preached in Greece and was martyred on an X-shaped cross (Saltire).",
+    info_sw: "Mtume wa kwanza kuitwa na kaka yake Petro. Alimleta Petro kwa Yesu. Aliuawa kwenye msalaba wenye umbo la X."
+  },
+
+  // ==================== DECEMBER ====================
+  "12-1": {
+    name_en: "Bl. Clementine Anuarite",
+    name_sw: "Mwenye Heri Klementina Anuarite",
+    rank: 40, color: "Red", season: "advent",
+    info_en: "A religious sister from DR Congo (1964). She was martyred while defending her chastity against rebel soldiers, forgiving her killer with the words: 'I forgive you for you know not what you do.'",
+    info_sw: "Sista mtawa kutoka Kongo (1964). Aliuawa akitetea usafi wake dhidi ya waasi, akimsamehe muuaji wake: 'Nakusamehe kwa maana hujui ulitendalo.'"
+  },
+  "12-3": {
+    name_en: "St. Francis Xavier",
+    name_sw: "Mt. Fransisko Saveri",
+    rank: 40, color: "White", season: "advent",
+    info_en: "Great Jesuit missionary. He evangelized India, Indonesia, and Japan, baptizing thousands. Patron saint of foreign missions alongside St. Thérèse.",
+    info_sw: "Mmisionari Mjesuiti mkuu. Aliinjilisha India na Japani, akibatiza maelfu. Msimamizi wa misioni pamoja na Mt. Teresa wa Mtoto Yesu."
+  },
+  "12-6": {
+    name_en: "St. Nicholas",
+    name_sw: "Mt. Nikolasi, Askofu",
+    rank: 20, color: "White", season: "advent",
+    info_en: "Bishop of Myra (Turkey). Famous for his generosity, defending the faith at Nicaea, and secretly giving gold to save three girls from slavery. The inspiration for Santa Claus.",
+    info_sw: "Askofu wa Myra. Maarufu kwa ukarimu wake na kutoa zawadi kwa siri kuokoa wasichana. Asili ya Baba Noeli."
+  },
+  "12-7": {
+    name_en: "St. Ambrose",
+    name_sw: "Mt. Ambrosi, Askofu na Mwalimu",
+    rank: 40, color: "White", season: "advent",
+    info_en: "Bishop of Milan. A governor chosen by popular acclaim to be bishop. His powerful preaching converted St. Augustine. He baptized Augustine.",
+    info_sw: "Askofu wa Milano. Alichaguliwa na watu kuwa askofu. Mahubiri yake yenye nguvu yalimwongoa Mt. Augustino na alimbatiza."
+  },
+  "12-8": {
+    name_en: "Immaculate Conception",
+    name_sw: "Sherehe ya Bikira Maria Mkingiwa Dhambi ya Asili",
+    rank: 80, color: "White", season: "advent",
+    info_en: "Solemnity celebrating the dogma that Mary was preserved from Original Sin from the very first moment of her conception by a singular grace of God.",
+    info_sw: "Sherehe ya dogma kwamba Maria alikingiwa Dhambi ya Asili tangu wakati wa kwanza wa kutungwa kwake mimba kwa neema ya pekee."
+  },
+  "12-9": {
+    name_en: "St. Juan Diego",
+    name_sw: "Mt. Juan Diego",
+    rank: 40, color: "White", season: "advent",
+    info_en: "The humble indigenous Mexican peasant to whom Our Lady of Guadalupe appeared in 1531. He carried the roses in his cloak (tilma) which bore her miraculous image.",
+    info_sw: "Mkulima mnyenyekevu wa Mexico ambaye Bikira Maria wa Guadalupe alimtokea (1531). Alibeba picha ya Maria kwenye joho lake."
+  },
+  "12-12": {
+    name_en: "Our Lady of Guadalupe",
+    name_sw: "Bikira Maria wa Guadalupe",
+    rank: 40, color: "White", season: "advent",
+    info_en: "Patroness of the Americas and the Unborn. Mary appeared as a pregnant indigenous woman, leading to the conversion of millions of Aztecs to Christianity.",
+    info_sw: "Msimamizi wa Amerika na watoto ambao hawajazaliwa. Maria alitokea kama mwanamke mjamzito, akileta wongofu wa mamilioni."
+  },
+  "12-13": {
+    name_en: "St. Lucy",
+    name_sw: "Mt. Lusia, Bikira na Shahidi",
+    rank: 40, color: "Red", season: "advent",
+    info_en: "Virgin martyr from Sicily. Her name means 'Light.' Tradition says her eyes were gouged out before her death. Patron saint of the blind and those with eye trouble.",
+    info_sw: "Bikira shahidi kutoka Sisilia. Jina lake lina maana ya 'Mwanga.' Msimamizi wa vipofu na wenye matatizo ya macho."
+  },
+  "12-14": {
+    name_en: "St. John of the Cross",
+    name_sw: "Mt. Yohane wa Msalaba",
+    rank: 40, color: "White", season: "advent",
+    info_en: "Carmelite mystic, poet, and Doctor of the Church. He worked with Teresa of Avila to reform the order. Famous for writing 'Dark Night of the Soul.'",
+    info_sw: "Mwanafumbo Mkarmeli na Mwalimu wa Kanisa. Alishirikiana na Teresa wa Avila kurekebisha shirika. Aliandika 'Usiku wa Giza wa Roho.'"
+  },
+  "12-25": {
+    name_en: "Christmas (Nativity of the Lord)",
+    name_sw: "Sherehe ya Noeli (Kuzaliwa kwa Bwana)",
+    rank: 95, color: "White", season: "Christmas",
+    info_en: "Solemnity of the Birth of Jesus Christ. The Word became Flesh and dwelt among us to save us from sin. The center of the Christian faith along with Easter.",
+    info_sw: "Sherehe ya Kuzaliwa kwa Yesu. Neno alifanyika Mwili akakaa kwetu ili kutuokoa. Ni kiini cha imani yetu pamoja na Pasaka."
+  },
+  "12-26": {
+    name_en: "St. Stephen, First Martyr",
+    name_sw: "Sikukuu ya Mt. Stefano, Shahidi wa Kwanza",
+    rank: 60, color: "Red", season: "Christmas",
+    info_en: "The Protomartyr. One of the first seven deacons chosen to serve the poor. He was stoned to death while praying for his executioners, mirroring Jesus' death.",
+    info_sw: "Shahidi wa kwanza (Protomartyr). Mmoja wa mashemasi saba wa kwanza. Alipigwa mawe hadi kufa huku akiwaombea watesaji wake."
+  },
+  "12-27": {
+    name_en: "St. John, Apostle and Evangelist",
+    name_sw: "Sikukuu ya Mt. Yohane, Mtume na Mwinjili",
+    rank: 60, color: "White", season: "Christmas",
+    info_en: "The 'Beloved Disciple.' Author of the fourth Gospel, three letters, and Revelation. He is the only apostle who was not martyred, representing a martyrdom of love.",
+    info_sw: "'Mwanafunzi Mpendwa.' Mwandishi wa Injili ya nne na Ufunuo. Mtume pekee asiyeuawa shahidi, akiwakilisha shahidi wa upendo."
+  },
+  "12-28": {
+    name_en: "Holy Innocents, Martyrs",
+    name_sw: "Sikukuu ya Watoto Wafiadini",
+    rank: 60, color: "Red", season: "Christmas",
+    info_en: "The male children of Bethlehem killed by King Herod in his attempt to kill the infant Jesus. They are considered martyrs who died not for Christ, but in place of Him.",
+    info_sw: "Watoto wa kiume wa Bethlehemu waliouawa na Herode akitaka kumuua Yesu. Ni wafiadini waliokufa badala ya Kristo."
+  }
+};
+
+// ==========================================
+// PART 3: BIBLE VERSES & ROSARY DATA
+// ==========================================
+
+// === 3.1 DAILY VERSES ===
+const todaysVerses = [
+  { en: "I have the strength for everything through Him who empowers me.", sw: "Nayaweza mambo yote katika yeye anitiaye nguvu.", ref_en: "Philippians 4:13", ref_sw: "Wafilipi 4:13" },
+  { en: "This is the day that the Lord has made; let us rejoice and be glad.", sw: "Siku hii ndiyo aliyoifanya Bwana tutashangilia na kuifurahia.", ref_en: "Psalm 118:24", ref_sw: "Zaburi 118:24" },
+  {
+    en: "Trust in the Lord with all your heart, on your own intelligence rely not; In all your ways be mindful of Him and He will make straight your paths.",
+    sw: "Mtumaini Bwana kwa moyo wako wote, wala usizitegemeze akili zako mwenyewe; katika njia zako zote mkiri Yeye naye atayanyosha mapito yako.", ref_en: "Proverbs 3:5-6", ref_sw: "Methali 3:5-6"
+  }
+
+];
+
+// === 3.2 THEMED VERSES ===
+const themedVerses = {
+  hope: [{
+    en: "For I know the plans I have in mind for you says the Lord, plans for your welfare, not for woe! Plans to give you a future full of hope.",
+    sw: "Maana nayajua mawazo ninayowawazia nyinyi, asema Bwana, ni mawazo ya amani, wala si ya mabaya, kuwapa nyinyi tumaini siku zenu za mwisho.", ref_en: "Jeremiah 29:11", ref_sw: "Yeremia 29:11"
+  }, { en: "Why are you cast down, my soul, why do you groan within me? Hope in God, whom I shall praise again, my saviour and my God.", sw: "Nafsi yangu, kwa nini kuinama, na kufadhaika ndani yangu? Umtumaini Mungu; kwa maana nitakuja kumsifu, aliye afya ya uso wangu, na Mungu wangu", ref_en: "Psalm 42:11", ref_sw: "Zaburi 42:11" }],
+  comfort: [{ en: "Come to me, all you who labor and are burdened, and I will give you rest.", sw: "Njoni kwangu, ninyi nyote msumbukao na wenye kulemewa na mizigo, nami nitawapumzisha.", ref_en: "Matthew 11:28", ref_sw: "Mathayo 11:28" }, { en: "Even when I walk through a dark valley, I fear no harm for you are at my side; your rod and staff give me courage.", sw: "Naam, nijapopita kati ya bonde la uvuli wa mauti, sitaogopa mabaya; kwa maana Wewe upo pamoja nami, gongo lako na fimbo yako vyanifariji.", ref_en: "Psalm 23:4", ref_sw: "Zaburi 23:4" }],
+  wisdom: [{ en: "My Son, from your youth embrace discipline; thus will you find wisdom with greying hair.", sw: "Mwanangu, uchume maarifa tangu ujana hata kwa mwenye mvi, nawe utapata hekima.", ref_en: "Sirach 6:18", ref_sw: "Yoshua Bin Sira 6:18", }, { en: "But if any of you lacks wisdom, he should ask God who gives to all generously and ungrudgingly and he will be given it.", sw: "Lakini mtu wa kwenu akipungukiwa na hekima, na aombe dua kwa Mungu, awapaye wote kwa ukarimu, wala hakemei; naye atapewa.", ref_en: "James 1:5", ref_sw: "Yakobo 1:5" }],
+  faith: [{ en: "Faith is the realisation of what is hoped for and evidence of things not seen. ", sw: "Basi imani ni kuwa na hakika ya mambo yatarajiwayo, ni bayana ya mambo yasiyoonekana.", ref_en: "Hebrews 11:1", ref_sw: "Waebrania 11:1" }]
+};
+const rosarySets = {
+  Furaha: { en: ["The Annunciation\nOur Father\nHail Mary X10", "The Visitation\nOur Father\nHail Mary X10", "The Nativity\nOur Father\nHail Mary X10", "The Presentation\nOur Father\nHail Mary X10", "The Finding in the Temple\nOur Father\nHail Mary X10"], sw: ["Malaika anampasha habari Maria kama atakua Mama wa Mungu\nTumwombe Mungu atujalie unyenyekevu.\n\nBaba Yetu\nSalamu Maria X10\n", "Maria anakwenda kumtembelea Elizabeti\nTumwombe Mungu atujalie Mapendo ya jirani\n\nBaba Yetu\nSalamu Maria X10", "Yesu anazaliwa Bethlehemu\nTumwombe Mungu atujalie usafi wa moyo.\n\nBaba Yetu\nSalamu Maria X10", "Yesu anatolewa hekaluni\nTumwombe Mungu atujalie usafi wa moyo.\n\nBaba Yetu\nSalamu Maria X10", "Maria anamkuta Yesu hekaluni\nTumwombe Mungu atujalie kuwatii wakubwa wetu\n\nBaba Yetu\nSalamu Maria X10"] },
+  Uchungu: { en: ["The Agony in the Garden\nOur Father\nHail Mary X10", "The Scourging at the Pillar\nOur Father\nHail Mary X10", "The Crowning with Thorns\nOur Father\nHail Mary X10", "The Carrying of the Cross\nOur Father\nHail Mary X10", "The Crucifixion\nOur Father\nHail Mary X10"], sw: ["Yesu anatoka jasho la damu\nTumwombe Mungu atujalie sikitiko la dhambi.\n\nBaba Yetu\nSalamu Maria X10", "Yesu anapigwa mijeledi.\nTumwombe Mungu atujalie kuacha dhambi za uchafu.\n\nBaba Yetu\nSalamu Maria X10", "Yesu anatiwa miiba kichwani\nTumwombe Mungu atujalie kushinda kiburi.\n\nBaba Yetu\nSalamu Maria X10", "Yesu anachukua msalaba\nTumwombe Mungu atujalie kuvumilia taabu\n\nBaba Yetu\nSalamu Maria X10", "Yesu anakufa msalabani\nTumwombe Mungu atujalie kuwapenda Yesu na Maria.\n\nBaba Yetu\nSalamu Maria X10"] },
+  Utukufu: { en: ["The Resurrection\nOur Father\nHail Mary X10", "The Ascension\nOur Father\nHail Mary X10", "The Descent of the Holy Spirit\nOur Father\nHail Mary X10", "The Assumption of Mary\nOur Father\nHail Mary X10", "The Coronation of Mary\nOur Father\nHail Mary X10"], sw: ["Yesu anafufuka\nTumwombe Mungu atujalie kugeuka Watakatifu\n\nBaba Yetu\nSalamu Maria X10", "Yesu anapaa Mbinguni.\nTumwombe Mungu atujalie kwenda Mbinguni.\n\nBaba Yetu\nSalamu Maria X10", "Roho Mtakatifu anawashukia Mitume.\nTumwombe Mungu atujalie bidii katika dini yetu.\n\nBaba Yetu\nSalamu Maria X10", "Bikira Maria anapalizwa Mbinguni.\nTumwombe Mungu atujalie kufa vizuri\n\nBaba Yetu\nSalamu Maria X10", "Bikira Maria anawekwa Malkia Mbinguni\nTumwombe Mungu atujalie kudumu katika njia njema\n\nBaba Yetu\nSalamu Maria X10"] },
+  Mwanga: { en: ["The Baptism of Jesus\nOur Father\nHail Mary X10", "The Wedding at Cana\nOur Father\nHail Mary X10", "The Proclamation of the Kingdom\nOur Father\nHail Mary X10", "The Transfiguration\nOur Father\nHail Mary X10", "The Institution of the Eucharist\nOur Father\nHail Mary X10"], sw: ["Ubatizo wa Yesu Mto Yordani\nTumwombe Mungu atujalie uaminifu kwa ahadi zetu za ubatizo.\n\nBaba Yetu\nSalamu Maria X10", "Yesu anageuza maji kuwa divai huko Kana\nTumwombe Mungu atujalie kuukoleza ulimwengu kwa chachu ya Injili\n\nBaba Yetu\nSalamu Maria X10", "Yesu anatangaza Ufalme wa Mungu\nTumwombe Mungu atujalie kupokea Ufalme wake kwa toba ya kweli.\n\nBaba Yetu\nSalamu Maria X10", "Yesu anageuka sura\nTumwombe Mungu atujalie neema ya kuung'arisha ulimwengu kwa uso wa Yesu\n\nBaba Yetu\nSalamu Maria X10", "Kuwekwa kwa Ekaristi.\nTumwombe Mungu atujalie neema ya kujitoa sadaka kwa ajili ya wengine\n\nBaba Yetu\nSalamu Maria X10"] }
+};
+
+// === 3.4 TRANSLATIONS & MESSAGES ===
+const translations = {
+  greeting: { en: (name) => `Welcome, ${name}!`, sw: (name) => `Karibu, ${name}!` }
+};
+
+// ==========================================
+// PART 4: UI UTILITY FUNCTIONS
+// ==========================================
+
+// === 4.1 THEME & APPEARANCE UTILITIES ===
+function getCurrentThemeBase() {
+  const theme = document.getElementById("theme").value;
+  const isDark = document.getElementById("darkMode").checked;
+  return `${theme}-${isDark ? "dark" : "light"}`;
+}
+
+function changeTheme(theme) {
+  document.getElementById("theme").value = theme;
+  document.body.className = getCurrentThemeBase();
+  localStorage.setItem("theme", theme);
+}
+
+function toggleDarkMode() {
+  document.body.className = getCurrentThemeBase();
+  localStorage.setItem("darkMode", document.getElementById("darkMode").checked);
+}
+
+// === 4.2 LANGUAGE & LOCALIZATION ===
+function updateLanguage(lang) {
+  document.querySelectorAll("[data-en]").forEach(el => {
+    if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) {
+      el.placeholder = el.dataset[lang];
+    } else if (el.dataset[lang]) {
+      el.textContent = el.dataset[lang];
     }
+  });
+  document.getElementById("languageSelectSetup").value = lang;
+  document.getElementById("languageSelect").value = lang;
+}
 
-    const matches = [];
-    const currentLanguage = localStorage.getItem("language") || "en";
+function changeLanguage(lang) {
+  localStorage.setItem("language", lang);
+  updateLanguage(lang);
+  updateMysteryLabel();
+  updateMysteryButtons();
+  if (document.getElementById('mysteries-content').classList.contains('active')) {
+    const currentSetButton = document.querySelector('.mystery-set-selector button.active');
+    if (currentSetButton) renderMysteries(currentSetButton.dataset.set === 'Today' ? getTodaySet() : currentSetButton.dataset.set);
+  }
+  updateLiturgicalDisplay(); // Refresh feast name on lang change
+  scheduleDailyPrayerNotifications();
+}
 
-    document.querySelectorAll(".prayer").forEach(prayer => {
-      const titleSpan = prayer.querySelector("button span[data-en]");
-      const title = titleSpan ? titleSpan.dataset[currentLanguage].toLowerCase() : "";
-      const content = prayer.querySelector(".content")?.textContent.toLowerCase() || "";
-      if (title.includes(query) || content.includes(query)) {
-        matches.push({
-          element: prayer,
-          title: titleSpan ? titleSpan.dataset[currentLanguage] : "Untitled Prayer"
-        });
+function updateGreeting(name, lang) {
+  const greetingElement = document.getElementById("personalizedGreeting");
+  if (name) {
+    greetingElement.textContent = translations.greeting[lang](name);
+    greetingElement.dataset.en = translations.greeting.en(name);
+    greetingElement.dataset.sw = translations.greeting.sw(name);
+  }
+}
+
+// === 4.3 NAVIGATION & SECTION DISPLAY ===
+function showCategory(categoryId) {
+  document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+  document.querySelectorAll('.sub-section').forEach(section => section.classList.remove('active'));
+  document.querySelectorAll('.category').forEach(btn => btn.classList.remove('active'));
+
+  const targetSection = document.getElementById(categoryId);
+  if (targetSection) {
+    targetSection.classList.add('active');
+    const activeButton = document.querySelector(`.category[data-category-id="${categoryId}"]`);
+    if (activeButton) activeButton.classList.add('active');
+
+    if (categoryId === 'Rosary') {
+      const mariaSection = document.getElementById('Maria');
+      const mariaButton = document.querySelector('.rosary-categories .category[data-category-id="Maria"]');
+      if (mariaSection && mariaButton) {
+        mariaSection.classList.add('active');
+        mariaButton.classList.add('active');
       }
-    });
-
-    if (matches.length === 0) {
-      resultsBox.classList.remove("hidden");
-      resultsBox.innerHTML = `<p>${currentLanguage === 'en' ? 'No matching prayers found.' : 'Hakuna sala zinazolingana zilizopatikana.'}</p>`;
-      return;
     }
+    if (targetSection.classList.contains('sub-section')) {
+      targetSection.closest('.section').classList.add('active');
+      const parentCategory = targetSection.closest('.section').id;
+      document.querySelector(`.category[data-category-id="${parentCategory}"]`)?.classList.add('active');
+    }
+  }
+}
 
-    const ul = document.createElement("ul");
-    matches.forEach(match => {
-      const li = document.createElement("li");
-      li.textContent = match.title;
-      li.addEventListener('click', () => {
+function toggleSettings() { document.getElementById('settings').classList.toggle('show'); }
+
+// === 4.4 PRAYER & MODAL INTERACTIONS ===
+function togglePrayer(button) {
+  const content = button.nextElementSibling;
+  content.classList.toggle('active');
+  button.querySelector('.toggle-icon').style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+
+// === 4.5 SEARCH FUNCTIONALITY ===
+function searchPrayers() {
+  const query = document.getElementById("searchInput").value.toLowerCase();
+  const resultsBox = document.getElementById("searchResults");
+  const lang = localStorage.getItem("language") || "en";
+
+  resultsBox.innerHTML = "";
+
+  // --- NEW WORD LIMIT LOGIC ---
+  const wordLimit = 5; // Change this number to your preferred limit
+  const wordCount = query.split(/\s+/).filter(word => word.length > 0).length;
+
+  if (wordCount > wordLimit) {
+    resultsBox.innerHTML = `<p class="error">Please limit your search to ${wordLimit} words.</p>`;
+    resultsBox.classList.remove("hidden");
+    return;
+  }
+
+  if (!query) {
+    resultsBox.classList.add("hidden");
+    return;
+  }
+
+  const matches = [];
+
+  // 1. SEARCH PRAYERS (Existing Logic)
+  document.querySelectorAll(".prayer-button").forEach(btn => {
+    const titleSpan = btn.querySelector("span[data-en]");
+    const title = titleSpan ? titleSpan.dataset[lang].toLowerCase() : "";
+    if (title.includes(query)) {
+      matches.push({
+        type: 'prayer',
+        element: btn,
+        title: titleSpan ? titleSpan.dataset[lang] : "Untitled"
+      });
+    }
+  });
+
+  // 2. SEARCH SAINTS (New Logic)
+  // We loop through your huge LIT_FIXED_DATA list
+  Object.keys(LIT_FIXED_DATA).forEach(key => {
+    const feast = LIT_FIXED_DATA[key];
+    const name = lang === 'sw' ? feast.name_sw : feast.name_en;
+
+    // If the name matches the search...
+    if (name.toLowerCase().includes(query)) {
+      matches.push({
+        type: 'saint',
+        data: feast,
+        dateKey: key, // e.g., "6-3"
+        title: name
+      });
+    }
+  });
+
+  // 3. DISPLAY RESULTS
+  if (matches.length === 0) {
+    resultsBox.classList.remove("hidden");
+    resultsBox.innerHTML = `<p style="padding:10px; opacity:0.7;">${lang === 'en' ? 'No results found.' : 'Hakuna matokeo.'}</p>`;
+    return;
+  }
+
+  const ul = document.createElement("ul");
+
+  matches.forEach(match => {
+    const li = document.createElement("li");
+
+    // Add an icon so they know if it's a Prayer or a Saint
+    const icon = match.type === 'saint' ? '🕊️ ' : '🙏 ';
+    li.textContent = icon + match.title;
+
+    // Styling
+    li.style.padding = "12px";
+    li.style.cursor = "pointer";
+    li.style.borderBottom = "1px solid rgba(0,0,0,0.1)";
+    li.style.display = "flex";
+    li.style.alignItems = "center";
+
+    li.addEventListener('click', () => {
+
+      if (match.type === 'prayer') {
+        // OPEN PRAYER (Existing Logic)
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         match.element.closest('.section').classList.add('active');
-        match.element.closest('.section').querySelectorAll('.content.active').forEach(openContent => {
-          if (openContent !== match.element.querySelector('.content')) {
-            openContent.classList.remove('active');
-            openContent.previousElementSibling.querySelector('.toggle-icon').style.transform = 'rotate(0deg)';
-          }
-        });
-        const content = match.element.querySelector(".content");
-        if (!content.classList.contains('active')) {
-          content.classList.add("active");
-          match.element.querySelector(".toggle-icon").style.transform = 'rotate(180deg)';
-        }
+        togglePrayer(match.element);
         match.element.scrollIntoView({ behavior: "smooth", block: "center" });
-        resultsBox.classList.add("hidden");
-      });
-      ul.appendChild(li);
+      }
+      else if (match.type === 'saint') {
+        // OPEN SAINT MODAL (New Logic)
+        const feast = match.data;
+
+        // Get Info
+        const desc = lang === 'sw' ? (feast.info_sw || "Hakuna maelezo.") : (feast.info_en || "No details available.");
+        const title = lang === 'sw' ? feast.name_sw : feast.name_en;
+
+        // Populate Modal
+        document.getElementById('feastPopupTitle').textContent = title;
+        document.getElementById('feastPopupDesc').textContent = desc;
+
+        // Show Modal
+        document.getElementById('feastModal').style.display = 'flex';
+      }
+
+      resultsBox.classList.add("hidden");
+      document.getElementById("searchInput").value = ""; // Clear search
     });
-    resultsBox.appendChild(ul);
-    resultsBox.classList.remove("hidden");
-  }
 
-  // VERSE OF THE DAY
-  function setVerseContent(verse) {
-    const verseText = document.getElementById('verseText');
-    const verseRef = document.getElementById('verseReference');
-    fadeOutIn(() => {
-      verseText.dataset.en = verse.en;
-      verseText.dataset.sw = verse.sw;
-      verseRef.dataset.en = verse.ref_en;
-      verseRef.dataset.sw = verse.ref_sw;
-      const currentLang = localStorage.getItem("language") || 'en';
-      verseText.innerText = verseText.dataset[currentLang];
-      verseRef.innerText = verseRef.dataset[currentLang];
-    });
-  }
+    ul.appendChild(li);
+  });
 
-  function fadeOutIn(callback) {
-    const verseText = document.getElementById('verseText');
-    const verseRef = document.getElementById('verseReference');
-    verseText.style.opacity = 0;
-    verseRef.style.opacity = 0;
-    setTimeout(() => {
-      callback();
-      verseText.style.opacity = 1;
-      verseRef.style.opacity = 1;
-    }, 300);
-  }
-  
-  function loadTodaysVerse() {
-    const today = new Date().getDate();
-    const verse = todaysVerses[today % todaysVerses.length];
-    setVerseContent(verse);
-  }
+  resultsBox.appendChild(ul);
+  resultsBox.classList.remove("hidden");
+}
 
-  // ROSARY
-  function getTodaySet() {
-    const day = new Date().getDay(); // Sunday=0
-    if ([0, 3].includes(day)) return 'Utukufu';
-    if ([1, 6].includes(day)) return 'Furaha';
-    if ([2, 5].includes(day)) return 'Uchungu';
-    if (day === 4) return 'Mwanga';
-    return 'Furaha';
-  }
+// ==========================================
+// PART 5: VERSES & ROSARY FUNCTIONS
+// ==========================================
 
-  function toggleMysteries() {
-    const content = document.getElementById('mysteries-content');
-    const icon = document.querySelector('#rosary-mysteries .toggle-icon');
-    content.classList.toggle('active');
-    icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
-    if (content.classList.contains('active') && !document.getElementById('dynamicMysteries').innerHTML) {
-      renderMysteries(getTodaySet());
+// === 5.1 VERSE DISPLAY ===
+function setVerseContent(verse) {
+  const verseText = document.getElementById('verseText');
+  const verseRef = document.getElementById('verseReference');
+  verseText.style.opacity = 0; verseRef.style.opacity = 0;
+  setTimeout(() => {
+    verseText.dataset.en = verse.en; verseText.dataset.sw = verse.sw;
+    verseRef.dataset.en = verse.ref_en; verseRef.dataset.sw = verse.ref_sw;
+    const currentLang = localStorage.getItem("language") || 'en';
+    verseText.innerText = verseText.dataset[currentLang];
+    verseRef.innerText = verseRef.dataset[currentLang];
+    verseText.style.opacity = 1; verseRef.style.opacity = 1;
+  }, 300);
+}
+
+function loadTodaysVerse() {
+  const today = new Date().getDate();
+  const verse = todaysVerses[today % todaysVerses.length];
+  setVerseContent(verse);
+}
+
+// === 5.2 ROSARY MYSTERIES ===
+function getTodaySet() {
+  const day = new Date().getDay();
+  if ([0, 3].includes(day)) return 'Utukufu';
+  if ([1, 6].includes(day)) return 'Furaha';
+  if ([2, 5].includes(day)) return 'Uchungu';
+  if (day === 4) return 'Mwanga';
+  return 'Furaha';
+}
+
+function toggleMysteries() {
+  const content = document.getElementById('mysteries-content');
+  const icon = document.querySelector('#rosary-mysteries .toggle-icon');
+  content.classList.toggle('active');
+  icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+  if (content.classList.contains('active') && !document.getElementById('dynamicMysteries').innerHTML) {
+    renderMysteries(getTodaySet());
+  }
+}
+
+function renderMysteries(set) {
+  const lang = localStorage.getItem('language') || 'en';
+  const mysteries = rosarySets[set][lang];
+  const container = document.getElementById('dynamicMysteries');
+  const setName = document.querySelector(`.mystery-set-selector button[data-set='${set}']`)?.dataset[lang] || set;
+
+  let html = `<h3>${lang === 'sw' ? 'Matendo ya Rozari (' + setName + ')' : 'Rosary Mysteries (' + setName + ' Mysteries)'}</h3>`;
+  html += '<ol class="mysteries-list">';
+  mysteries.forEach(mystery => { html += `<li>${mystery}</li>`; });
+  html += '</ol>';
+  container.innerHTML = html;
+  document.querySelectorAll('.mystery-set-selector button').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.set === set || (btn.dataset.set === 'Today' && set === getTodaySet()));
+  });
+}
+
+function updateMysteryLabel() {
+  const lang = localStorage.getItem('language') || 'en';
+  const mysteryLabel = document.getElementById('mystery-label');
+  if (mysteryLabel) mysteryLabel.textContent = mysteryLabel.dataset[lang];
+}
+
+function updateMysteryButtons() {
+  const lang = localStorage.getItem('language') || 'en';
+  document.querySelectorAll('.mystery-set-selector button').forEach(btn => {
+    if (btn.dataset[lang]) btn.textContent = btn.dataset[lang];
+  });
+}
+
+// ==========================================
+// PART 6: LITURGICAL ENGINE DISPLAY
+// ==========================================
+
+function updateLiturgicalDisplay() {
+  const engine = new LiturgicalEngine();
+  const today = new Date();
+  const anchors = engine.getAnchors(today.getFullYear());
+  const key = `${today.getMonth() + 1}-${today.getDate()}`;
+  const fixed = LIT_FIXED_DATA[key];
+
+  const result = engine.getPrecedence(today, anchors, fixed);
+  const lang = localStorage.getItem('language') || 'sw';
+
+  // --- CALCULATE CYCLE (Year A, B, C) ---
+  let effectiveYear = today.getFullYear();
+  if (today.getTime() >= anchors.advent1.getTime()) {
+    effectiveYear += 1;
+  }
+  const cycleMap = { 1: "A", 2: "B", 0: "C" };
+  const cycle = cycleMap[effectiveYear % 3];
+
+  // --- UPDATE HEADER TEXT ---
+  const litText = document.getElementById('lit-feast');
+  const litInfoDiv = document.getElementById('liturgical-info');
+  if (litText) {
+    const dayName = lang === 'sw' ? result.name_sw : result.name_en;
+
+    // Logic: If Swahili, use "Mwaka"; otherwise use "Year"
+    const yearLabel = lang === 'sw' ? "Mwaka" : "Year";
+
+    litText.textContent = `${dayName} (${yearLabel} ${cycle})`;
+
+    if (litInfoDiv) {
+      litInfoDiv.dataset.titleEn = result.name_en;
+      litInfoDiv.dataset.titleSw = result.name_sw;
+      litInfoDiv.dataset.infoEn = result.info_en || "";
+      litInfoDiv.dataset.infoSw = result.info_sw || "";
     }
   }
 
-  function renderMysteries(set) {
-    const lang = localStorage.getItem('language') || 'en';
-    const mysteries = rosarySets[set][lang];
-    const container = document.getElementById('dynamicMysteries');
-    const setName = document.querySelector(`.mystery-set-selector button[data-set='${set}']`)?.dataset[lang] || set;
+  // --- UPDATE DOT COLOR ---
+  const dot = document.getElementById('lit-color-dot');
+  if (dot) {
+    let dotColor = 'green';
+    if (result.color === 'White') dotColor = 'white';
+    if (result.color === 'Red') dotColor = 'red';
+    if (result.color === 'Violet') dotColor = 'purple';
+    if (result.color === 'Rose') dotColor = 'pink';
+    dot.style.backgroundColor = dotColor;
+  }
+
+  // --- AUTOMATIC THEME MAPPING ---
+  let appTheme = "ordinary";
+  if (result.season === "Christmas") appTheme = "Christmas";
+  if (result.season === "lent") appTheme = "lent";
+  if (result.season === "easter") appTheme = "easter";
+  if (result.season === "ordinary") appTheme = "ordinary";
+  if (result.season === "advent") appTheme = "advent";
+
+  // Override for Red Days (Martyrs)
+  if (result.color === "Red") {
+    appTheme = "red";
+  }
+
+  // Apply the calculated theme
+  changeTheme(appTheme);
+}
+// ==========================================
+// PART 6.5: PRAYER NOTIFICATIONS
+// ==========================================
+
+async function requestNotificationPermission() {
+  const permission = await LocalNotifications.requestPermissions();
+  if (permission.display !== 'granted') {
+    console.log("Notification permission not granted");
+  }
+}
+function getPrayerNotificationContent(language) {
+
+  const content = {
+    en: [
+      { title: "Morning Prayer 🌅", body: "6:00 AM - Time for Angelus." },
+      { title: "Midday Prayer ☀️", body: "12:00 PM - Time for Angelus." },
+      { title: "Afternoon Prayer 🕊️", body: "3:00 PM - Offer your afternoon prayer." },
+      { title: "Evening Prayer 🌆", body: "6:00 PM - Time for Angelus." },
+      { title: "Night Prayer 🌙", body: "9:00 PM - Pray Compline before rest." }
+    ],
+    sw: [
+      { title: "Sala ya Asubuhi 🌅", body: "Saa 12:00 Asubuhi - Ni wakati wa kusali Malaika wa Bwana." },
+      { title: "Sala ya Mchana ☀️", body: "Saa 6:00 Mchana - Ni wakati wa kusali Malaika wa Bwana." },
+      { title: "Sala ya Alasiri 🕊️", body: "Saa 9:00 Alasiri - Sala sala yako ya mchana." },
+      { title: "Sala ya Jioni 🌆", body: "Saa 12:00 Jioni - Ni wakati wa kusali Malaika wa Bwana." },
+      { title: "Sala ya Usiku 🌙", body: "Saa 3:00 Usiku - Sali ya Mwisho kabla ya kulala." }
+    ]
+  };
+
+  return content[language] || content.en;
+}
+async function scheduleDailyPrayerNotifications() {
+  try {
+    // 1. Correctly get the plugin from Capacitor
+    const LocalNotifications = Capacitor.Plugins.LocalNotifications;
+
+    // 2. Check if it exists properly
+    if (!LocalNotifications) {
+      console.log("LocalNotifications plugin not found on Capacitor.Plugins");
+      return;
+    }
+
+    const language = localStorage.getItem("language") || "sw";
+    const engine = new LiturgicalEngine();
+    const prayers = getPrayerNotificationContent(language);
     
-    let html = `<h3>${lang === 'sw' ? 'Matendo ya Rozari (' + setName + ')' : 'Rosary Mysteries (' + setName + ' Mysteries)'}</h3>`;
-    html += '<ol class="mysteries-list">';
-    mysteries.forEach(mystery => { html += `<li>${mystery}</li>`; });
-    html += '</ol>';
-    container.innerHTML = html;
+    // Add this inside scheduleDailyPrayerNotifications() to get the saint of the day
+    // Use 'result' to get the name of the saint/feast for the notification
+    const today = new Date();
+    const anchors = engine.getAnchors(today.getFullYear());
+    const key = `${today.getMonth() + 1}-${today.getDate()}`;
+    const fixed = LIT_FIXED_DATA[key];
+    const result = engine.getPrecedence(today, anchors, fixed);
+    const saintName = language === 'sw' ? result.name_sw : result.name_en;
 
-    document.querySelectorAll('.mystery-set-selector button').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.set === set || (btn.dataset.set === 'Today' && set === getTodaySet()));
-    });
-  }
+    // Get notification settings
+    const morningEnabled = localStorage.getItem("notifyMorning") !== "false";
+    const middayEnabled = localStorage.getItem("notifyMidday") !== "false";
+    const afternoonEnabled = localStorage.getItem("notifyAfternoon") !== "false";
+    const eveningEnabled = localStorage.getItem("notifyEvening") !== "false";
+    const nightEnabled = localStorage.getItem("notifyNight") !== "false";
+    const saintsEnabled = localStorage.getItem("notifySaints") !== "false";
 
-  function updateMysteryLabel() {
-    const lang = localStorage.getItem('language') || 'en';
-    const mysteryLabel = document.getElementById('mystery-label');
-    if (mysteryLabel) mysteryLabel.textContent = mysteryLabel.dataset[lang];
-  }
-  
-  function updateMysteryButtons() {
-    const lang = localStorage.getItem('language') || 'en';
-    document.querySelectorAll('.mystery-set-selector button').forEach(btn => {
-      if (btn.dataset[lang]) btn.textContent = btn.dataset[lang];
-    });
-  }
-
-  // --- APP INITIALIZATION ---
-  document.addEventListener("DOMContentLoaded", () => {
-    // Update About label on language change
-    function updateAboutLabel() {
-      const lang = localStorage.getItem('language') || 'en';
-      document.getElementById('aboutLabel').textContent = document.getElementById('aboutLabel').dataset[lang];
-    }
-    updateAboutLabel();
-    document.getElementById('languageSelect').addEventListener('change', updateAboutLabel);
-    // Restore settings from localStorage
-    const savedTheme = localStorage.getItem("theme") || "ordinary";
-    const isDark = localStorage.getItem("darkMode") === "true";
-    let language = localStorage.getItem("language");
-    const userName = localStorage.getItem("userName");
-    const savedSize = localStorage.getItem("fontSize");
-
-    // Apply saved settings
-    document.getElementById("theme").value = savedTheme;
-    document.getElementById("darkMode").checked = isDark;
-    document.body.className = `${savedTheme}-${isDark ? "dark" : "light"}`;
-    if (savedSize) {
-      document.documentElement.style.fontSize = savedSize;
-      document.getElementById("fontSizeSlider").value = parseInt(savedSize);
+    // Check if LocalNotifications is available (Capacitor)
+    if (typeof LocalNotifications === 'undefined') {
+      console.log("LocalNotifications not available, skipping scheduling");
+      return;
     }
 
-    // Initial language and user setup
-    const setupModal = document.getElementById("setupModal");
-    if (!userName || !language) {
-      setupModal.style.display = "flex";
-    } else {
-      document.getElementById("languageSelect").value = language;
-      updateLanguage(language);
-      updateGreeting(userName, language);
-    }
+    // 1. Get all pending notifications (including the new Saint IDs 100, 101, etc.)
+    const pending = await LocalNotifications.getPending();
 
-    // Initialize home screen content
-    showCategory('home');
-    loadTodaysVerse();
-    document.getElementById('backToToday').classList.add('active'); // <-- Add this line
-    updateMysteryLabel();
-    updateMysteryButtons();
-
-     document.querySelector('.rosary-categories').addEventListener('click', (event) => {
-    const categoryButton = event.target.closest('.category');
-    if (categoryButton && categoryButton.dataset.categoryId) {
-      // Remove active class from all rosary sub-category buttons
-      document.querySelectorAll('.rosary-categories .category').forEach(btn => {
-        btn.classList.remove('active');
+    // 2. If there are any, cancel them all
+    if (pending.notifications.length > 0) {
+      await LocalNotifications.cancel({
+        notifications: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }]
       });
-      // Add active class to clicked button
-      categoryButton.classList.add('active');
-      // Show the selected sub-section
-      showCategory(categoryButton.dataset.categoryId);
+    }
+
+    const notificationsToSchedule = [];
+
+    if (morningEnabled) {
+      notificationsToSchedule.push({
+        id: 1,
+        title: prayers[0].title,
+        body: prayers[0].body,
+        schedule: { on: { hour: 6, minute: 0 }, repeats: true, allowWhileIdle: true },
+        smallIcon: 'notification_icon',
+        largeIcon: 'ic_launcher_foreground'
+      });
+    }
+
+    if (middayEnabled) {
+      notificationsToSchedule.push({
+        id: 2,
+        title: prayers[1].title,
+        body: prayers[1].body,
+        schedule: { on: { hour: 12, minute: 0 }, repeats: true, allowWhileIdle: true },
+        smallIcon: 'notification_icon',
+        largeIcon: 'ic_launcher_foreground'
+      });
+    }
+
+    if (afternoonEnabled) {
+      notificationsToSchedule.push({
+        id: 3,
+        title: prayers[2].title,
+        body: prayers[2].body,
+        schedule: { on: { hour: 15, minute: 0 }, repeats: true, allowWhileIdle: true },
+        smallIcon: 'notification_icon',
+        largeIcon: 'ic_launcher_foreground'
+      });
+    }
+
+    if (eveningEnabled) {
+      notificationsToSchedule.push({
+        id: 4,
+        title: prayers[3].title,
+        body: prayers[3].body,
+        schedule: { on: { hour: 18, minute: 0 }, repeats: true, allowWhileIdle: true },
+        smallIcon: 'notification_icon',
+        largeIcon: 'ic_launcher_foreground'
+      });
+    }
+
+    if (nightEnabled) {
+      notificationsToSchedule.push({
+        id: 5,
+        title: prayers[4].title,
+        body: prayers[4].body,
+        schedule: { on: { hour: 21, minute: 0 }, repeats: true, allowWhileIdle: true },
+        smallIcon: 'notification_icon',
+        largeIcon: 'ic_launcher_foreground'
+      });
+    }
+
+    // ... inside scheduleDailyPrayerNotifications ...
+
+    // schedule saint/feast notification if requested
+    if (saintsEnabled) {
+      if (typeof engine !== 'undefined' && typeof LIT_FIXED_DATA !== 'undefined') {
+        try {
+          for (let i = 0; i < 7; i++) {
+            const futureDate = new Date();
+            futureDate.setDate(futureDate.getDate() + i);
+            
+            const anchors = engine.getAnchors(futureDate.getFullYear());
+            const key = `${futureDate.getMonth() + 1}-${futureDate.getDate()}`;
+            const fixed = LIT_FIXED_DATA[key];
+            
+            // Get whatever the "winner" for that day is (Fixed or Moveable)
+            const feast = engine.getPrecedence(futureDate, anchors, fixed);
+
+            if (feast) {
+              let notifyTime = new Date(futureDate);
+              notifyTime.setHours(8, 0, 0, 0);
+
+              // Don't schedule for today if 8:00 AM has already passed
+              if (i === 0 && notifyTime <= new Date()) continue;
+
+              notificationsToSchedule.push({
+                id: 100 + i,
+                title: language === 'sw' ? "Mtakatifu wa Leo 🕊️" : "Saint of the Day 🕊️",
+                body: language === 'sw' ? feast.name_sw : feast.name_en,
+                schedule: { at: notifyTime, allowWhileIdle: true },
+                smallIcon: 'notification_icon', // Keep icon name consistent
+                largeIcon: 'ic_launcher_foreground'
+              });
+            }
+          }
+        } catch (err) {
+          console.error("Liturgical calculation error:", err);
+        }
+      }
+    }
+
+    // 2. Final Schedule Call (Ensure this is OUTSIDE the if blocks)
+    if (notificationsToSchedule.length > 0) {
+      await LocalNotifications.schedule({
+        notifications: notificationsToSchedule
+      });
+      console.log("Daily prayers scheduled successfully!");
+    }
+  } catch (error) {
+    console.error("Error scheduling notifications:", error);
+  }
+}
+
+// ===========================
+// NOTIFICATION SETTINGS FUNCTIONS
+// ===========================
+
+function loadNotificationSettings() {
+  // Load stored notification settings, default to true if not set
+  document.getElementById('notificationMorning').checked = localStorage.getItem("notifyMorning") !== "false";
+  document.getElementById('notificationMidday').checked = localStorage.getItem("notifyMidday") !== "false";
+  document.getElementById('notificationAfternoon').checked = localStorage.getItem("notifyAfternoon") !== "false";
+  document.getElementById('notificationEvening').checked = localStorage.getItem("notifyEvening") !== "false";
+  document.getElementById('notificationNight').checked = localStorage.getItem("notifyNight") !== "false";
+  document.getElementById('notificationSaints').checked = localStorage.getItem("notifySaints") !== "false";
+}
+
+async function saveNotificationSettings() {
+  try {
+    // Save notification preferences to localStorage
+    localStorage.setItem("notifyMorning", document.getElementById('notificationMorning').checked);
+    localStorage.setItem("notifyMidday", document.getElementById('notificationMidday').checked);
+    localStorage.setItem("notifyAfternoon", document.getElementById('notificationAfternoon').checked);
+    localStorage.setItem("notifyEvening", document.getElementById('notificationEvening').checked);
+    localStorage.setItem("notifyNight", document.getElementById('notificationNight').checked);
+    localStorage.setItem("notifySaints", document.getElementById('notificationSaints').checked);
+
+    // Re-schedule notifications with new settings
+    await scheduleDailyPrayerNotifications();
+
+    // Close the modal
+    document.getElementById('notificationModal').classList.remove('show');
+  } catch (error) {
+    console.error("Error saving notification settings:", error);
+  }
+}
+
+// ==========================================
+// PART 7: APPLICATION INITIALIZATION
+// ==========================================
+
+document.addEventListener("DOMContentLoaded", async () => {
+  await setupNotificationChannels();
+  // Add this in your App Init section
+  scheduleDailyPrayerNotifications();
+  async function setupNotificationChannels() {
+  if (typeof LocalNotifications === 'undefined') return;
+
+  await LocalNotifications.createChannel({
+    id: 'prayer_reminders_v1',
+    name: 'Prayer Reminders',
+    description: 'Daily Angelus and Prayer notifications',
+    importance: 4, // 5 = Highest (Sound + Popup)
+    visibility: 1, // 1 = Public (Visible on lock screen) // Optional: put a custom sound in android/app/src/main/res/raw
+    vibration: true,
+  });
+}
+  // === 7.1 RESTORE USER SETTINGS ===
+  const isDark = localStorage.getItem("darkMode") === "true";
+  const savedSize = localStorage.getItem("fontSize");
+  let language = localStorage.getItem("language");
+  const userName = localStorage.getItem("userName");
+
+  // Apply Dark Mode State to Checkbox immediately
+  const darkModeCheckbox = document.getElementById("darkMode");
+  if (darkModeCheckbox) darkModeCheckbox.checked = isDark;
+
+  // Apply Font Size
+  if (savedSize) {
+    document.documentElement.style.fontSize = savedSize;
+    const fontSlider = document.getElementById("fontSizeSlider");
+    if (fontSlider) fontSlider.value = parseInt(savedSize);
+  }
+
+  // === 7.2 INITIALIZE UI & CONTENT ===
+  function updateAboutLabel() {
+    const lang = localStorage.getItem('language') || 'en';
+    const aboutLbl = document.getElementById('aboutLabel');
+    if (aboutLbl) aboutLbl.textContent = aboutLbl.dataset[lang];
+  }
+
+  // Update display
+  updateLiturgicalDisplay();
+  updateAboutLabel();
+
+  // === 7.3 SETUP USER & MODAL ===
+  const setupModal = document.getElementById("setupModal");
+  if (!userName || !language) {
+    if (setupModal) setupModal.style.display = "flex";
+  } else {
+    const langSelect = document.getElementById("languageSelect");
+    if (langSelect) langSelect.value = language;
+    updateLanguage(language);
+    updateGreeting(userName, language);
+  }
+
+  // === 7.4 INITIALIZE UI ELEMENTS ===
+  showCategory('home');
+  loadTodaysVerse();
+  const backBtn = document.getElementById('backToToday');
+  if (backBtn) backBtn.classList.add('active');
+  updateMysteryLabel();
+  updateMysteryButtons();
+
+  // === 7.5 EVENT LISTENERS - USER SETUP ===
+  document.getElementById('saveUserDetailsBtn').addEventListener('click', async () => {
+    const name = document.getElementById("userNameInput").value.trim();
+    const selectedLanguage = document.getElementById("languageSelectSetup").value;
+    // --- WORD LIMIT LOGIC ---
+    const maxWords = 4; 
+    // Split by spaces and filter out empty strings to get actual word count
+    const nameWordCount = name.split(/\s+/).filter(word => word.length > 0).length;
+
+    if (nameWordCount > maxWords) {
+      const errorMsg = selectedLanguage === 'sw' 
+        ? `Jina lisiwe na maneno zaidi ya ${maxWords}.` 
+        : `Name must not exceed ${maxWords} words.`;
+      alert(errorMsg);
+      return; // Stop the function here
+    }
+    // ------------------------
+    
+    if (name && selectedLanguage) {
+      localStorage.setItem("userName", name);
+      localStorage.setItem("language", selectedLanguage);
+      language = selectedLanguage;
+      updateLanguage(language);
+      updateGreeting(name, language);
+      setupModal.style.display = "none";
+      updateLiturgicalDisplay();
+      await scheduleDailyPrayerNotifications();
+
+      // Show the small in-app welcome modal (only selected language) after setup
+      try {
+        const welcomeModal = document.getElementById('welcomeModal');
+        const welcomeTitle = document.getElementById('welcomeTitle');
+        const welcomeBody = document.getElementById('welcomeBody');
+        if (welcomeTitle && welcomeBody && welcomeModal) {
+          if (selectedLanguage === 'sw') {
+            welcomeTitle.textContent = `Karibu, ${name}!`;
+            welcomeBody.textContent = `Kwa Pamoja Tusali kwa Mungu Wetu ili Tukue Kiimani na Kiroho.`;
+          } else {
+            welcomeTitle.textContent = `Welcome, ${name}!`;
+            welcomeBody.textContent = `Together We Pray To Our God so as to grow in faith and spirituality.`;
+          }
+          welcomeModal.classList.add('show');
+          // Auto-dismiss after 3 seconds
+          setTimeout(() => {
+            welcomeModal.classList.add('closing');
+            setTimeout(() => {
+              welcomeModal.classList.remove('show', 'closing');
+            }, 800); // duration of exit animation
+          }, 3000);
+        }
+      } catch (e) { console.warn('welcome modal show failed', e); }
+
+      // === SCHEDULE NOTIFICATIONS AFTER USER SETUP ===
+      const { LocalNotifications } = Capacitor.Plugins;
+      await LocalNotifications.requestPermissions();
+      
+      // Schedule welcome notification
+      const now = new Date();
+      now.setSeconds(now.getSeconds() + 3);
+
+      const welcomeMsgs = {
+        en: {
+          title: "Welcome to the Catholic Prayers App! 🙏",
+          body: "We will notify you of daily prayers and feast days. Let's grow in faith together!"
+        },
+        sw: {
+          title: "Karibu Sala Za Kikatoliki! 🙏",
+          body: "Tutakujulisha kuhusu sala za kila siku pamoja na sikukuu mbalimbali za Kanisa. Tuwe pamoja tukue katika imani!"
+        }
+      };
+
+      const msg = welcomeMsgs[selectedLanguage] || welcomeMsgs.en;
+
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            id: 999,
+            title: msg.title,
+            body: msg.body,
+            schedule: { at: now, allowWhileIdle: true},
+            smallIcon: 'notification_icon',
+            largeIcon: 'ic_launcher_foreground'
+          }
+        ]
+      });
+      
+      // Schedule daily prayer notifications
+      await scheduleDailyPrayerNotifications();
+    } else {
+      alert("Tafadhali jaza Jina Lako / Please enter your name.");
     }
   });
 
-    // --- ATTACH ALL EVENT LISTENERS ---
-    // About Modal logic
-    const aboutBtn = document.getElementById('aboutBtn');
-    const aboutModal = document.getElementById('aboutModal');
-    const closeAbout = document.getElementById('closeAbout');
-    const aboutTitle = document.getElementById('aboutTitle');
-    const aboutText = document.getElementById('aboutText');
+  // === 7.6 EVENT LISTENERS - NAVIGATION & PRAYERS ===
+  document.querySelector('.categories').addEventListener('click', (event) => {
+    const btn = event.target.closest('.category');
+    if (btn && btn.dataset.categoryId) showCategory(btn.dataset.categoryId);
+  });
 
-    function showAboutModal() {
-      const lang = localStorage.getItem('language') || 'en';
-      aboutTitle.textContent = aboutTitle.dataset[lang];
-      aboutText.textContent = aboutText.dataset[lang];
-      aboutModal.style.display = 'flex';
+  document.getElementById('prayer-content').addEventListener('click', (event) => {
+    const btn = event.target.closest('.prayer-button');
+    if (btn) {
+      if (btn.id === 'rosary-mysteries-toggle') toggleMysteries();
+      else togglePrayer(btn);
     }
-    function hideAboutModal() {
+  });
+
+  document.getElementById('searchInput').addEventListener('keyup', searchPrayers);
+  document.addEventListener('click', (event) => {
+    const results = document.getElementById('searchResults');
+    if (results && !results.contains(event.target) && event.target !== document.getElementById('searchInput')) {
+      results.classList.add('hidden');
+    }
+  });
+
+  // === 7.7 EVENT LISTENERS - SETTINGS & THEME ===
+  document.getElementById('settingsBtn').addEventListener('click', toggleSettings);
+  document.getElementById('languageSelect').addEventListener('change', (e) => changeLanguage(e.target.value));
+
+  document.getElementById('theme').addEventListener('change', (e) => changeTheme(e.target.value));
+
+  document.getElementById('darkMode').addEventListener('change', toggleDarkMode);
+  document.getElementById('fontSizeSlider').addEventListener('input', (e) => {
+    const size = `${e.target.value}px`;
+    document.documentElement.style.fontSize = size;
+    localStorage.setItem("fontSize", size);
+  });
+
+  // Notification Settings Button
+  document.getElementById('notificationSettingsBtn').addEventListener('click', () => {
+    document.getElementById('notificationModal').classList.add('show');
+    loadNotificationSettings();
+  });
+
+  // Close Notification Modal
+  document.getElementById('closeNotification').addEventListener('click', () => {
+    document.getElementById('notificationModal').classList.remove('show');
+  });
+
+  // Save Notification Settings
+  document.getElementById('saveNotificationSettingsBtn').addEventListener('click', saveNotificationSettings);
+
+  // Close notification modal when clicking outside
+  document.getElementById('notificationModal').addEventListener('click', (e) => {
+    if (e.target.id === 'notificationModal') {
+      document.getElementById('notificationModal').classList.remove('show');
+    }
+  });
+
+  document.addEventListener('click', (event) => {
+    const settings = document.getElementById('settings');
+    if (settings && !settings.contains(event.target) && event.target !== document.getElementById('settingsBtn')) {
+      settings.classList.remove('show');
+    }
+  });
+
+  // === 7.8 EVENT LISTENERS - VERSES & ROSARY ===
+  document.querySelector('.verse-theme-selector').addEventListener('click', (event) => {
+    const btn = event.target.closest('.verse-theme');
+    if (btn) {
+      const theme = btn.dataset.theme;
+      localStorage.setItem('selectedVerseTheme', theme);
+      document.querySelectorAll('.verse-theme').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (backBtn) backBtn.classList.remove('active');
+      const options = themedVerses[theme];
+      setVerseContent(options[Math.floor(Math.random() * options.length)]);
+    }
+  });
+
+  if (backBtn) backBtn.addEventListener('click', () => {
+    localStorage.removeItem('selectedVerseTheme');
+    document.querySelectorAll('.verse-theme').forEach(b => b.classList.remove('active'));
+    backBtn.classList.add('active');
+    loadTodaysVerse();
+  });
+
+  document.querySelector('.mystery-set-selector').addEventListener('click', (event) => {
+    const btn = event.target.closest('button[data-set]');
+    if (btn) renderMysteries(btn.dataset.set === 'Today' ? getTodaySet() : btn.dataset.set);
+  });
+
+  document.querySelector('.rosary-categories').addEventListener('click', (event) => {
+    const btn = event.target.closest('.category');
+    if (btn && btn.dataset.categoryId) {
+      document.querySelectorAll('.rosary-categories .category').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      showCategory(btn.dataset.categoryId);
+    }
+  });
+
+  // === 7.9 EVENT LISTENERS - MODALS (ABOUT & FEAST) ===
+  const aboutBtn = document.getElementById('aboutBtn');
+  const aboutModal = document.getElementById('aboutModal');
+  const closeAbout = document.getElementById('closeAbout');
+  const aboutTitle = document.getElementById('aboutTitle');
+  const aboutText = document.getElementById('aboutText');
+  const langSel = document.getElementById('languageSelect');
+
+  function showAboutModal() {
+    const lang = localStorage.getItem('language') || 'en';
+    if (aboutTitle) aboutTitle.textContent = aboutTitle.dataset[lang];
+    if (aboutText) aboutText.textContent = aboutText.dataset[lang];
+    if (aboutModal) aboutModal.style.display = 'flex';
+  }
+  if (aboutBtn) aboutBtn.addEventListener('click', showAboutModal);
+  if (closeAbout) closeAbout.addEventListener('click', () => aboutModal.style.display = 'none');
+  if (aboutModal) aboutModal.addEventListener('click', (e) => { if (e.target === aboutModal) aboutModal.style.display = 'none'; });
+  if (langSel) langSel.addEventListener('change', () => {
+    if (aboutModal && aboutModal.style.display === 'flex') showAboutModal();
+    updateAboutLabel();
+  });
+
+  // FEAST MODAL HANDLERS
+  const feastModal = document.getElementById('feastModal');
+  const closeFeast = document.getElementById('closeFeast');
+  const litInfoDiv = document.getElementById('liturgical-info');
+
+  // Close when clicking the "X"
+  if (closeFeast) {
+    closeFeast.onclick = function () {
+      feastModal.style.display = 'none';
+    }
+  }
+
+  // Close when clicking outside the box
+  window.onclick = function (event) {
+    if (event.target === feastModal) {
+      feastModal.style.display = 'none';
+    }
+    const aboutModal = document.getElementById('aboutModal');
+    if (event.target === aboutModal) {
       aboutModal.style.display = 'none';
     }
-    aboutBtn.addEventListener('click', showAboutModal);
-    closeAbout.addEventListener('click', hideAboutModal);
-    aboutModal.addEventListener('click', function(e) {
-      if (e.target === aboutModal) hideAboutModal();
-    });
-    document.getElementById('languageSelect').addEventListener('change', function() {
-      if (aboutModal.style.display === 'flex') {
-        const lang = localStorage.getItem('language') || 'en';
-        aboutTitle.textContent = aboutTitle.dataset[lang];
-        aboutText.textContent = aboutText.dataset[lang];
+  }
+
+  // Open Modal when clicking the Header (Red/Green info bar)
+  if (litInfoDiv) {
+    litInfoDiv.addEventListener('click', () => {
+      const currentLang = localStorage.getItem('language') || 'en';
+
+      // Retrieve stored data
+      const title = currentLang === 'sw' ? litInfoDiv.dataset.titleSw : litInfoDiv.dataset.titleEn;
+      const desc = currentLang === 'sw' ? litInfoDiv.dataset.infoSw : litInfoDiv.dataset.infoEn;
+
+      if (title) {
+        document.getElementById('feastPopupTitle').textContent = title;
+        document.getElementById('feastPopupDesc').textContent = desc || (currentLang === 'sw' ? "Hakuna maelezo." : "No details available.");
+        feastModal.style.display = 'flex';
       }
     });
-    
-    // Setup Modal
-    document.getElementById('saveUserDetailsBtn').addEventListener('click', () => {
-        const name = document.getElementById("userNameInput").value.trim();
-        const selectedLanguage = document.getElementById("languageSelectSetup").value;
-        if (name && selectedLanguage) {
-            localStorage.setItem("userName", name);
-            localStorage.setItem("language", selectedLanguage);
-            language = selectedLanguage;
-            updateLanguage(language);
-            updateGreeting(name, language);
-            setupModal.style.display = "none";
-            alert(translations.alert[language](name));
-        } else {
-            alert("Tafadhali jaza Jina Lako na Chagua Lugha / Please enter your name and select a language.");
-        }
-    });
-
-    // Main Navigation
-    document.querySelector('.categories').addEventListener('click', (event) => {
-        const categoryButton = event.target.closest('.category');
-        if (categoryButton && categoryButton.dataset.categoryId) {
-            showCategory(categoryButton.dataset.categoryId);
-        }
-    });
-
-    // Prayer Toggling (Event Delegation)
-    document.getElementById('prayer-content').addEventListener('click', (event) => {
-        const prayerButton = event.target.closest('.prayer-button');
-        if (prayerButton) {
-            if (prayerButton.id === 'rosary-mysteries-toggle') {
-                toggleMysteries();
-            } else {
-                togglePrayer(prayerButton);
-            }
-        }
-    });
-
-    // Search
-    document.getElementById('searchInput').addEventListener('keyup', searchPrayers);
-    document.addEventListener('click', (event) => {
-        const categoryButton = event.target.closest('.category');
-        if (categoryButton && categoryButton.dataset.categoryId) {
-          showCategory(categoryButton.dataset.categoryId);
-        }
-        const searchResults = document.getElementById('searchResults');
-        if (!searchResults.contains(event.target) && event.target !== document.getElementById('searchInput')) {
-            searchResults.classList.add('hidden');
-        }
-    });
-
-    // Settings Panel
-    document.getElementById('settingsBtn').addEventListener('click', toggleSettings);
-    document.getElementById('languageSelect').addEventListener('change', (e) => changeLanguage(e.target.value));
-    document.getElementById('theme').addEventListener('change', (e) => changeTheme(e.target.value));
-    document.getElementById('darkMode').addEventListener('change', toggleDarkMode);
-    document.getElementById('fontSizeSlider').addEventListener('input', (e) => {
-        const size = `${e.target.value}px`;
-        document.documentElement.style.fontSize = size;
-        localStorage.setItem("fontSize", size);
-    });
-    document.addEventListener('click', (event) => {
-        const settings = document.getElementById('settings');
-        if (!settings.contains(event.target) && event.target !== document.getElementById('settingsBtn')) {
-            settings.classList.remove('show');
-        }
-    });
-
-    // Verse Theming
-    document.querySelector('.verse-theme-selector').addEventListener('click', (event) => {
-        const themeButton = event.target.closest('.verse-theme');
-        if(themeButton){
-            const theme = themeButton.dataset.theme;
-            localStorage.setItem('selectedVerseTheme', theme);
-            document.querySelectorAll('.verse-theme').forEach(b => b.classList.remove('active'));
-            if (themeButton.id === 'backToToday') {
-            themeButton.classList.add('active');
-          } else {
-            themeButton.classList.add('active');
-            document.getElementById('backToToday').classList.remove('active');
-          }
-            const options = themedVerses[theme];
-            const verse = options[Math.floor(Math.random() * options.length)];
-            setVerseContent(verse);
-        }
-    });
-    
-    document.getElementById('backToToday').addEventListener('click', () => {
-      localStorage.removeItem('selectedVerseTheme');
-      document.querySelectorAll('.verse-theme').forEach(b => b.classList.remove('active'));
-      document.getElementById('backToToday').classList.add('active');
-      loadTodaysVerse();
-    });
-
-    // Rosary Mysteries (Event Delegation)
-    document.querySelector('.mystery-set-selector').addEventListener('click', (event) => {
-      const setButton = event.target.closest('button[data-set]');
-      if(setButton){
-        let set = setButton.dataset.set;
-        renderMysteries(set === 'Today' ? getTodaySet() : set);
-      }
-    });
-  });
-
-  
-  </script>
-</body>
+  }
+});
+</script>
 </html>
