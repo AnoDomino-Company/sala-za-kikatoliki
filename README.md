@@ -2,7 +2,7 @@
 - 
 Catholic Prayer App Developed by Anollian Mushi at AnoDomino Company, Sala za Kikatoliki is a premium, bilingual Catholic prayer application meticulously engineered for spiritual growth and daily devotion. This lightweight, single-file solution offers a high-performance, seamless experience across desktop, mobile, and tablet devices without the need for an active internet connection after the initial load.
 
-🌐 View Live Application: https://anodomino-company.github.io/sala-za-kikatoliki/
+🌐 View Live Application: https://anollian-mushi.github.io/sala-za-kikatoliki/
 
 About the Developer: Anollian Mushi
 Anollian Mushi is a visionary lead developer and the founder of AnoDomino Company. Based on a commitment to leveraging modern web technologies for community and spiritual benefit, Anollian Mushi designed Sala za Kikatoliki to bridge the gap between ancient Catholic liturgical traditions and modern digital accessibility.
